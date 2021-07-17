@@ -36,6 +36,10 @@ namespace FirstBlazorApp.Models
         public async Task Add(Employee employee)
         {
             var openResult = await this.OpenIndexedDb();
+            List<Employee> employees = await GetAll<Employee>("Employees");
+            var emp = employees.OrderByDescending(i => i.Id).First();
+            employee.Id = emp.Id+1;
+            //var idMax = employee.Max(x = x.id);
             var result = await this.AddItems<Employee>("Employees", new List<Employee>() { employee });
         }
         public async Task<List<Employee>> GetAll()
