@@ -68,6 +68,7 @@ test deploy   id test
             <tr>
                 <th>Name</th>
                 <th>E-mail</th>
+                <th>Mobile number</th>
             </tr>
         </thead>
         <tbody>
@@ -75,6 +76,7 @@ test deploy   id test
                 <tr>
                     <td>@employee.Fullname</td>
                     <td>@employee.Email</td>
+                    <td>@employee.MobileNumber</td>
                 </tr>
             </Virtualize>
         </tbody>
@@ -103,6 +105,9 @@ test deploy   id test
             MobileNumber = emp.MobileNumber
 
         });
+        emp.Fullname = "";
+        emp.Email = "";
+        emp.MobileNumber = "";
     }
     private void HandleInvalidSubmit(EditContext context)
     {
