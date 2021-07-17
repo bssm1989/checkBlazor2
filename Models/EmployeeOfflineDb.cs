@@ -57,10 +57,28 @@ namespace FirstBlazorApp.Models
             //var idMax = employee.Max(x = x.id);
             var result = await this.AddItems<Employee>("Employees", new List<Employee>() { employee });
         }
+
+        public async Task Delete(int id)
+        {
+            var openResult = await this.OpenIndexedDb();
+            List<Employee> employees = await GetAll<Employee>("Employees");
+            Employee emp = await GetByKey<int,Employee>("Employees", id);
+            var resultx="";
+            if (emp.Id>0)
+            {
+                
+                 resultx = await this.DeleteByKey<int>("Employees", emp.Id);
+            }
+        }
         public async Task<List<Employee>> GetAll()
         {
             var openResult = await this.OpenIndexedDb();
             return await this.GetAll<Employee>("Employees");
+        }
+        public async Task<Employee> GetById(int id)
+        {
+            var openResult = await this.OpenIndexedDb();
+            return await this.GetById(id);
         }
     }
 }

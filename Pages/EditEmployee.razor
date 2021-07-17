@@ -1,13 +1,8 @@
-﻿@page "/"
+﻿@page "/editemployee/{id}"
 @inject Models.EmployeeContext DBContext
 @using FirstBlazorApp.Models
-
 @inject NavigationManager NavigationManager
-<h1>Hello, Bassam</h1>
-test deploy   id test
-<p>
-    <a href="/addemp">Create New Employee</a>
-</p>
+
 <EditForm Model="@emp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
 
@@ -36,6 +31,7 @@ test deploy   id test
             </div>
 
             <button type="submit" class="btn btn-info" Style="margin-top:10px">Add user</button>
+            <input type="button" class="btn" @onclick="@Cancel" value="Cancel" />
         </div>
         @if (displayValidationErrorMessages)
         {
@@ -53,63 +49,29 @@ test deploy   id test
     </div>
 }
 @*</div>*@
-<hr />
-
-
-<div class="form-group row">
-    <button class="btn btn-info float-right" @onclick="GetSavedEmployees">List All Employees</button>
-</div>
-@if (employees != null)
-{
-    <table class="table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>E-mail</th>
-                <th>Mobile number</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <Virtualize Context="employee" Items="@employees">
-                <tr>
-                    <td>@employee.Fullname</td>
-                    <td>@employee.Email</td>
-                    <td>@employee.MobileNumber</td>
-                    <td>
-                        <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
-                        <a href='/editemployee/@employee.Id' class="btn btn-block">Edit</a> 
-                    </td>
-
-                </tr>
-            </Virtualize>
-        </tbody>
-    </table>
-}
 
 @code{
+
+    //[Parameter]
+    //public int id { get; set; }
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    //emp = await DBContext.GetById(id);
+    //}
     Employee emp = new Employee();
-    private List<Models.Employee> employees = null;
 
     bool displayValidationErrorMessages = false;
     bool displayUserAddedToDB = false;
 
 
-    private async Task GetSavedEmployees()
-    { employees = await DBContext.GetAll(); }
-    private async Task DeleteEmployee(int id)
-    {
-        await DBContext.Delete(id);
-        await Task.Run(() => GetSavedEmployees());
-        await Task.CompletedTask;
-    }
-    private async Task EditEmp(int id)
-    {
-        emp = await DBContext.GetById(id);
-        emp.Fullname = "dfdffd";
-    }
 
-    private async Task HandleValidSubmit(EditContext context)
+    private void HandleInvalidSubmit(EditContext context)
+    {
+        displayValidationErrorMessages = true;
+        displayUserAddedToDB = false;
+    }
+    protected async Task HandleValidSubmit(EditContext context)
     {
         displayValidationErrorMessages = true;
         displayUserAddedToDB = false;
@@ -120,19 +82,11 @@ test deploy   id test
             MobileNumber = emp.MobileNumber
 
         });
-        emp.Fullname = "";
-        emp.Email = "";
-        emp.MobileNumber = "";
+        NavigationManager.NavigateTo("/");
     }
-    private void HandleInvalidSubmit(EditContext context)
+    void Cancel()
     {
-        displayValidationErrorMessages = true;
-        displayUserAddedToDB = false;
+        NavigationManager.NavigateTo("listemployees");
     }
-    protected override async Task OnInitializedAsync()
-    {
-        employees = await DBContext.GetAll();
-    }
-    private string AddResult = string.Empty;
 
 }
