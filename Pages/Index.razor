@@ -1,16 +1,58 @@
 ﻿@page "/"
 @inject Models.EmployeeContext DBContext
+@using FirstBlazorApp.Models
 
 <h1>Hello, Bassam</h1>
 test deploy   id test
-Welcome to your new app.
+<EditForm Model="@emp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+    <DataAnnotationsValidator />
 
-
-
-<hr/>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row" style="margin-top:10px">
+                <div class="col-md-12">
+                    <label for="Fullname">Fullname #</label>
+                    <input type="text" class="form-control" id="Fullname" @bind-value="@emp.Fullname" placeholder="enter Fullname..." />
+                    <ValidationMessage For="@(()=>emp.Fullname)" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px">
+                <div class="col-md-12">
+                    <label for="Email">Email#</label>
+                    <input type="text" class="form-control" id="Email" @bind-value="@emp.Email" placeholder="enter Email..." />
+                    <ValidationMessage For="@(()=>emp.Email)" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px">
+                <div class="col-md-12">
+                    <label for="MobileNumber">Mobile Number #</label>
+                    <input type="text" class="form-control" id="MobileNumber" @bind-value="@emp.MobileNumber" />
+                    <ValidationMessage For="@(()=>emp.MobileNumber)" />
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-info" Style="margin-top:10px">Add user</button>
+        </div>
+        @if (displayValidationErrorMessages)
+        {
+            <div class="col-md-4" style="margin-top:10px">
+                <label>Validation Messages: </label>
+                <ValidationSummary />
+            </div>
+        }
+    </div>
+</EditForm>
+@if (displayUserAddedToDB)
+{
+    <div class="row bg-success text-white" style="margin-top:10px; height:40px">
+        <label class="p-2">User added to database... </label>
+    </div>
+}
+@*</div>*@
+<hr />
 <div class="form-group row">
-    <button class="btn btn-info float-right" @onclick="AddToEmployeeDb" >Add to Employee Db</button>
-    @if(!string.IsNullOrEmpty(AddResult))
+    <button class="btn btn-info float-right" @onclick="AddToEmployeeDb">Add to Employee Db</button>
+    @if (!string.IsNullOrEmpty(AddResult))
     {
         <span class="bg-danger text-white">@AddResult</span>
     }
@@ -40,9 +82,33 @@ Welcome to your new app.
 }
 
 @code{
+    Employee emp = new Employee();
     private List<Models.Employee> employees = null;
+
+    bool displayValidationErrorMessages = false;
+    bool displayUserAddedToDB = false;
+
+
     private async Task GetSavedEmployees()
-    {employees = await DBContext.GetAll();}
+    { employees = await DBContext.GetAll(); }
+
+    private async Task HandleValidSubmit(EditContext context)
+    {
+        displayValidationErrorMessages = true;
+        displayUserAddedToDB = false;
+        await DBContext.Add(new Models.Employee()
+        {
+            Email = emp.Email,
+            Fullname =emp.Fullname,
+            MobileNumber = emp.MobileNumber
+
+        });
+    }
+    private void HandleInvalidSubmit(EditContext context)
+    {
+        displayValidationErrorMessages = true;
+        displayUserAddedToDB = false;
+    }
     protected override async Task OnInitializedAsync()
     {
         employees = await DBContext.GetAll();
@@ -53,12 +119,12 @@ Welcome to your new app.
         Random random = new Random(2000);
         var generated = random.Next();
         var fullname = $"John Doe {generated.ToString()}";
-        await DBContext.Add(new Models.Employee()
-        {
-            Email = $"sample{generated.ToString()}@samplemail.com",
-            Fullname = fullname,
-            MobileNumber = $"0927646{generated.ToString()}"
-        }); ;
+        //await DBContext.Add(new Models.Employee()
+        //{
+        //    Email = $"sample{generated.ToString()}@samplemail.com",
+        //    Fullname = fullname,
+        //    MobileNumber = $"0927646{generated.ToString()}"
+        //});
         AddResult = $"Added {fullname}";
     }
 }

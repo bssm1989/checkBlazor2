@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using DnetIndexedDb;
@@ -26,8 +27,14 @@ namespace FirstBlazorApp.Models
     public class Employee
     {
         public int Id { get; set; }
+        [Required(ErrorMessage = "Last Name is required")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "Last Name cannot have less than 3 characters and more than 20 characters in length")]
         public string Fullname { get; set; }
         public string Email { get; set; }
+        [Required]
+        [MaxLength(12)]
+        [MinLength(1)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "UPRN must be numeric")]
         public string MobileNumber { get; set; }
     }
     public class EmployeeContext : IndexedDbInterop
