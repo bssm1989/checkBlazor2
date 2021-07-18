@@ -53,28 +53,40 @@
 @*</div>*@
 
 @code{
-        Employee emp = new Employee();
+    Employee emp = new Employee();
 
-        bool displayValidationErrorMessages = false;
-        bool displayUserAddedToDB = false;
+    bool displayValidationErrorMessages = false;
+    bool displayUserAddedToDB = false;
 
 
+    //add user server
+    Employee ReceivedEmployee;
+    public string FormSubmitMessage { get; set; } = "Reservation Not Created";
 
-        private void HandleInvalidSubmit(EditContext context)
+    public async Task HandleValidSubmit(Employee employee)
+    {
+        ReceivedEmployee = new Employee();
+        
+        FormSubmitMessage = "Reservation Created";
+    }
+    //add user local
+    private void HandleInvalidSubmit(EditContext context)
+    {
+        displayValidationErrorMessages = true;
+        displayUserAddedToDB = false;
+    }
+    protected async Task HandleValidSubmit(EditContext context)
+    {
+        displayValidationErrorMessages = true;
+        displayUserAddedToDB = false;
+
+
+        await DBContext.Add(new Models.Employee()
         {
-            displayValidationErrorMessages = true;
-            displayUserAddedToDB = false;
-        }
-        protected async Task HandleValidSubmit(EditContext context)
-        {
-            displayValidationErrorMessages = true;
-            displayUserAddedToDB = false;
-            await DBContext.Add(new Models.Employee()
-            {
-                Email = emp.Email,
-                Fullname = emp.Fullname,
-                MobileNumber = emp.MobileNumber,
-                User=  await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name")
+            Email = emp.Email,
+            Fullname = emp.Fullname,
+            MobileNumber = emp.MobileNumber,
+            User=  await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name")
 
         });
         NavigationManager.NavigateTo("/");
