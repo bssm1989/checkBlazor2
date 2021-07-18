@@ -23,6 +23,7 @@ namespace FirstBlazorApp
             builder.Services.AddIndexedDbDatabase<EmployeeContext>(o => { o.UseDatabase(new EmployeeOfflineDb()); });
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddSingleton<CustomHttpClient>();
+
             await builder.Build().RunAsync();
         }
     }

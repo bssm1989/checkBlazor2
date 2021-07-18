@@ -3,6 +3,8 @@
 @using FirstBlazorApp.Models
 @inject NavigationManager NavigationManager
 
+@inject IJSRuntime JSRuntime
+
 <EditForm Model="@emp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
 
@@ -51,27 +53,28 @@
 @*</div>*@
 
 @code{
-    Employee emp = new Employee();
+        Employee emp = new Employee();
 
-    bool displayValidationErrorMessages = false;
-    bool displayUserAddedToDB = false;
+        bool displayValidationErrorMessages = false;
+        bool displayUserAddedToDB = false;
 
 
 
-    private void HandleInvalidSubmit(EditContext context)
-    {
-        displayValidationErrorMessages = true;
-        displayUserAddedToDB = false;
-    }
-    protected async Task HandleValidSubmit(EditContext context)
-    {
-        displayValidationErrorMessages = true;
-        displayUserAddedToDB = false;
-        await DBContext.Add(new Models.Employee()
+        private void HandleInvalidSubmit(EditContext context)
         {
-            Email = emp.Email,
-            Fullname = emp.Fullname,
-            MobileNumber = emp.MobileNumber
+            displayValidationErrorMessages = true;
+            displayUserAddedToDB = false;
+        }
+        protected async Task HandleValidSubmit(EditContext context)
+        {
+            displayValidationErrorMessages = true;
+            displayUserAddedToDB = false;
+            await DBContext.Add(new Models.Employee()
+            {
+                Email = emp.Email,
+                Fullname = emp.Fullname,
+                MobileNumber = emp.MobileNumber,
+                User=  await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name")
 
         });
         NavigationManager.NavigateTo("/");
