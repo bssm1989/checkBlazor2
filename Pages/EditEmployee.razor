@@ -3,45 +3,85 @@
 @using FirstBlazorApp.Models
 @inject NavigationManager NavigationManager
 
-<EditForm Model="@emp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+
+
+
+<EditForm Model="employee" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
-
     <div class="row">
-        <div class="col-md-8">
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
-                    <label for="Fullname">Fullname #</label>
-                    <input type="text" class="form-control" id="Fullname" @bind-value="@emp.Fullname" placeholder="enter Fullname..." />
-                    <ValidationMessage For="@(()=>emp.Fullname)" />
-                </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input type="hidden"     name="hidden" @bind-value="@employee.Id" />
+                <input for="Name" class="form-control" @bind="@employee.Fullname" />
+                <ValidationMessage For="@(()=>employee.Fullname)" />
             </div>
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
+        </div>
+    </div>
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <div class="form-group">
                     <label for="Email">Email#</label>
-                    <input type="text" class="form-control" id="Email" @bind-value="@emp.Email" placeholder="enter Email..." />
-                    <ValidationMessage For="@(()=>emp.Email)" />
+                    <input type="text" class="form-control" id="Email" @bind-value="@employee.Email" placeholder="enter Email..." />
+                    <ValidationMessage For="@(()=>employee.Email)" />
+                </div>
                 </div>
             </div>
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <div class="form-group">
                     <label for="MobileNumber">Mobile Number #</label>
-                    <input type="text" class="form-control" id="MobileNumber" @bind-value="@emp.MobileNumber" />
-                    <ValidationMessage For="@(()=>emp.MobileNumber)" />
+                    <input type="text" class="form-control" id="MobileNumber" @bind-value="@employee.MobileNumber" />
+                    <ValidationMessage For="@(()=>employee.MobileNumber)" />
+                </div>
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-info" Style="margin-top:10px">Add user</button>
+    <div class="row">
+        <div class="form-group">
+            <button type="submit" class="btn btn-info" Style="margin-top:10px">Update</button>
             <input type="button" class="btn" @onclick="@Cancel" value="Cancel" />
         </div>
-        @if (displayValidationErrorMessages)
-        {
-            <div class="col-md-4" style="margin-top:10px">
-                <label>Validation Messages: </label>
-                <ValidationSummary />
-            </div>
-        }
     </div>
 </EditForm>
+@*<EditForm  OnInvalidSubmit="HandleInvalidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="Fullname">Fullname #</label>
+                        <input type="text" class="form-control" id="Fullname" @bind="@employee.Fullname" placeholder="enter Fullname..." />
+                        <ValidationMessage For="@(()=>employee.Fullname)" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="Email">Email#</label>
+                        <input type="text" class="form-control" id="Email" @bind-value="@employee.Email" placeholder="enter Email..." />
+                        <ValidationMessage For="@(()=>employee.Email)" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="MobileNumber">Mobile Number #</label>
+                        <input type="text" class="form-control" id="MobileNumber" @bind-value="@employee.MobileNumber" />
+                        <ValidationMessage For="@(()=>employee.MobileNumber)" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-info" Style="margin-top:10px">Add user</button>
+                <input type="button" class="btn" @onclick="@Cancel" value="Cancel" />
+            </div>
+            @if (displayValidationErrorMessages)
+            {
+                <div class="col-md-4" style="margin-top:10px">
+                    <label>Validation Messages: </label>
+                    <ValidationSummary />
+                </div>
+            }
+        </div>
+    </EditForm>*@
 @if (displayUserAddedToDB)
 {
     <div class="row bg-success text-white" style="margin-top:10px; height:40px">
@@ -52,13 +92,13 @@
 
 @code{
 
-    //[Parameter]
-    //public int id { get; set; }
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    //emp = await DBContext.GetById(id);
-    //}
+    [Parameter]
+    public String id { get; set; }
+    Employee employee = new Employee();
+    protected override async Task OnInitializedAsync()
+    {
+        employee = await DBContext.GetById(Int16.Parse(id));
+    }
     Employee emp = new Employee();
 
     bool displayValidationErrorMessages = false;
@@ -75,11 +115,12 @@
     {
         displayValidationErrorMessages = true;
         displayUserAddedToDB = false;
-        await DBContext.Add(new Models.Employee()
+        await DBContext.UpdateById(new Models.Employee()
         {
-            Email = emp.Email,
-            Fullname = emp.Fullname,
-            MobileNumber = emp.MobileNumber
+            Email = employee.Email,
+            Fullname = employee.Fullname,
+            MobileNumber = employee.MobileNumber,
+            Id = employee.Id
 
         });
         NavigationManager.NavigateTo("/");

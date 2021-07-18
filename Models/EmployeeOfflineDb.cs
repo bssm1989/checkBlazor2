@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using DnetIndexedDb;
 using DnetIndexedDb.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.JSInterop;
 
 namespace FirstBlazorApp.Models
@@ -42,7 +46,9 @@ namespace FirstBlazorApp.Models
         public EmployeeContext(IJSRuntime jSRuntime, IndexedDbOptions<EmployeeContext> options) : base(jSRuntime, options) { }
         public async Task Add(Employee employee)
         {
+           
             var openResult = await this.OpenIndexedDb();
+            
             List<Employee> employees = await GetAll<Employee>("Employees");
             if (employees.Count==0)
             {
@@ -54,13 +60,14 @@ namespace FirstBlazorApp.Models
             var emp = employees.OrderByDescending(i => i.Id).First();
             employee.Id = emp.Id+1;
             }
-            //var idMax = employee.Max(x = x.id);
+            //var idMa
+            //x = employee.Max(x = x.id);
             var result = await this.AddItems<Employee>("Employees", new List<Employee>() { employee });
         }
 
         public async Task Delete(int id)
         {
-            var openResult = await this.OpenIndexedDb();
+         //   var openResult = await this.OpenIndexedDb();
             List<Employee> employees = await GetAll<Employee>("Employees");
             Employee emp = await GetByKey<int,Employee>("Employees", id);
             var resultx="";
@@ -78,7 +85,86 @@ namespace FirstBlazorApp.Models
         public async Task<Employee> GetById(int id)
         {
             var openResult = await this.OpenIndexedDb();
-            return await this.GetById(id);
+            var emp= await this.GetAll<Employee>("Employees");
+            var empById= emp.Where(x => x.Id == id);
+            return (Employee)empById.First();
+        }
+        public async Task getToHttp()
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://119.59.125.182/gis_bssm/blazorTest.php?id=2");
+            httpWebRequest.ContentType = "text/json";
+            httpWebRequest.Method = "POST";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write("gg:22");
+                streamWriter.Flush();
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+        }
+        public async Task UpdateById(Employee emp)
+        {
+            await this.OpenIndexedDb();
+            List<Employee> employees = await GetAll<Employee>("Employees");
+            Employee emp1 = await GetByKey<int, Employee>("Employees", emp.Id);
+            var resultx = "";
+            if (emp.Id > 0)
+            {
+
+                resultx = await this.DeleteByKey<int>("Employees", emp.Id);
+                var result = await this.AddItems<Employee>("Employees", new List<Employee>() { emp });
+            }
+
+           
+            //var transaction = db.transaction("Employees", IDBTransaction.READ_WRITE);
+            //var objectStore = transaction.objectStore("MyObjectStore");
+            //var request = objectStore.add({ Name: Name, Email: Email, Location: Location});
+            //request.onsuccess = function(e) {
+            //    // do something when the add succeeded                              
+            //};
+            //transaction.oncomplete = function(e) {
+            //    // do something after the transaction completed      
+            //};
+            //transaction.onabort = function(e) {
+            //    // do something after the transaction aborted     
+            //};
+            //transaction.onerrort = function(e) {
+            //    // do something after the transaction canceled    
+            //};
+
+
+
+            //var openResult = await this.OpenIndexedDb();
+            //openResult.transaction =
+            //string strConnString = "myconnectionstring"; // get it from Web.config file    
+            //SqlTransaction objTrans = null;
+
+            //using (SqlConnection objConn = new SqlConnection(strConnString))
+            //{
+            //    objConn.Open();
+            //    objTrans = objConn.BeginTransaction();
+            //        try
+            //    {
+            //        List<Employee> employees = await GetAll<Employee>("Employees");
+            //        Employee emp1 = await GetByKey<int, Employee>("Employees", emp.Id);
+            //        var resultx = "";
+            //        if (emp.Id > 0)
+            //        {
+
+            //            resultx = await this.DeleteByKey<int>("Employees", emp.Id);
+            //        }
+            //        var result = await this.AddItems<Employee>("Employees", new List<Employee>() { emp });
+            //        objTrans.Commit();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        objTrans.Rollback();
+            //    }
+            //    finally
+            //    {
+            //        objConn.Close();
+            //    }
+            // }
+
         }
     }
 }
