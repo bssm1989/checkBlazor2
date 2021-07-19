@@ -1,0 +1,15 @@
+name: Deploy to GitHub Pages 23:22
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses:  bssm1989/checkBlazor2@main
+
