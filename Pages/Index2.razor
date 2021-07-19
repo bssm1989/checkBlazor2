@@ -73,9 +73,13 @@
 <table class="table-bordered">
     <thead>
         <tr>
+            <th>Id</th>
             <th>Name</th>
             <th>E-mail</th>
             <th>Mobile number</th>
+            <th>Server update</th>
+            <th>Local update</th>
+            <th>User</th>
             <th></th>
         </tr>
     </thead>
@@ -91,7 +95,7 @@
                 <td>@employee.User</td>
                 <td>
                     <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
-                    <a href='/editemployee/@employee.Id' class="btn btn-block">Edit</a>
+                    <a href='editemployee/@employee.Id' class="btn btn-block">Edit</a>
                 </td>
 
             </tr>
