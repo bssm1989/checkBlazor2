@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using DnetIndexedDb;
 using DnetIndexedDb.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.JSInterop;
 
 namespace FirstBlazorApp.Models
 {
-    public class EmployeeOfflineDb:IndexedDbDatabaseModel
+    public class EmployeeOfflineDb : IndexedDbDatabaseModel
     {
         public EmployeeOfflineDb()
         {
@@ -39,41 +37,62 @@ namespace FirstBlazorApp.Models
         [MinLength(1)]
         [RegularExpression("^[0-9]*$", ErrorMessage = "UPRN must be numeric")]
         public string MobileNumber { get; set; }
+        public DateTime? localUpdate { get; set; }
+        public DateTime? ServerUpdate { get; set; }
+        public string Status { get; set; }
+        public string User { get; set; }
     }
     public class EmployeeContext : IndexedDbInterop
     {
         public EmployeeContext(IJSRuntime jSRuntime, IndexedDbOptions<EmployeeContext> options) : base(jSRuntime, options) { }
         public async Task Add(Employee employee)
         {
-           
+            Random r = new Random();
+            int num = r.Next();
             var openResult = await this.OpenIndexedDb();
-            
-            List<Employee> employees = await GetAll<Employee>("Employees");
-            if (employees.Count==0)
-            {
-                employee.Id = 1;
-            }
-            else
-            {
 
-            var emp = employees.OrderByDescending(i => i.Id).First();
-            employee.Id = emp.Id+1;
-            }
+
+            employee.Id = num;
+            employee.localUpdate = DateTime.Now;
             //var idMa
             //x = employee.Max(x = x.id);
+            _ = toServer(employee);
             var result = await this.AddItems<Employee>("Employees", new List<Employee>() { employee });
         }
+        public async Task toServer(Employee employee)
+        {
 
+            using (var httpClient = new HttpClient())
+            {
+                // StringContent content = new StringContent(JsonConvert.SerializeObject(employees), Encoding.UTF8, "application/json");
+
+
+
+                using (var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorTest.php?" +
+                    "id=" + employee.Id +
+                    "&FullName=" + employee.Fullname +
+                    "&Email=" + employee.Email +
+                    "&MobileNumber=" + employee.MobileNumber +
+                    "&localUpdate=" + employee.localUpdate +
+                    "&ServerUpdate=" + employee.ServerUpdate +
+                    "&User=" + employee.User +
+                    "&Status=" + employee.Status))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    //ReceivedEmployee = JsonConvert.DeserializeObject<Employee>(apiResponse);
+                }
+            }
+        }
         public async Task Delete(int id)
         {
-         //   var openResult = await this.OpenIndexedDb();
+            //   var openResult = await this.OpenIndexedDb();
             List<Employee> employees = await GetAll<Employee>("Employees");
-            Employee emp = await GetByKey<int,Employee>("Employees", id);
-            var resultx="";
-            if (emp.Id>0)
+            Employee emp = await GetByKey<int, Employee>("Employees", id);
+            var resultx = "";
+            if (emp.Id > 0)
             {
-                
-                 resultx = await this.DeleteByKey<int>("Employees", emp.Id);
+
+                resultx = await this.DeleteByKey<int>("Employees", emp.Id);
             }
         }
         public async Task<List<Employee>> GetAll()
@@ -84,21 +103,13 @@ namespace FirstBlazorApp.Models
         public async Task<Employee> GetById(int id)
         {
             var openResult = await this.OpenIndexedDb();
-            var emp= await this.GetAll<Employee>("Employees");
-            var empById= emp.Where(x => x.Id == id);
+            var emp = await this.GetAll<Employee>("Employees");
+            var empById = emp.Where(x => x.Id == id);
             return (Employee)empById.First();
         }
         public async Task getToHttp()
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://119.59.125.182/gis_bssm/blazorTest.php?id=2");
-            httpWebRequest.ContentType = "text/json";
-            httpWebRequest.Method = "POST";
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write("gg:22");
-                streamWriter.Flush();
-            }
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
         }
         public async Task UpdateById(Employee emp)
         {
@@ -113,7 +124,7 @@ namespace FirstBlazorApp.Models
                 var result = await this.AddItems<Employee>("Employees", new List<Employee>() { emp });
             }
 
-           
+
             //var transaction = db.transaction("Employees", IDBTransaction.READ_WRITE);
             //var objectStore = transaction.objectStore("MyObjectStore");
             //var request = objectStore.add({ Name: Name, Email: Email, Location: Location});
