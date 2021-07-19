@@ -10,52 +10,52 @@
 <h1>Local Storage!</h1>
 
 <input class="form-control" @bind="currentInputValue" />
-<button class="btn btn-secondary" @onclick="Save">Save</button>
-<button class="btn btn-secondary" @onclick="Read">Read</button>
-<button class="btn btn-secondary" @onclick="Delete">Delete</button>
-<h1>Hello, Bassam</h1>
-test deploy   id test
+<button class="btn btn-secondary" @onclick="Save">บันทึก</button>
+<button class="btn btn-secondary" @onclick="Read">อ่าน</button>
+<button class="btn btn-secondary" @onclick="Delete">ลบ</button>
+@*test deploy   id test<h1>Hello, Bassam</h1>*@
+
 <p>
     <a href="addemp">Create New Employee</a>
 </p>
 @*<EditForm Model="@emp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
-    <DataAnnotationsValidator />
+        <DataAnnotationsValidator />
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
-                    <label for="Fullname">Fullname #</label>
-                    <input type="text" class="form-control" id="Fullname" @bind-value="@emp.Fullname" placeholder="enter Fullname..." />
-                    <ValidationMessage For="@(()=>emp.Fullname)" />
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="Fullname">Fullname #</label>
+                        <input type="text" class="form-control" id="Fullname" @bind-value="@emp.Fullname" placeholder="enter Fullname..." />
+                        <ValidationMessage For="@(()=>emp.Fullname)" />
+                    </div>
                 </div>
-            </div>
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
-                    <label for="Email">Email#</label>
-                    <input type="text" class="form-control" id="Email" @bind-value="@emp.Email" placeholder="enter Email..." />
-                    <ValidationMessage For="@(()=>emp.Email)" />
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="Email">Email#</label>
+                        <input type="text" class="form-control" id="Email" @bind-value="@emp.Email" placeholder="enter Email..." />
+                        <ValidationMessage For="@(()=>emp.Email)" />
+                    </div>
                 </div>
-            </div>
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
-                    <label for="MobileNumber">Mobile Number #</label>
-                    <input type="text" class="form-control" id="MobileNumber" @bind-value="@emp.MobileNumber" />
-                    <ValidationMessage For="@(()=>emp.MobileNumber)" />
+                <div class="row" style="margin-top:10px">
+                    <div class="col-md-12">
+                        <label for="MobileNumber">Mobile Number #</label>
+                        <input type="text" class="form-control" id="MobileNumber" @bind-value="@emp.MobileNumber" />
+                        <ValidationMessage For="@(()=>emp.MobileNumber)" />
+                    </div>
                 </div>
-            </div>
 
-            <button type="submit" class="btn btn-info" Style="margin-top:10px">Add user</button>
+                <button type="submit" class="btn btn-info" Style="margin-top:10px">Add user</button>
+            </div>
+            @if (displayValidationErrorMessages)
+            {
+                <div class="col-md-4" style="margin-top:10px">
+                    <label>Validation Messages: </label>
+                    <ValidationSummary />
+                </div>
+            }
         </div>
-        @if (displayValidationErrorMessages)
-        {
-            <div class="col-md-4" style="margin-top:10px">
-                <label>Validation Messages: </label>
-                <ValidationSummary />
-            </div>
-        }
-    </div>
-</EditForm>*@
+    </EditForm>*@
 @if (displayUserAddedToDB)
 {
     <div class="row bg-success text-white" style="margin-top:10px; height:40px">
@@ -67,34 +67,38 @@ test deploy   id test
 
 
 @*<div class="form-group row">
-    <button class="btn btn-info float-right" @onclick="GetSavedEmployees">List All Employees</button>
-</div>*@
+        <button class="btn btn-info float-right" @onclick="GetSavedEmployees">List All Employees</button>
+    </div>*@
 @if (employees != null)
 {
-    <table class="table-bordered">
-        <thead>
+<table class="table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>E-mail</th>
+            <th>Mobile number</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <Virtualize Context="employee" Items="@employees">
             <tr>
-                <th>Name</th>
-                <th>E-mail</th>
-                <th>Mobile number</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <Virtualize Context="employee" Items="@employees">
-                <tr>
-                    <td>@employee.Fullname</td>
-                    <td>@employee.Email</td>
-                    <td>@employee.MobileNumber</td>
-                    <td>
-                        <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
-                        <a href='/editemployee/@employee.Id' class="btn btn-block">Edit</a>
-                    </td>
+                <td>@employee.Id</td>
+                <td>@employee.Fullname</td>
+                <td>@employee.Email</td>
+                <td>@employee.MobileNumber</td>
+                <td>@employee.ServerUpdate</td>
+                <td>@employee.localUpdate</td>
+                <td>@employee.User</td>
+                <td>
+                    <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
+                    <a href='/editemployee/@employee.Id' class="btn btn-block">Edit</a>
+                </td>
 
-                </tr>
-            </Virtualize>
-        </tbody>
-    </table>
+            </tr>
+        </Virtualize>
+    </tbody>
+</table>
 }
 @code{
     Employee emp = new Employee();
