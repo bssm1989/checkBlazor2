@@ -1,10 +1,20 @@
 ﻿@page "/"
 @inject Models.EmployeeContext DBContext
+
 @using FirstBlazorApp.Models
 
+
 @inject NavigationManager NavigationManager
-<h1>Hello, Bassam***564465</h1>
-test deploy   id test ///****/*///*/*
+@inject IJSRuntime JSRuntime
+
+<h1>Local Storage!</h1>
+
+<input class="form-control" @bind="currentInputValue" />
+<button class="btn btn-secondary" @onclick="Save">Save</button>
+<button class="btn btn-secondary" @onclick="Read">Read</button>
+<button class="btn btn-secondary" @onclick="Delete">Delete</button>
+<h1>Hello, Bassam</h1>
+test deploy   id test
 <p>
     <a href="addemp">Create New Employee</a>
 </p>
@@ -78,7 +88,7 @@ test deploy   id test ///****/*///*/*
                     <td>@employee.MobileNumber</td>
                     <td>
                         <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
-                        <a href='editemployee/@employee.Id' class="btn btn-block">Edit</a> 
+                        <a href='/editemployee/@employee.Id' class="btn btn-block">Edit</a>
                     </td>
 
                 </tr>
@@ -94,9 +104,28 @@ test deploy   id test ///****/*///*/*
     bool displayValidationErrorMessages = false;
     bool displayUserAddedToDB = false;
 
+
+    //local store
+    string currentInputValue;
+
+    public async Task Save()
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);
+    }
+
+    public async Task Read()
+    {
+        currentInputValue = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name");
+    }
+
+    public async Task Delete()
+    {
+        await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "name");
+    }
+
     private async Task getTohttp()
     {
-      
+
     }
     private async Task GetSavedEmployees()
     { employees = await DBContext.GetAll(); }
