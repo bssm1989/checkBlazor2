@@ -10,8 +10,10 @@
             let location = window.location;
             let url = location.origin;
             for (let i = 0, n = 0; i < location.pathname.length; ++i) {
+                 console.log("check.. url:"+url);
                 if (location.pathname[i] === '/' && ++n === segments + 1) {
                     url += location.pathname.slice(0, i + 1);
+                   
                     url += '?page=' + encodeURIComponent(location.pathname.slice(i + 1));
                 }
             }
