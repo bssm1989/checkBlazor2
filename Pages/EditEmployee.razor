@@ -97,7 +97,7 @@
     Employee employee = new Employee();
     protected override async Task OnInitializedAsync()
     {
-        employee = await DBContext.GetById(Int16.Parse(id));
+        employee = await DBContext.GetById(Int32.Parse(id));
     }
     Employee emp = new Employee();
 
