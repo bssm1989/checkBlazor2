@@ -5,20 +5,19 @@
 
 
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
+@*@inject IJSRuntime JSRuntime*@
+@*<h1>Local Storage!</h1>
 
-<h1>Local Storage!</h1>
-
-<input class="form-control" @bind="currentInputValue" />
-<button class="btn btn-secondary" @onclick="Save">Save</button>
-<button class="btn btn-secondary" @onclick="Read">Read</button>
-<button class="btn btn-secondary" @onclick="Delete">Delete</button>
-<h1>Hello, Bassam</h1>
-test deploy   id test
+    <input class="form-control" @bind="currentInputValue" />
+    <button class="btn btn-secondary" @onclick="Save">Save</button>
+    <button class="btn btn-secondary" @onclick="Read">Read</button>
+    <button class="btn btn-secondary" @onclick="Delete">Delete</button>
+    <h1>Hello, Bassam</h1>
+    test deploy   id test*@
 <p>
     <a href="addemp">Create New Employee</a>
 </p>
-<EditForm Model="@emp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+@*<EditForm Model="@employee" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
 
     <div class="row">
@@ -26,8 +25,8 @@ test deploy   id test
             <div class="row" style="margin-top:10px">
                 <div class="col-md-12">
                     <label for="Fullname">Fullname #</label>
-                    <input type="text" class="form-control" id="Fullname" @bind-value="@emp.Fullname" placeholder="enter Fullname..." />
-                    <ValidationMessage For="@(()=>emp.Fullname)" />
+                    <input type="text" class="form-control" id="Fullname" @bind-value="@employee.Fullname" placeholder="enter Fullname..." />
+                    <ValidationMessage For="@(()=>employee.Fullname)" />
                 </div>
             </div>
             <div class="row" style="margin-top:10px">
@@ -55,7 +54,7 @@ test deploy   id test
             </div>
         }
     </div>
-</EditForm>
+</EditForm>*@
 @if (displayUserAddedToDB)
 {
     <div class="row bg-success text-white" style="margin-top:10px; height:40px">
@@ -96,7 +95,6 @@ test deploy   id test
         </tbody>
     </table>
 }
-
 @code{
     Employee emp = new Employee();
     private List<Models.Employee> employees = null;
@@ -104,29 +102,43 @@ test deploy   id test
     bool displayValidationErrorMessages = false;
     bool displayUserAddedToDB = false;
 
-
-    //local store
     string currentInputValue;
 
-    public async Task Save()
+    //public async Task Save()
+    //{
+    //    await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);
+    //}
+
+    //public async Task Read()
+    //{
+    //    currentInputValue = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name");
+    //}
+
+    //public async Task Delete()
+    //{
+    //    await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "name");
+    //}
+    // http
+
+    Employee ReceivedEmployee;
+    public string FormSubmitMessage { get; set; } = "Reservation Not Created";
+
+    public async Task HandleValidSubmit()
     {
-        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);
+        ReceivedEmployee = new Employee();
+        using (var httpClient = new HttpClient())
+        {
+
+
+
+            using (var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorTest.php?id=9"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+            }
+        }
+        FormSubmitMessage = "Reservation Created";
     }
 
-    public async Task Read()
-    {
-        currentInputValue = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name");
-    }
-
-    public async Task Delete()
-    {
-        await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "name");
-    }
-
-    private async Task getTohttp()
-    {
-
-    }
     private async Task GetSavedEmployees()
     { employees = await DBContext.GetAll(); }
     private async Task DeleteEmployee(int id)
