@@ -89,11 +89,11 @@
             User = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name")
 
         });
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("index2");
     }
     void Cancel()
     {
-        NavigationManager.NavigateTo("listemployees");
+        NavigationManager.NavigateTo("index2");
     }
 
 }
