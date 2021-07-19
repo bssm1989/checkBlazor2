@@ -3,6 +3,8 @@
 @using FirstBlazorApp.Models
 @inject NavigationManager NavigationManager
 
+@inject IJSRuntime JSRuntime
+
 <EditForm Model="@emp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
 
@@ -57,7 +59,17 @@
     bool displayUserAddedToDB = false;
 
 
+    //add user server
+    Employee ReceivedEmployee;
+    public string FormSubmitMessage { get; set; } = "Reservation Not Created";
 
+    public async Task HandleValidSubmit(Employee employee)
+    {
+        ReceivedEmployee = new Employee();
+
+        FormSubmitMessage = "Reservation Created";
+    }
+    //add user local
     private void HandleInvalidSubmit(EditContext context)
     {
         displayValidationErrorMessages = true;
@@ -67,11 +79,14 @@
     {
         displayValidationErrorMessages = true;
         displayUserAddedToDB = false;
+
+
         await DBContext.Add(new Models.Employee()
         {
             Email = emp.Email,
             Fullname = emp.Fullname,
-            MobileNumber = emp.MobileNumber
+            MobileNumber = emp.MobileNumber,
+            User = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name")
 
         });
         NavigationManager.NavigateTo("/");
