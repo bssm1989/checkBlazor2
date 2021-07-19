@@ -12,30 +12,30 @@
         <div class="col-md-10">
             <div class="form-group">
                 <label for="Name" class="control-label">Name</label>
-                <input type="hidden"     name="hidden" @bind-value="@employee.Id" />
+                <input type="hidden" name="hidden" @bind-value="@employee.Id" />
                 <input for="Name" class="form-control" @bind="@employee.Fullname" />
                 <ValidationMessage For="@(()=>employee.Fullname)" />
             </div>
         </div>
     </div>
-        <div class="row" style="margin-top:10px">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="Email">Email#</label>
-                    <input type="text" class="form-control" id="Email" @bind-value="@employee.Email" placeholder="enter Email..." />
-                    <ValidationMessage For="@(()=>employee.Email)" />
-                </div>
-                </div>
+    <div class="row" style="margin-top:10px">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="Email">Email#</label>
+                <input type="text" class="form-control" id="Email" @bind-value="@employee.Email" placeholder="enter Email..." />
+                <ValidationMessage For="@(()=>employee.Email)" />
             </div>
-        <div class="row" style="margin-top:10px">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="MobileNumber">Mobile Number #</label>
-                    <input type="text" class="form-control" id="MobileNumber" @bind-value="@employee.MobileNumber" />
-                    <ValidationMessage For="@(()=>employee.MobileNumber)" />
-                </div>
-                </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="MobileNumber">Mobile Number #</label>
+                <input type="text" class="form-control" id="MobileNumber" @bind-value="@employee.MobileNumber" />
+                <ValidationMessage For="@(()=>employee.MobileNumber)" />
             </div>
+        </div>
+    </div>
     <div class="row">
         <div class="form-group">
             <button type="submit" class="btn btn-info" Style="margin-top:10px">Update</button>
