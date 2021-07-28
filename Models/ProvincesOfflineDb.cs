@@ -10,44 +10,37 @@ using Microsoft.JSInterop;
 
 namespace FirstBlazorApp.Models
 {
-    public class EmployeeOfflineDb : IndexedDbDatabaseModel
+    public class ProvincesOfflineDb : IndexedDbDatabaseModel
     {
-        public EmployeeOfflineDb()
+        public ProvincesOfflineDb()
         {
-            Name = "EmployeeData";
+            Name = "ProvinceDb";
             Version = 4;
             Stores = _stores;
         }
-        private IndexedDbStore _tableFieldStore => new TStore<Employee>();
-        private IndexedDbStore _tableFieldStore2 => new TStore<Province>();
-        private IndexedDbStore _tableFieldStore3 => new TStore<Amper>();
-   
+        private IndexedDbStore _tableFieldStore => new TStore<Province>();
         private List<IndexedDbStore> _stores => new List<IndexedDbStore>
         {
-            _tableFieldStore,_tableFieldStore2,_tableFieldStore3
+            _tableFieldStore,
         };
 
     }
-    public class Employee
+    public class Province
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Last Name is required")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "Last Name cannot have less than 3 characters and more than 20 characters in length")]
         public string Fullname { get; set; }
-        public string Email { get; set; }
-        [Required]
-        [MaxLength(12)]
-        [MinLength(1)]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "UPRN must be numeric")]
-        public string MobileNumber { get; set; }
-        public DateTime? localUpdate { get; set; }
-        public DateTime? ServerUpdate { get; set; }
-        public string Status { get; set; }
-        public string User { get; set; }
-    }
-    public class EmployeeContext : IndexedDbInterop
+        public ICollection<Amper> Ampers { get; set; }
+
+}
+    public class Amper
     {
-        public EmployeeContext(IJSRuntime jSRuntime, IndexedDbOptions<EmployeeContext> options) : base(jSRuntime, options) { }
+        public int Id { get; set; }
+        public string Fullname { get; set; }
+
+    }
+    public class ProvinceContext : IndexedDbInterop
+    {
+        public ProvinceContext(IJSRuntime jSRuntime, IndexedDbOptions<ProvinceContext> options) : base(jSRuntime, options) { }
         public async Task Add(Employee employee)
         {
             Random r = new Random();

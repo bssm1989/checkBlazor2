@@ -20,6 +20,7 @@ namespace FirstBlazorApp
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddIndexedDbDatabase<ProvinceContext>(o => { o.UseDatabase(new ProvincesOfflineDb()); });
             builder.Services.AddIndexedDbDatabase<EmployeeContext>(o => { o.UseDatabase(new EmployeeOfflineDb()); });
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddSingleton<CustomHttpClient>();
