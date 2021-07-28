@@ -6,7 +6,7 @@
 
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
-
+<input type="button" class="btn btn-primary" @onclick="synData" value="synData" />
 <h1>Local Storage!</h1>
 
 <input class="form-control" @bind="currentInputValue" />
@@ -18,51 +18,14 @@
 <p>
     <a class="btn btn-secondary" href="addemp">Create New Employee</a>
 </p>
-@*<EditForm Model="@emp" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
-        <DataAnnotationsValidator />
 
-        <div class="row">
-            <div class="col-md-8">
-                <div class="row" style="margin-top:10px">
-                    <div class="col-md-12">
-                        <label for="Fullname">Fullname #</label>
-                        <input type="text" class="form-control" id="Fullname" @bind-value="@emp.Fullname" placeholder="enter Fullname..." />
-                        <ValidationMessage For="@(()=>emp.Fullname)" />
-                    </div>
-                </div>
-                <div class="row" style="margin-top:10px">
-                    <div class="col-md-12">
-                        <label for="Email">Email#</label>
-                        <input type="text" class="form-control" id="Email" @bind-value="@emp.Email" placeholder="enter Email..." />
-                        <ValidationMessage For="@(()=>emp.Email)" />
-                    </div>
-                </div>
-                <div class="row" style="margin-top:10px">
-                    <div class="col-md-12">
-                        <label for="MobileNumber">Mobile Number #</label>
-                        <input type="text" class="form-control" id="MobileNumber" @bind-value="@emp.MobileNumber" />
-                        <ValidationMessage For="@(()=>emp.MobileNumber)" />
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-info" Style="margin-top:10px">Add user</button>
-            </div>
-            @if (displayValidationErrorMessages)
-            {
-                <div class="col-md-4" style="margin-top:10px">
-                    <label>Validation Messages: </label>
-                    <ValidationSummary />
-                </div>
-            }
-        </div>
-    </EditForm>*@
 @if (displayUserAddedToDB)
 {
     <div class="row bg-success text-white" style="margin-top:10px; height:40px">
         <label class="p-2">User added to database... </label>
     </div>
 }
-@*</div>*@
+
 <hr />
 
 
@@ -71,38 +34,38 @@
     </div>*@
 @if (employees != null)
 {
-<table class="table-bordered">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>E-mail</th>
-            <th>Mobile number</th>
-            <th>Server update</th>
-            <th>Local update</th>
-            <th>User</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <Virtualize Context="employee" Items="@employees">
+    <table class="table-bordered">
+        <thead>
             <tr>
-                <td>@employee.Id</td>
-                <td>@employee.Fullname</td>
-                <td>@employee.Email</td>
-                <td>@employee.MobileNumber</td>
-                <td>@employee.ServerUpdate</td>
-                <td>@employee.localUpdate</td>
-                <td>@employee.User</td>
-                <td>
-                    <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
-                    <a href='editemployee/@employee.Id' class="btn btn-block">Edit</a>
-                </td>
-
+                <th>Id</th>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th>Mobile number</th>
+                <th>Server update</th>
+                <th>Local update</th>
+                <th>User</th>
+                <th></th>
             </tr>
-        </Virtualize>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <Virtualize Context="employee" Items="@employees">
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Fullname</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.MobileNumber</td>
+                    <td>@employee.ServerUpdate</td>
+                    <td>@employee.localUpdate</td>
+                    <td>@employee.User</td>
+                    <td>
+                        <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
+                        <a href='editemployee/0  @employee.Id' class="btn btn-block">Edit</a>
+                    </td>
+
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
 }
 @code{
     Employee emp = new Employee();
@@ -113,6 +76,10 @@
 
     string currentInputValue;
 
+    public async Task synData()
+    {
+        await DBContext.loadDbFromServer(); 
+        }
     public async Task Save()
     {
         await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);

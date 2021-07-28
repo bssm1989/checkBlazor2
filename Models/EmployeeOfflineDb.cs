@@ -28,7 +28,16 @@ namespace FirstBlazorApp.Models
         };
 
     }
-    public class Employee
+    public class district
+    {
+        public string district_id { get; set; }
+        public int province_id { get; set; }
+        public string district_name_thai { get; set; }
+        public string district_name_eng { get; set; }
+        public int comment { get; set; }
+
+    }
+        public class Employee
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Last Name is required")]
@@ -61,6 +70,22 @@ namespace FirstBlazorApp.Models
             //x = employee.Max(x = x.id);
             _ = toServer(employee);
             var result = await this.AddItems<Employee>("Employees", new List<Employee>() { employee });
+        }
+        public async Task loadDbFromServer()
+        {
+
+            using (var httpClient = new HttpClient())
+            {
+                // StringContent content = new StringContent(JsonConvert.SerializeObject(employees), Encoding.UTF8, "application/json");
+
+
+
+                using (var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorLoadDb.php"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    //ReceivedEmployee = JsonConvert.DeserializeObject<Employee>(apiResponse);
+                }
+            }
         }
         public async Task toServer(Employee employee)
         {

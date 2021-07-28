@@ -32,6 +32,7 @@ namespace FirstBlazorApp.Models
         public ICollection<Amper> Ampers { get; set; }
 
 }
+
     public class Amper
     {
         public int Id { get; set; }
