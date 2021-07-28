@@ -80,11 +80,13 @@ namespace FirstBlazorApp.Models
 
 
 
-                using (var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorLoadDb.php"))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
+                var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorLoadDb.php");
+                
+
+                    var contents = await response.Content.ReadAsStringAsync();
+                contents = "";
                     //ReceivedEmployee = JsonConvert.DeserializeObject<Employee>(apiResponse);
-                }
+                
             }
         }
         public async Task toServer(Employee employee)
