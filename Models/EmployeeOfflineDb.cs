@@ -15,17 +15,17 @@ namespace FirstBlazorApp.Models
         public EmployeeOfflineDb()
         {
             Name = "EmployeeData";
-            Version = 31;
+            Version = 40;
             Stores = _stores;
         }
         private IndexedDbStore _tableFieldStore => new TStore<Employee>();
-        private IndexedDbStore _tableFieldStore2 => new TStore<Province>();
-        private IndexedDbStore _tableFieldStore3 => new TStore<Amper>();
+        private IndexedDbStore _tableFieldStore2 => new TStore<province>();
+        private IndexedDbStore _tableFieldStore3 => new TStore<tambon>();
         private IndexedDbStore _tableFieldStore4 => new TStore<district>();
 
     private List<IndexedDbStore> _stores => new List<IndexedDbStore>
         {
-            _tableFieldStore,_tableFieldStore2,_tableFieldStore4
+            _tableFieldStore,_tableFieldStore2,_tableFieldStore4,_tableFieldStore3
         
         };
     
@@ -76,20 +76,41 @@ namespace FirstBlazorApp.Models
 
 
 
-                var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorLoadDb.php");
+                var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorLoadDb.php?table=district");
 
                 var openResult = await this.OpenIndexedDb();
                 var contents = await response.Content.ReadAsStringAsync();
                 List<district> DeserializedObjList = (List<district>)Newtonsoft.Json.JsonConvert.DeserializeObject(contents, typeof(List<district>));
-                //var eceivedEmployee = JsonConvert.DeserializeObject<Employee>(contents);
-              
-                //foreach (district item in myDeserializedObjList)
-                //{
-                //    result = await this.a(List<district>)("district", item);
-                //}
 
-                //ar db1Result1 = await this.DeleteAll("district" );
+
+                var db1Result1 = await this.DeleteAll("district" );
                  var db1Result2 = await this.AddItems<district>("district",DeserializedObjList);
+
+
+                 response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorLoadDb.php?table=tambon");
+
+               
+                 contents = await response.Content.ReadAsStringAsync();
+                List<tambon> DeserializedObjList2 = (List<tambon>)Newtonsoft.Json.JsonConvert.DeserializeObject(contents, typeof(List<tambon>));
+
+
+                var db1Result3 = await this.DeleteAll("tambon");
+                var db1Result4 = await this.AddItems<tambon>("tambon", DeserializedObjList2);
+
+
+                response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorLoadDb.php?table=province");
+
+
+                contents = await response.Content.ReadAsStringAsync();
+                List<province> DeserializedObjList3 = (List<province>)Newtonsoft.Json.JsonConvert.DeserializeObject(contents, typeof(List<province>));
+
+
+                var db1Result5 = await this.DeleteAll("province");
+                var db1Result6 = await this.AddItems<province>("province", DeserializedObjList3);
+
+
+
+
                 Random r = new Random();
                 int num = r.Next();
                 //  var openResult = await this.OpenIndexedDb();
