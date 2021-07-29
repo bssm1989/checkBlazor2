@@ -24,13 +24,13 @@ namespace FirstBlazorApp.Models
         {
             foreach (PropertyInfo info in typeof(T).GetProperties())
             {
-                var classId = info.Name.Substring(info.Name.Length - 2);
+               // var classId = info.Name.Substring(info.Name.Length - 2);
 
                 var classAttrs = info.GetCustomAttributes(true);
 
-                var keyAttr = classAttrs.Select(p => p as KeyAttribute).FirstOrDefault();
+                var keyAttr = classAttrs.Select(p => p as IndexDbKeyAttribute).FirstOrDefault();
 
-                if (classId == "Id" || keyAttr != null)
+                if (keyAttr != null)
                 {
                     _key = new IndexedDbStoreParameter
                     {

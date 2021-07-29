@@ -78,8 +78,8 @@
 
     public async Task synData()
     {
-        await DBContext.loadDbFromServer(); 
-        }
+        await DBContext.loadDbFromServer();
+    }
     public async Task Save()
     {
         await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);

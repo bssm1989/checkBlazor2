@@ -15,30 +15,25 @@ namespace FirstBlazorApp.Models
         public EmployeeOfflineDb()
         {
             Name = "EmployeeData";
-            Version = 5;
+            Version = 29;
             Stores = _stores;
         }
         private IndexedDbStore _tableFieldStore => new TStore<Employee>();
         private IndexedDbStore _tableFieldStore2 => new TStore<Province>();
         private IndexedDbStore _tableFieldStore3 => new TStore<Amper>();
-   
-        private List<IndexedDbStore> _stores => new List<IndexedDbStore>
+        private IndexedDbStore _tableFieldStore4 => new TStore<district>();
+
+    private List<IndexedDbStore> _stores => new List<IndexedDbStore>
         {
-            _tableFieldStore,_tableFieldStore2,_tableFieldStore3
+            _tableFieldStore,_tableFieldStore2,_tableFieldStore4
+        
         };
+    
+}
 
-    }
-    public class district
-    {
-        public string district_id { get; set; }
-        public int province_id { get; set; }
-        public string district_name_thai { get; set; }
-        public string district_name_eng { get; set; }
-        public int comment { get; set; }
-
-    }
         public class Employee
     {
+        [IndexDbKey(AutoIncrement = true)]
         public int Id { get; set; }
         [Required(ErrorMessage = "Last Name is required")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Last Name cannot have less than 3 characters and more than 20 characters in length")]
@@ -56,6 +51,7 @@ namespace FirstBlazorApp.Models
     }
     public class EmployeeContext : IndexedDbInterop
     {
+
         public EmployeeContext(IJSRuntime jSRuntime, IndexedDbOptions<EmployeeContext> options) : base(jSRuntime, options) { }
         public async Task Add(Employee employee)
         {
@@ -84,9 +80,15 @@ namespace FirstBlazorApp.Models
                 
 
                     var contents = await response.Content.ReadAsStringAsync();
-                contents = "";
-                    //ReceivedEmployee = JsonConvert.DeserializeObject<Employee>(apiResponse);
-                
+               // contents = "";
+                List<district> myDeserializedObjList = (List<district>)Newtonsoft.Json.JsonConvert.DeserializeObject(contents, typeof(List<district>));
+                //var eceivedEmployee = JsonConvert.DeserializeObject<Employee>(contents);
+                var result = "";
+                //foreach (district item in myDeserializedObjList)
+                //{
+                //    result = await this.a(List<district>)("district", item);
+                //}
+                _ = await this.AddItems<district>("district", myDeserializedObjList );
             }
         }
         public async Task toServer(Employee employee)
@@ -118,16 +120,34 @@ namespace FirstBlazorApp.Models
             //   var openResult = await this.OpenIndexedDb();
             List<Employee> employees = await GetAll<Employee>("Employees");
             Employee emp = await GetByKey<int, Employee>("Employees", id);
-            var resultx = "";
+           var test=new TStore<district>();
+        var resultx = "";
             if (emp.Id > 0)
             {
 
                 resultx = await this.DeleteByKey<int>("Employees", emp.Id);
             }
+
+
+
+
         }
         public async Task<List<Employee>> GetAll()
         {
+
             var openResult = await this.OpenIndexedDb();
+            Random r = new Random();
+            int num = r.Next();
+
+
+            List<Employee> emp=new List<Employee>();
+            emp.Add(new Employee { Id = num, Fullname = "" });
+
+            //var idMa
+            //x = employee.Max(x = x.id);
+            var result = await this.AddItems<Employee>("Employees", emp) ;
+
+
             return await this.GetAll<Employee>("Employees");
         }
         public async Task<Employee> GetById(int id)

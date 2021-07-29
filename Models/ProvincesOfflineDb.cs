@@ -27,18 +27,35 @@ namespace FirstBlazorApp.Models
     }
     public class Province
     {
+        [IndexDbKey(AutoIncrement = true)]
         public int Id { get; set; }
         public string Fullname { get; set; }
-        public ICollection<Amper> Ampers { get; set; }
+       
 
 }
+  
+   
+    public class district
+    {
+        [IndexDbKey(AutoIncrement = true)]
+        public int? district_id { get; set; }
+        [IndexDbIndex]
+        public int province_id { get; set; }
+        [IndexDbIndex]
+        public string district_name_thai { get; set; }
+        [IndexDbIndex]
+        public string district_name_eng { get; set; }
+        [IndexDbIndex]
+        public int comment { get; set; }
 
+    }
     public class Amper
     {
         public int Id { get; set; }
         public string Fullname { get; set; }
 
     }
+    
     public class ProvinceContext : IndexedDbInterop
     {
         public ProvinceContext(IJSRuntime jSRuntime, IndexedDbOptions<ProvinceContext> options) : base(jSRuntime, options) { }
