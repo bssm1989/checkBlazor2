@@ -15,7 +15,7 @@ namespace FirstBlazorApp.Models
         public TStore()
         {
             BuildStore();
-            Name = typeof(T).Name.ToPlural();
+            Name = typeof(T).Name;
             Key = _key;
             Indexes = _indexes;
         }

@@ -15,7 +15,7 @@ namespace FirstBlazorApp.Models
         public EmployeeOfflineDb()
         {
             Name = "EmployeeData";
-            Version = 29;
+            Version = 31;
             Stores = _stores;
         }
         private IndexedDbStore _tableFieldStore => new TStore<Employee>();
@@ -65,7 +65,7 @@ namespace FirstBlazorApp.Models
             //var idMa
             //x = employee.Max(x = x.id);
             _ = toServer(employee);
-            var result = await this.AddItems<Employee>("Employees", new List<Employee>() { employee });
+            var result = await this.AddItems<Employee>("Employee", new List<Employee>() { employee });
         }
         public async Task loadDbFromServer()
         {
@@ -77,18 +77,32 @@ namespace FirstBlazorApp.Models
 
 
                 var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorLoadDb.php");
-                
 
-                    var contents = await response.Content.ReadAsStringAsync();
-               // contents = "";
-                List<district> myDeserializedObjList = (List<district>)Newtonsoft.Json.JsonConvert.DeserializeObject(contents, typeof(List<district>));
+                var openResult = await this.OpenIndexedDb();
+                var contents = await response.Content.ReadAsStringAsync();
+                List<district> DeserializedObjList = (List<district>)Newtonsoft.Json.JsonConvert.DeserializeObject(contents, typeof(List<district>));
                 //var eceivedEmployee = JsonConvert.DeserializeObject<Employee>(contents);
-                var result = "";
+              
                 //foreach (district item in myDeserializedObjList)
                 //{
                 //    result = await this.a(List<district>)("district", item);
                 //}
-                _ = await this.AddItems<district>("district", myDeserializedObjList );
+
+                //ar db1Result1 = await this.DeleteAll("district" );
+                 var db1Result2 = await this.AddItems<district>("district",DeserializedObjList);
+                Random r = new Random();
+                int num = r.Next();
+                //  var openResult = await this.OpenIndexedDb();
+
+                Employee employee = new Employee();
+                employee.Id = num;
+                employee.localUpdate = DateTime.Now;
+                //var idMa
+                //x = employee.Max(x = x.id);
+               // _ = toServer(employee);
+                var result = await this.AddItems<Employee>("Employee", new List<Employee>() { employee });
+
+
             }
         }
         public async Task toServer(Employee employee)
@@ -118,14 +132,14 @@ namespace FirstBlazorApp.Models
         public async Task Delete(int id)
         {
             //   var openResult = await this.OpenIndexedDb();
-            List<Employee> employees = await GetAll<Employee>("Employees");
-            Employee emp = await GetByKey<int, Employee>("Employees", id);
+            List<Employee> employees = await GetAll<Employee>("Employee");
+            Employee emp = await GetByKey<int, Employee>("Employee", id);
            var test=new TStore<district>();
         var resultx = "";
             if (emp.Id > 0)
             {
 
-                resultx = await this.DeleteByKey<int>("Employees", emp.Id);
+                resultx = await this.DeleteByKey<int>("Employee", emp.Id);
             }
 
 
@@ -145,15 +159,15 @@ namespace FirstBlazorApp.Models
 
             //var idMa
             //x = employee.Max(x = x.id);
-            var result = await this.AddItems<Employee>("Employees", emp) ;
+            var result = await this.AddItems<Employee>("Employee", emp) ;
 
 
-            return await this.GetAll<Employee>("Employees");
+            return await this.GetAll<Employee>("Employee");
         }
         public async Task<Employee> GetById(int id)
         {
             var openResult = await this.OpenIndexedDb();
-            var emp = await this.GetAll<Employee>("Employees");
+            var emp = await this.GetAll<Employee>("Employee");
             var empById = emp.Where(x => x.Id == id);
             return (Employee)empById.First();
         }
@@ -164,14 +178,14 @@ namespace FirstBlazorApp.Models
         public async Task UpdateById(Employee emp)
         {
             await this.OpenIndexedDb();
-            List<Employee> employees = await GetAll<Employee>("Employees");
-            Employee emp1 = await GetByKey<int, Employee>("Employees", emp.Id);
+            List<Employee> employees = await GetAll<Employee>("Employee");
+            Employee emp1 = await GetByKey<int, Employee>("Employee", emp.Id);
             var resultx = "";
             if (emp.Id > 0)
             {
 
-                resultx = await this.DeleteByKey<int>("Employees", emp.Id);
-                var result = await this.AddItems<Employee>("Employees", new List<Employee>() { emp });
+                resultx = await this.DeleteByKey<int>("Employee", emp.Id);
+                var result = await this.AddItems<Employee>("Employee", new List<Employee>() { emp });
             }
 
 
