@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DnetIndexedDb;
 using FirstBlazorApp.Models;
 using Blazored.LocalStorage;
+using MatBlazor;
 
 namespace FirstBlazorApp
 {
@@ -21,6 +22,7 @@ namespace FirstBlazorApp
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddIndexedDbDatabase<EmployeeContext>(o => { o.UseDatabase(new EmployeeOfflineDb()); });
+           builder.Services.AddMatBlazor();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddSingleton<CustomHttpClient>();
             await builder.Build().RunAsync();

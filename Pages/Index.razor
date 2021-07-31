@@ -153,6 +153,8 @@
     }
     protected override async Task OnInitializedAsync()
     {
+
+
         employees = await DBContext.GetAll();
     }
     private string AddResult = string.Empty;

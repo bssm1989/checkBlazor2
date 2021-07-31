@@ -1,207 +1,29 @@
 ﻿@page "/survey1"
+@inject Models.EmployeeContext DBContext
+
+
+<MatButton>Test</MatButton>
 <h3>survey1</h3>
 <form name='survey' method='POST' action='survey_porfile_add.php' enctype="multipart/form-data">
 <input type='hidden' name='next' value='1'>
 <br>
 		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12">
 				<label><b>ข้อมูลพื้นฐานครัวเรือน (หน้าที่ 1/20)</b></label>
 			</div>
 		</div>
 
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label for="HC">รหัสบ้าน </label>
-				<input type='text' id="HC" name='HC' placeholder="ที่ระบุในทะเบียนบ้าน ขอดูทะเบียนบ้าน"  required >
 				<!--<input type='text' id="HC" name='HC' placeholder="ที่ระบุในทะเบียนบ้าน ขอดูทะเบียนบ้าน" onkeyup="autoTab(this,3)" onkeypress="autoTab(this,3)" maxlength='13' onblur="HC_out(this.form)" value='<?php echo$_SESSION['HC']?>' class="form-control" required >-->
-				<label>กรณีไม่สามารถจะขอดูทะเบียนบ้านได้ ให้สร้างรหัสเองได้ โดยใส่ 0 หน้าเลขรหัสจังหวัด 2 หลัก รหัสแบบสอบถาม  8 หลัก  รวมเป็น 11 หลัก</label><br>
-<!--				แล้วตามด้วยการสร้างโคดกันเองแยกเป็นตำบลหรือเลขที่บ้านกันเองได้ โดยไม่ให้มันซ้ำซ้อนกันครับ หรืออาจจะเป็น 0XY แล้วตามด้วยรหัสแบบสอบถามก็ได้นะครับ รหัสแบบสอบถาม 8 หลัก รวมเป็น 11 หลักครับ โดย 0 ตัวหน้าแปลว่า ไม่สามารถป้อนรหัสบ้านได้-->
-				<label>เช่น มุกดาหาร <font color='red'>0</font><font color='green'>49</font><font color='blue'>00000001</font></label><br>
-				<label>เช่น ปัตตานี <font color='red'>0</font><font color='green'>94</font><font color='blue'>00000001</font></label><br>
-				<label><a onclick='document.survey.JUN.focus()' style='color:blue;cursor:pointer' >ดูรหัสจังหวัด</a></label><br>
-				<label><font color='red'>หมายเหตุ : เลขรหัสบ้านห้ามซ้ำกันในฐานข้อมูล</font>)</label><br>
-				<!--label>กรณีไม่มีรหัสบ้าน ให้กรอกดังนี้ <font color='green'>0940-1</font> ตามด้วยบ้านเลขที่ 6 หลัก (ข้างหน้า 3 หลัก ข้างหลัง 3 หลัก)</label><br>
-				<label>เช่น บ้านเลขที่ <font color='blue'>3</font>/<font color='red'>16</font> กรอกดังนี้<font color='green'>0940-1</font><font color='blue'>003</font><font color='red'>01-6</font></label><br>
-				<label>เช่น บ้านเลขที่ <font color='blue'>17</font> กรอกดังนี้<font color='green'>0940-1</font><font color='blue'>017</font><font color='red'>00-0</font></label><br-->
-			</div>
-		</div>
+<p>GroupIdAux:@SelectProvinceId</p>
 
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label>หมายเลขครัวเรือนเกษตรกร (สมุดเขียว) </label>
-				<input type='button' value='reset' 
-					onclick="
-						document.getElementById('AGRI_NO1').checked=false;
-						document.getElementById('AGRI_NO2').checked=false;
-				">
-				<div class="custom-control custom-radio">
-					<input id="AGRI_NO1" name="AGRI_NO1" type="radio" class="custom-control-input" value='0' >
-					<label class="custom-control-label" for="AGRI_NO1">ไม่มี </label>
-				</div>
-			  <div class="custom-control custom-radio">
-					<input id="AGRI_NO2" name="AGRI_NO1" type="radio" class="custom-control-input" value='1' >
-					<label class="custom-control-label" for="AGRI_NO2">มี</label>
-					<input type='text' name='AGRI_NO'  placeholder='หมายเลขครัวเรือนเกษตรกร' class="form-control">
-				</div>
-			</div>
-		</div>
-
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label for="state">จังหวัด <a href='index.php?curr=edit'>เปลี่ยนจังหวัดเริ่มต้น</a></label>
-				<select class="custom-select d-block w-100" id="JUN"  name='JUN' onchange="search_location(this.form,'AMP')" >
-					<option value='46' <?php if($row_name->JUN==46){echo"selected";}?>>กาฬสินธุ์ (46)</option>
-					<option value='18' <?php if($row_name->JUN==18){echo"selected";}?>>ชัยนาท (18)</option>
-					<option value='94' <?php if($row_name->JUN==94){echo"selected";}?>>ปัตตานี (94)</option>
-					<option value='49' <?php if($row_name->JUN==49){echo"selected";}?>>มุกดาหาร (49)</option>
-					<option value='35' <?php if($row_name->JUN==35){echo"selected";}?>>ยโสธร (35)</option>
-					<option value='33' <?php if($row_name->JUN==33){echo"selected";}?>>ศรีสะเกษ (33)</option>
-					<option value='47' <?php if($row_name->JUN==47){echo"selected";}?>>สกลนคร (47)</option>
-					<option value='32' <?php if($row_name->JUN==32){echo"selected";}?>>สุรินทร์ (32)</option>
-					<option value='37' <?php if($row_name->JUN==37){echo"selected";}?>>อำนาจเจริญ (37)</option>
-					<option value='58' <?php if($row_name->JUN==58){echo"selected";}?>>แม่ฮ่องสอน (58)</option>		
-				</select>
-				<div class="invalid-feedback">
-					กรุณาเลือกจังหวัด
-				</div>
-			</div>
-
-			<div class="col-lg-12  mb-3">
-				<label for="country">อำเภอ</label>
-				<select class="custom-select d-block w-100" id="AMP" name='AMP' onchange="search_location(this.form,'TMP')">
-				</select>
-				<div class="invalid-feedback">
-<?php
-/*
-if($HC){
-	$query="select district_id,district_name_thai from district where province_id ='$row1->JUN'";
-	$result=$mysqli->query($query);
-	while($row=$result->fetch_object()){
-		if($row->district_id==$row1->AMP){
-			echo"<option value='$row->district_id' selected>$row->district_name_thai ($row->district_id)</option>\n";
-		}else{
-			echo"<option value='$row->district_id'>$row->district_name_thai ($row->district_id)</option>\n";
-		}
+   <MatSelect Label="จังหวัด2" @bind-Value="@SelectProvinceId" TValue="string"
+Outlined="true" FullWidth>
+	   @if (provinces1 != null)
+	{
+		@foreach(var item in provinces1)
+	{
+		<MatOption TValue="string" Value="@item.province_id">@item.province_name_thai</MatOption>
 	}
-}
-*/
-?>
-					กรุณาเลือกอำเภอ
-				</div>
-			</div>
-
-			<div class="col-lg-12  mb-3">
-				<label for="country">ตำบล</label>
-				<!--input type="text" class="form-control" id="TMP" name="TMP" placeholder="--ตำบล--" value='<?php echo $row1->TMP?>'-->
-				<select class="custom-select d-block w-100" id="TMP"  name='TMP'>
-				</select>
-				<div class="invalid-feedback">
-					กรุณาเลือกตำบล
-				</div>
-			</div>
-
-			<div class="col-lg-12  mb-3">
-				<label for="country">หมู่ที่</label>
-				<input type='text' name='MB' id='MB' class="form-control"  placeholder='--หมู่ที่--' value='<?php echo $row1->MB?>'>
-				<!--select class="custom-select d-block w-100" id="MB"  name='MB' onchange="search_mm(this.form)">
-				</select>
-				<div class="invalid-feedback">
-					กรุณาเลือกหมู่บ้าน
-				</div-->
-			</div>
-
-			<div class="col-lg-12  mb-3">
-				<label for="MM">ชื่อหมู่บ้าน </label>
-				<input type='text' name='MM' id='MM' placeholder='--ชื่อหมู่บ้าน--' class="form-control">
-			</div>
-
-			<div class="col-lg-12  mb-3">
-				<label for="POSTCODE">รหัสไปษณีย์</label>
-				<input type="text" class="form-control" id="POSTCODE" name="POSTCODE" placeholder="--รหัสไปษณีย์--"  value='<?php echo $row1->POSTCODE?>'>
-				<div class="invalid-feedback">
-					กรุณากรอกรหัสไปษณีย์
-				</div>
-			</div>
-
-			<div class="col-lg-12  mb-3">
-				<label for="MBNO">บ้านเลขที่</label>
-				<input type='text' name='MBNO' placeholder='--บ้านเลขที่--' class="form-control">
-			</div>
-		</div>
-
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label for="PERSON">ชื่อผู้ให้ข้อมูล</label>
-				<input type='button' value='reset' 
-					onclick="
-						document.getElementById('PREFIX1').checked=false;
-						document.getElementById('PREFIX2').checked=false;
-						document.getElementById('PREFIX3').checked=false;
-						document.getElementById('PREFIX4').checked=false;
-				">
-				<div class="custom-control custom-radio">
-					<input id="PREFIX1" name="PREFIX" type="radio" class="custom-control-input" value='1'>
-					<label class="custom-control-label" for="PREFIX1"> นาย </label>
-				</div>
-				<div class="custom-control custom-radio">
-					<input id="PREFIX2" name="PREFIX" type="radio" class="custom-control-input"  value='2'>
-					<label class="custom-control-label" for="PREFIX2"> นาง </label>
-				</div>
-				<div class="custom-control custom-radio">
-					<input id="PREFIX3" name="PREFIX" type="radio" class="custom-control-input"  value='3'>
-					<label class="custom-control-label" for="PREFIX3"> นางสาว </label>
-				</div>
-				<div class="custom-control custom-radio">
-					<input id="PREFIX4" name="PREFIX" type="radio" class="custom-control-input"  value='4'>
-					<label class="custom-control-label" for="PREFIX4"> อื่น ๆ  </label>
-					<input type='text' name='PERSON'  placeholder="--ชื่อผู้ให้ข้อมูล--" class="form-control">
-				</div>
-			</div>
-		</div>
-
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label for="popid">หมายเลขบัตรประจำตัวประชาชน ของผู้ให้ข้อมูล </label>
-				<input type='text' name='popid' id='popid'  placeholder="--หมายเลขบัตรประจำตัวประชาชน--" onkeyup="autoTab(this,1)" onkeypress="autoTab(this,1)" maxlength='17' class="form-control">
-			</div>
-		</div>
-
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label for="TEL">หมายเลขโทรศัพท์ (บ้าน/มือถือ) </label>
-				<input type='text' id='TEL' name='TEL'  placeholder="--หมายเลขโทรศัพท์--" size='30' onKeyUp="autoTab(this,2)" onKeyPress="autoTab(this,2)" maxlength='12' class="form-control">
-			</div>
-		</div>
-
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label for="HHM">จำนวนสมาชิกทั้งหมดในครัวเรือนตามทะเบียนบ้าน  </label>
-				<input type='text' name='HHM' id='HHM' size='5' placeholder="--จำนวนสมาชิกทั้งหมดในครัวเรือนตามทะเบียนบ้าน--"  class="form-control" required>
-			</div>
-		</div>
-
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label for="PPP">จำนวนคนที่อาศัยอยู่จริงตามทะเบียนบ้าน </label>
-			<input type='text' name='PPP' id='PPP' size='5' placeholder="--จำนวนคนที่อาศัยอยู่จริงตามทะเบียนบ้าน--" class="form-control" required>
-			</div>
-		</div>
-
-		<br>
-		<div class="row" style='border-style: dotted;border-width: 1px'>
-			<div class="col-lg-12  mb-3">
-				<label for="PP">จำนวนคนที่อาศัยอยู่จริงแต่<font color='red'>ไม่มี</font>ชื่อในทะเบียนบ้าน </label>
-			<input type='text' name='PP' id='PP' size='5' placeholder="--จำนวนคนที่อาศัยอยู่แต่ไม่มีชื่อในทะเบียนบ้าน--" class="form-control" required>
-			</div>
 		</div>
 
 		<br>
@@ -222,17 +44,119 @@ if($HC){
 
 			<br>
 
-			</div>
+	}
+</MatSelect>
 
-		<br>
-		<div class="row">
-			<div class="col-lg-12  mb-3">
-				<input type='button' value='บันทึก' onclick='SaveClick(this.form)' >
-				<input type='button' value='ถัดไป' onclick='NextClick(this.form)' >
-			</div>
-		</div>
-		</form>
+<p>GroupIdAux:@SelectDistrictId</p>
+<MatSelect Label="เลือกอำเภอ"  @bind-Value="@SelectDistrictId" TValue="string"  Outlined="true" FullWidth>
+	   
+	  
+	
+		@foreach(var item in districts)
+	{
+		<MatOption  TValue="String" Value="@item.district_id">@item.district_name_thai</MatOption>
+	}
+	
+</MatSelect>
+ 
+<p>GroupIdAux:@tambonId</p>
+<MatSelect Label="เลือกอำเภอ" @bind-Value="@tambonId"  Outlined="true" FullWidth>
+	  <MatOptionString></MatOptionString>
+	
+		@foreach(var item in tambons)
+	{
+		<MatOption TValue="string" Value="@item.tambon_id">@item.tambon_name_thai</MatOption>
+	}
+	
+</MatSelect>
+ 
 
+
+ 
 @code {
+	string value1;
+	List<province> provinces1=new List<province>();
+	List<district> districts = new List<district>();
+	List<tambon> tambons = new List<tambon>();
+	string provinceId;
+	string districtId;
+	string districtId2;
+	string tambonId;
+//	List<province> provinces = new List<province>();
+	 //private List<Models.district> districts = null;
+
+	  private string threatId = null;
+	  private string threatId2 = null;
+	  private string threatId3 = null;
+
+    public string SelectProvinceId
+    {
+        get { return threatId; }set
+        {
+            threatId = value;
+            SelectThreatValueChanged(value);
+        }
+    }
+    public string SelectDistrictId
+    {
+        get { return threatId2; }set
+        {
+			
+					threatId2 = value;
+			if (value != null && value != "")
+			{
+            SelectDistrictValueChanged(value);
+			}
+			else
+			{
+			//	tambons.Clear();
+			}
+
+        }
+    }
+    public string SelectTambonId
+    {
+        get { return threatId3; }set
+        {
+			
+					threatId3 = value;
+		
+		
+        }
+    }
+
+    
+	  private async void SelectDistrictValueChanged(string id)
+    {//https://stackoverflow.com/questions/64802201/blazor-matblazor-how-to-catch-the-value-change-of-matselect-component
+		int proId = Convert.ToInt32(id);
+		if(id!=null)
+		 tambons =await DBContext.GetByIndex<string,tambon>("tambon",id,null,"district_id",false);
+		tambonId = "";
+		StateHasChanged();
+
+
+    }
+	  private async void SelectThreatValueChanged(string id)
+    {//https://stackoverflow.com/questions/64802201/blazor-matblazor-how-to-catch-the-value-change-of-matselect-component
+		int proId = Convert.ToInt32(id);
+		tambonId ="";
+		districts =await DBContext.GetByIndex<int?,district>("district", proId,0,"province_id",false);
+		SelectDistrictId = null;
+		
+		tambons = new List<tambon>();
+		StateHasChanged();
+		//
+	}
+			
+
+
+
+
+
+	 protected override async Task OnInitializedAsync()
+	{
+		 provinces1 = await DBContext.GetAll<province>("province");
+	}
+	
 
 }

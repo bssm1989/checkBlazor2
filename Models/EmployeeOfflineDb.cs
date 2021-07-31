@@ -167,6 +167,18 @@ namespace FirstBlazorApp.Models
 
 
         }
+        public async Task<List<province>> GetAll_survey1_provinces()
+        {
+            var openResult = await this.OpenIndexedDb();
+            return await this.GetAll<province>("province");
+        }
+        public  List<district> GetAll_survey1_district(int province_id)
+        {
+            var openResult =  this.OpenIndexedDb();
+            var result = this.GetAll<district>("district");
+            return (List<district>)result.Result.Where(x => x.province_id == province_id);
+        }
+
         public async Task<List<Employee>> GetAll()
         {
 
