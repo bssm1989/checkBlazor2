@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\surveya2.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.2" />
     <PackageReference Include="Blazored.Toast" Version="3.1.2" />
     <PackageReference Include="DnetIndexedDb" Version="2.2.1" />
@@ -30,6 +34,10 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="wwwroot\css\fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Surveya2.razor" />
   </ItemGroup>
 
 </Project>
