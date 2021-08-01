@@ -5,6 +5,7 @@
 
 
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 @*@inject IJSRuntime JSRuntime*@
 @*<h1>Local Storage!</h1>
 
@@ -16,116 +17,131 @@
     test deploy   id test*@
 <p>
     <a href="addemp">Create New Employee..</a>
-</p>
-@*<EditForm Model="@employee" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
-    <DataAnnotationsValidator />
-
-    <div class="row">
-        <div class="col-md-8">
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
-                    <label for="Fullname">Fullname #</label>
-                    <input type="text" class="form-control" id="Fullname" @bind-value="@employee.Fullname" placeholder="enter Fullname..." />
-                    <ValidationMessage For="@(()=>employee.Fullname)" />
-                </div>
-            </div>
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
-                    <label for="Email">Email#</label>
-                    <input type="text" class="form-control" id="Email" @bind-value="@emp.Email" placeholder="enter Email..." />
-                    <ValidationMessage For="@(()=>emp.Email)" />
-                </div>
-            </div>
-            <div class="row" style="margin-top:10px">
-                <div class="col-md-12">
-                    <label for="MobileNumber">Mobile Number #</label>
-                    <input type="text" class="form-control" id="MobileNumber" @bind-value="@emp.MobileNumber" />
-                    <ValidationMessage For="@(()=>emp.MobileNumber)" />
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-info" Style="margin-top:10px">Add user</button>
-        </div>
-        @if (displayValidationErrorMessages)
-        {
-            <div class="col-md-4" style="margin-top:10px">
-                <label>Validation Messages: </label>
-                <ValidationSummary />
-            </div>
-        }
-    </div>
-</EditForm>*@
-@if (displayUserAddedToDB)
+</p>    @if (survey_profile_list != null)
 {
-    <div class="row bg-success text-white" style="margin-top:10px; height:40px">
-        <label class="p-2">User added to database... </label>
+    <div class="row">
+        <div class="col-md-12">
+     <table class="table-bordered">
+        <thead>
+            <tr>
+                    <th>HC</th>
+                    <th>survey_year</th>
+                    <th>survey_no</th>
+                    <th>AGRI</th>
+                    <th>AGRI_NO</th>
+                    <th>MBNO</th>
+                    <th>MB</th>
+                    <th>MM</th>
+                    <th>TMP</th>
+                    <th>AMP</th>
+                    <th>JUN</th>
+                    <th>POSTCODE</th>
+                    <th>PERSON</th>
+                    <th>popid</th>
+                    <th>PREFIX</th>
+                    <th>TEL</th>
+                    <th>HHM</th>
+                    <th>PP</th>
+                    <th>PPP</th> 
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Context="survey_profile" Items="@survey_profile_list">
+                <tr>
+                    <td>@survey_profile.HC</td>
+                    <td>@survey_profile.survey_year</td>
+                    <td>@survey_profile.survey_no</td>
+                    <td>@survey_profile.AGRI</td>
+                    <td>@survey_profile.AGRI_NO</td>
+                    <td>@survey_profile.MBNO</td>
+                    <td>@survey_profile.MB</td>
+                    <td>@survey_profile.MM</td>
+                    <td>@survey_profile.TMP</td>
+                    <td>@survey_profile.AMP</td>
+                    <td>@survey_profile.JUN</td>
+                    <td>@survey_profile.POSTCODE</td>
+                    <td>@survey_profile.PERSON</td>
+                    <td>@survey_profile.popid</td>
+                    <td>@survey_profile.PREFIX</td>
+                    <td>@survey_profile.TEL</td>
+                    <td>@survey_profile.HHM</td>
+                    <td>@survey_profile.PP</td>
+                    <td>@survey_profile.PPP</td> 
+                
+                    <td>
+                        <input type="button" class="btn btn-danger" @onclick="@(e => DeleteSurvey_profile(survey_profile.HC))" value="Delete" />
+                        <a href='editemployee/@survey_profile.HC' class="btn btn-block">Edit</a>
+                    </td>
+
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
     </div>
-}
-@*</div>*@
-<hr />
-
-
-@*<div class="form-group row">
-    <button class="btn btn-info float-right" @onclick="GetSavedEmployees">List All Employees</button>
-</div>*@
+    </div>
+    }
 @if (employees != null)
 {
-<table class="table-bordered">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>E-mail</th>
-            <th>Mobile number</th>
-            <th>Server update</th>
-            <th>Local update</th>
-            <th>User</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <Virtualize Context="employee" Items="@employees">
+    <table class="table-bordered">
+        <thead>
             <tr>
-                <td>@employee.Id</td> rtx6b n4
-                <td>@employee.Fullname</td>
-                <td>@employee.Email</td>
-                <td>@employee.MobileNumber</td>
-                <td>@employee.ServerUpdate</td>
-                <td>@employee.localUpdate</td>
-                <td>@employee.User</td>
-                <td>
-                    <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
-                    <a href='editemployee/@employee.Id' class="btn btn-block">Edit</a>
-                </td>
-
+                <th>Id</th>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th>Mobile number</th>
+                <th>Server update</th>
+                <th>Local update</th>
+                <th>User</th>
+                <th></th>
             </tr>
-        </Virtualize>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <Virtualize Context="employee" Items="@employees">
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Fullname</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.MobileNumber</td>
+                    <td>@employee.ServerUpdate</td>
+                    <td>@employee.localUpdate</td>
+                    <td>@employee.User</td>
+                    <td>
+                        <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
+                        <a href='editemployee/@employee.Id' class="btn btn-block">Edit</a>
+                    </td>
+
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
 }
 @code{
     Employee emp = new Employee();
-    private List<Models.Employee> employees = null;
-
+    private List<Models.Employee> employees = new List<Employee>();
+    private List<Models.survey_profile> survey_profile_list = new List<survey_profile>();
     bool displayValidationErrorMessages = false;
     bool displayUserAddedToDB = false;
 
     string currentInputValue;
 
-    //public async Task Save()
-    //{
-    //    await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);
-    //}
+    public async Task synData()
+    {
+        await DBContext.loadDbFromServer();
+    }
+    public async Task Save()
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);
+    }
 
-    //public async Task Read()
-    //{
-    //    currentInputValue = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name");
-    //}
+    public async Task Read()
+    {
+        currentInputValue = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name");
+    }
 
-    //public async Task Delete()
-    //{
-    //    await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "name");
-    //}
+    public async Task Delete()
+    {
+        await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "name");
+    }
     // http
 
     Employee ReceivedEmployee;
@@ -136,12 +152,14 @@
         ReceivedEmployee = new Employee();
         using (var httpClient = new HttpClient())
         {
+            //StringContent content = new StringContent(JsonConvert.SerializeObject(employees), Encoding.UTF8, "application/json");
 
 
 
             using (var response = await httpClient.GetAsync("https://www.psutrobon.com/gis_bssm/blazorTest.php?id=9"))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
+                //ReceivedEmployee = JsonConvert.DeserializeObject<Employee>(apiResponse);
             }
         }
         FormSubmitMessage = "Reservation Created";
@@ -153,6 +171,14 @@
     {
         await DBContext.Delete(id);
         await Task.Run(() => GetSavedEmployees());
+        await Task.CompletedTask;
+    }
+     private async Task DeleteSurvey_profile(string id)
+    {
+          var openResult = await DBContext.OpenIndexedDb();
+        await DBContext.DeleteByKey<string>("survey_profile", id);
+       
+        await Task.Run(() => OnInitializedAsync());
         await Task.CompletedTask;
     }
     private async Task EditEmp(int id)
@@ -183,6 +209,8 @@
     }
     protected override async Task OnInitializedAsync()
     {
+        var openResult = await DBContext.OpenIndexedDb();
+      survey_profile_list =await DBContext.GetAll<survey_profile>("survey_profile");
         employees = await DBContext.GetAll();
     }
     private string AddResult = string.Empty;

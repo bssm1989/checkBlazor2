@@ -34,14 +34,18 @@ namespace FirstBlazorApp.Models
                 {
                     _key = new IndexedDbStoreParameter
                     {
-                        KeyPath = info.Name.ToCamelCase(),
+                      //  KeyPath = info.Name,
+                       // KeyPath = info.Name.ToCamelCase(),
+                        KeyPath = info.Name.ToLower(),
                         AutoIncrement = true
                     };
                 }
 
                 _indexes.Add(new IndexedDbIndex
                 {
-                    Name = info.Name.ToCamelCase(),
+                    Name = info.Name.ToLower(),
+                    //Name = info.Name.ToCamelCase(),
+                    //Name = info.Name,
                     Definition = new IndexedDbIndexParameter { Unique = false }
                 });
             }

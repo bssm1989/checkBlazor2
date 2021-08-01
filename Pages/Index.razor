@@ -32,6 +32,73 @@
 @*<div class="form-group row">
         <button class="btn btn-info float-right" @onclick="GetSavedEmployees">List All Employees</button>
     </div>*@
+    @if (survey_profile_list != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+     <table class="table-bordered">
+        <thead>
+            <tr>
+                    <th>id</th>
+                    <th>HC</th>
+                    <th>survey_year</th>
+                    <th>create_survey</th>
+                    <th>survey_no</th>
+                    <th>AGRI</th>
+                    <th>AGRI_NO</th>
+                    <th>MBNO</th>
+                    <th>MB</th>
+                    <th>MM</th>
+                    <th>TMP</th>
+                    <th>AMP</th>
+                    <th>JUN</th>
+                    <th>POSTCODE</th>
+                    <th>PERSON</th>
+                    <th>popid</th>
+                    <th>PREFIX</th>
+                    <th>TEL</th>
+                    <th>HHM</th>
+                    <th>PP</th>
+                    <th>PPP</th> 
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Context="survey_profile" Items="@survey_profile_list">
+                <tr>
+                    <td>@survey_profile.id</td>
+                    <td>@survey_profile.HC</td>
+                    <td>@survey_profile.survey_year</td>
+                    <td>@survey_profile.survey_no</td>
+                    <td>@survey_profile.create_survey</td>
+                    <td>@survey_profile.AGRI</td>
+                    <td>@survey_profile.AGRI_NO</td>
+                    <td>@survey_profile.MBNO</td>
+                    <td>@survey_profile.MB</td>
+                    <td>@survey_profile.MM</td>
+                    <td>@survey_profile.TMP</td>
+                    <td>@survey_profile.AMP</td>
+                    <td>@survey_profile.JUN</td>
+                    <td>@survey_profile.POSTCODE</td>
+                    <td>@survey_profile.PERSON</td>
+                    <td>@survey_profile.popid</td>
+                    <td>@survey_profile.PREFIX</td>
+                    <td>@survey_profile.TEL</td>
+                    <td>@survey_profile.HHM</td>
+                    <td>@survey_profile.PP</td>
+                    <td>@survey_profile.PPP</td> 
+                
+                    <td>
+                        <input type="button" class="btn btn-danger" @onclick="@(e => DeleteSurvey_profile(survey_profile.id))" value="Delete" />
+                        <a href='editemployee/@survey_profile.id' class="btn btn-block">Edit</a>
+                    </td>
+
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    }
 @if (employees != null)
 {
     <table class="table-bordered">
@@ -59,7 +126,7 @@
                     <td>@employee.User</td>
                     <td>
                         <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
-                        <a href='editemployee/0  @employee.Id' class="btn btn-block">Edit</a>
+                        <a href='editemployee/@employee.Id' class="btn btn-block">Edit</a>
                     </td>
 
                 </tr>
@@ -69,8 +136,8 @@
 }
 @code{
     Employee emp = new Employee();
-    private List<Models.Employee> employees = null;
-
+    private List<Models.Employee> employees = new List<Employee>();
+    private List<Models.survey_profile> survey_profile_list = new List<survey_profile>();
     bool displayValidationErrorMessages = false;
     bool displayUserAddedToDB = false;
 
@@ -125,6 +192,16 @@
         await Task.Run(() => GetSavedEmployees());
         await Task.CompletedTask;
     }
+     private async Task DeleteSurvey_profile(int? id)
+    {
+            var openResult = await DBContext.OpenIndexedDb();
+
+        await DBContext.DeleteByKey<int?>("survey_profile", id);
+        survey_profile_list =await DBContext.GetAll<survey_profile>("survey_profile");
+      //var updateSurPro=await DBContext.GetByIndex<string, survey_profile>("survey_profile", "1", null, "hc", false);
+   
+        StateHasChanged();
+    }
     private async Task EditEmp(int id)
     {
         emp = await DBContext.GetById(id);
@@ -153,9 +230,10 @@
     }
     protected override async Task OnInitializedAsync()
     {
-
-
-        employees = await DBContext.GetAll();
+        var openResult = await DBContext.OpenIndexedDb();
+      survey_profile_list =(await DBContext.GetAll<survey_profile>("survey_profile")).OrderBy(x => x.create_survey).ToList();
+	     
+      employees = await DBContext.GetAll();
     }
     private string AddResult = string.Empty;
 

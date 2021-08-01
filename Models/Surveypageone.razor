@@ -2,12 +2,13 @@
 @inject Models.EmployeeContext DBContext
 
 @using FirstBlazorApp.Models
-
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 <h3>Surveypageone</h3>
 <h3>survey1</h3>
-<form name='survey' method='POST' action='survey_porfile_add.php' enctype="multipart/form-data">
+<EditForm Model="@recordSurveyProfile" OnValidSubmit="@HandleValidSubmit" >
 <input type='hidden' name='next' value='1'>
-<br>
+
 		<br>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12">
@@ -19,7 +20,7 @@
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
 				<label for="HC">รหัสบ้าน </label>
-				<input type='text' id="HC" name='HC' placeholder="ที่ระบุในทะเบียนบ้าน ขอดูทะเบียนบ้าน"  required >
+				<input type='text' id="HC" name='HC' @bind-value="@recordSurveyProfile.HC" placeholder="ที่ระบุในทะเบียนบ้าน ขอดูทะเบียนบ้าน"  required >
 				<!--<input type='text' id="HC" name='HC' placeholder="ที่ระบุในทะเบียนบ้าน ขอดูทะเบียนบ้าน" onkeyup="autoTab(this,3)" onkeypress="autoTab(this,3)" maxlength='13' onblur="HC_out(this.form)" value='<?php echo$_SESSION['HC']?>' class="form-control" required >-->
 				<label>กรณีไม่สามารถจะขอดูทะเบียนบ้านได้ ให้สร้างรหัสเองได้ โดยใส่ 0 หน้าเลขรหัสจังหวัด 2 หลัก รหัสแบบสอบถาม  8 หลัก  รวมเป็น 11 หลัก</label><br>
 <!--				แล้วตามด้วยการสร้างโคดกันเองแยกเป็นตำบลหรือเลขที่บ้านกันเองได้ โดยไม่ให้มันซ้ำซ้อนกันครับ หรืออาจจะเป็น 0XY แล้วตามด้วยรหัสแบบสอบถามก็ได้นะครับ รหัสแบบสอบถาม 8 หลัก รวมเป็น 11 หลักครับ โดย 0 ตัวหน้าแปลว่า ไม่สามารถป้อนรหัสบ้านได้-->
@@ -49,7 +50,7 @@
 			  <div class="custom-control custom-radio">
 					<input id="AGRI_NO2" name="AGRI_NO1" type="radio" class="custom-control-input" value='1' >
 					<label class="custom-control-label" for="AGRI_NO2">มี</label>
-					<input type='text' name='AGRI_NO'  placeholder='หมายเลขครัวเรือนเกษตรกร' class="form-control">
+					<input type='text' name='AGRI_NO'  @bind-value="@recordSurveyProfile.AGRI_NO" placeholder='หมายเลขครัวเรือนเกษตรกร' class="form-control">
 				</div>
 			</div>
 		</div>
@@ -110,22 +111,18 @@ Outlined="true" FullWidth>
 
 			<div class="col-lg-12  mb-3">
 				<label for="country">หมู่ที่</label>
-				<input type='text' name='MB' id='MB' class="form-control"  placeholder='--หมู่ที่--' value='<?php echo $row1->MB?>'>
-				<!--select class="custom-select d-block w-100" id="MB"  name='MB' onchange="search_mm(this.form)">
-				</select>
-				<div class="invalid-feedback">
-					กรุณาเลือกหมู่บ้าน
-				</div-->
+				<input type='text' name='MB' id='MB' class="form-control"  placeholder='--หมู่ที่--'  @bind-value="@recordSurveyProfile.MB" />'
+		
 			</div>
 
 			<div class="col-lg-12  mb-3">
 				<label for="MM">ชื่อหมู่บ้าน </label>
-				<input type='text' name='MM' id='MM' placeholder='--ชื่อหมู่บ้าน--' class="form-control">
+				<input type='text' name='MM'   @bind-value="@recordSurveyProfile.MM" id='MM' placeholder='--ชื่อหมู่บ้าน--' class="form-control">
 			</div>
 
 			<div class="col-lg-12  mb-3">
 				<label for="POSTCODE">รหัสไปษณีย์</label>
-				<input type="text" class="form-control" id="POSTCODE" name="POSTCODE" placeholder="--รหัสไปษณีย์--"  value='<?php echo $row1->POSTCODE?>'>
+				<input type="text" class="form-control" id="POSTCODE"  @bind-value="@recordSurveyProfile.POSTCODE" name="POSTCODE" placeholder="--รหัสไปษณีย์--"  >
 				<div class="invalid-feedback">
 					กรุณากรอกรหัสไปษณีย์
 				</div>
@@ -133,7 +130,7 @@ Outlined="true" FullWidth>
 
 			<div class="col-lg-12  mb-3">
 				<label for="MBNO">บ้านเลขที่</label>
-				<input type='text' name='MBNO' placeholder='--บ้านเลขที่--' class="form-control">
+				<input type='text' name='MBNO'  @bind-value="@recordSurveyProfile.MBNO" placeholder='--บ้านเลขที่--' class="form-control">
 			</div>
 		</div>
 
@@ -149,7 +146,7 @@ Outlined="true" FullWidth>
 						document.getElementById('PREFIX4').checked=false;
 				">
 				<div class="custom-control custom-radio">
-					<input id="PREFIX1" name="PREFIX" type="radio" class="custom-control-input" value='1'>
+					<input id="PREFIX1" name="PREFIX"   type="radio" class="custom-control-input" value='1'>
 					<label class="custom-control-label" for="PREFIX1"> นาย </label>
 				</div>
 				<div class="custom-control custom-radio">
@@ -172,7 +169,7 @@ Outlined="true" FullWidth>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
 				<label for="popid">หมายเลขบัตรประจำตัวประชาชน ของผู้ให้ข้อมูล </label>
-				<input type='text' name='popid' id='popid'  placeholder="--หมายเลขบัตรประจำตัวประชาชน--" onkeyup="autoTab(this,1)" onkeypress="autoTab(this,1)" maxlength='17' class="form-control">
+				<input type='text' name='popid' id='popid'  @bind-value="@recordSurveyProfile.popid"  placeholder="--หมายเลขบัตรประจำตัวประชาชน--" onkeyup="autoTab(this,1)" onkeypress="autoTab(this,1)" maxlength='17' class="form-control">
 			</div>
 		</div>
 
@@ -180,7 +177,7 @@ Outlined="true" FullWidth>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
 				<label for="TEL">หมายเลขโทรศัพท์ (บ้าน/มือถือ) </label>
-				<input type='text' id='TEL' name='TEL'  placeholder="--หมายเลขโทรศัพท์--" size='30' onKeyUp="autoTab(this,2)" onKeyPress="autoTab(this,2)" maxlength='12' class="form-control">
+				<input type='text' id='TEL' name='TEL'  @bind-value="@recordSurveyProfile.TEL" placeholder="--หมายเลขโทรศัพท์--" size='30' onKeyUp="autoTab(this,2)" onKeyPress="autoTab(this,2)" maxlength='12' class="form-control">
 			</div>
 		</div>
 
@@ -188,7 +185,7 @@ Outlined="true" FullWidth>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
 				<label for="HHM">จำนวนสมาชิกทั้งหมดในครัวเรือนตามทะเบียนบ้าน  </label>
-				<input type='text' name='HHM' id='HHM' size='5' placeholder="--จำนวนสมาชิกทั้งหมดในครัวเรือนตามทะเบียนบ้าน--"  class="form-control" required>
+				<input type='text' name='HHM' id='HHM'  @bind-value="@recordSurveyProfile.HHM" size='5' placeholder="--จำนวนสมาชิกทั้งหมดในครัวเรือนตามทะเบียนบ้าน--"  class="form-control" required>
 			</div>
 		</div>
 
@@ -196,7 +193,7 @@ Outlined="true" FullWidth>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
 				<label for="PPP">จำนวนคนที่อาศัยอยู่จริงตามทะเบียนบ้าน </label>
-			<input type='text' name='PPP' id='PPP' size='5' placeholder="--จำนวนคนที่อาศัยอยู่จริงตามทะเบียนบ้าน--" class="form-control" required>
+			<input type='text' name='PPP' id='PPP'  @bind-value="@recordSurveyProfile.PPP" size='5' placeholder="--จำนวนคนที่อาศัยอยู่จริงตามทะเบียนบ้าน--" class="form-control" required>
 			</div>
 		</div>
 
@@ -204,7 +201,7 @@ Outlined="true" FullWidth>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
 				<label for="PP">จำนวนคนที่อาศัยอยู่จริงแต่<font color='red'>ไม่มี</font>ชื่อในทะเบียนบ้าน </label>
-			<input type='text' name='PP' id='PP' size='5' placeholder="--จำนวนคนที่อาศัยอยู่แต่ไม่มีชื่อในทะเบียนบ้าน--" class="form-control" required>
+			<input type='text' name='PP' id='PP'  @bind-value="@recordSurveyProfile.PP" size='5' placeholder="--จำนวนคนที่อาศัยอยู่แต่ไม่มีชื่อในทะเบียนบ้าน--" class="form-control" required>
 			</div>
 		</div>
 
@@ -231,14 +228,17 @@ Outlined="true" FullWidth>
 		<br>
 		<div class="row">
 			<div class="col-lg-12  mb-3">
-				<input type='button' value='บันทึก' onclick='SaveClick(this.form)' >
+				<input type='submit' value='บันทึก' >
 				<input type='button' value='ถัดไป' onclick='NextClick(this.form)' >
 			</div>
 		</div>
-		</form>
+</EditForm>
+
 
 @code {
-string value1;
+
+	string value1;
+	survey_profile recordSurveyProfile=new survey_profile();
 	List<province> provinces1=new List<province>();
 	List<district> districts = new List<district>();
 	List<tambon> tambons = new List<tambon>();
@@ -246,9 +246,6 @@ string value1;
 	string districtId;
 	string districtId2;
 	string tambonId;
-//	List<province> provinces = new List<province>();
-	 //private List<Models.district> districts = null;
-
 	  private string threatId = null;
 	  private string threatId2 = null;
 	  private string threatId3 = null;
@@ -321,6 +318,33 @@ string value1;
 	{
 		 provinces1 = await DBContext.GetAll<province>("province");
 	}
-
+	protected async Task HandleValidSubmit(EditContext context)
+    {
+		var User = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name");
+		await DBContext.OpenIndexedDb();
+		  Random r = new Random();
+            int num = r.Next();
+		recordSurveyProfile.id = num;
+		 await DBContext.AddItems<survey_profile>("survey_profile",new List<survey_profile>(){recordSurveyProfile});
+		//update survey_profile set create_survey='".date("U")."' where HC='$HC'
+		//districts =await DBContext.GetByIndex<int?,district>("district", proId,0,"province_id",false);
+	var getAll=await DBContext.GetAll<survey_profile>("survey_profile");
+	List<survey_profile> updateSurPro=await DBContext.GetByIndex<string, survey_profile>("survey_profile", recordSurveyProfile.HC, null, "hc", false);
+	updateSurPro.First().create_survey=(int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+		await DBContext.UpdateItems<survey_profile>("survey_profile", new List<survey_profile> { updateSurPro.First() });
+		//$log="insert into log_file ( id,username,time1,detail) values('','$username','".date("U") ."','เพิ่ม $HC')";
+		await DBContext.AddItems<log_file>("log_file", new List<log_file>{
+		new log_file{
+			id=num,
+				username=User,
+				time1=(int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+				detail="เพิ่ม "+recordSurveyProfile.HC
+			}
+		});
+		  NavigationManager.NavigateTo("index2");
+		//$log="insert into log_file ( id,username,time1,detail) values('','$username','".date("U") ."','เพิ่ม $HC')";
+       
+    }
 }
 
+ 

@@ -16,7 +16,7 @@ namespace FirstBlazorApp.Models
         public EmployeeOfflineDb()
         {
             Name = "EmployeeData";
-            Version = 53;
+            Version = 60;
             Stores = _stores;
         }
         private IndexedDbStore _tableFieldStore => new TStore<Employee>();
@@ -124,7 +124,7 @@ namespace FirstBlazorApp.Models
         public string MobileNumber { get; set; }
         public DateTime? localUpdate { get; set; }
         public DateTime? ServerUpdate { get; set; }
-        public string Status { get; set; }
+        public string STATUS { get; set; }
         public string User { get; set; }
     }
     public class EmployeeContext : IndexedDbInterop
@@ -221,7 +221,7 @@ namespace FirstBlazorApp.Models
                     "&localUpdate=" + employee.localUpdate +
                     "&ServerUpdate=" + employee.ServerUpdate +
                     "&User=" + employee.User +
-                    "&Status=" + employee.Status))
+                    "&Status=" + employee.STATUS))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     //ReceivedEmployee = JsonConvert.DeserializeObject<Employee>(apiResponse);

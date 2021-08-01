@@ -134,14 +134,14 @@ namespace FirstBlazorApp.Models
         public string survey_no { get; set; }
         public string ch { get; set; }
         public string level { get; set; }
-
+    }
         public class employee
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? Id { get; set; }
             public string Fullname { get; set; }
             public string Email { get; set; }
             public string MobileNumber { get; set; }
-            public int? Id { get; set; }
         }
 
         public class hc_result
@@ -438,16 +438,16 @@ namespace FirstBlazorApp.Models
         public class hc_sum_check1
         {
             [IndexDbKey(AutoIncrement = true)]
-            public string JUN { get; set; }
             public int? id { get; set; }
+            public string JUN { get; set; }
             public int? status { get; set; }
         }
 
         public class hc_sum_check2
         {
             [IndexDbKey(AutoIncrement = true)]
-            public string JUN { get; set; }
             public int? id { get; set; }
+            public string JUN { get; set; }
             public int? status { get; set; }
         }
         public class income
@@ -535,17 +535,17 @@ namespace FirstBlazorApp.Models
         public class log_file
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string username { get; set; }
             public string detail { get; set; }
-            public int? id { get; set; }
             public int? time1 { get; set; }
         }
         public class log_file_2
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string username { get; set; }
             public string detail { get; set; }
-            public int? id { get; set; }
             public int? time1 { get; set; }
         }
         public class mm
@@ -573,6 +573,7 @@ namespace FirstBlazorApp.Models
         public class poverty
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string lat { get; set; }
             public string lng { get; set; }
             public string images { get; set; }
@@ -587,7 +588,6 @@ namespace FirstBlazorApp.Models
             public string h_occupation { get; set; }
             public string remark { get; set; }
             public string house_code { get; set; }
-            public int? id { get; set; }
             public int? createBy { get; set; }
             public int? last_edit { get; set; }
             public int? create_time { get; set; }
@@ -602,6 +602,7 @@ namespace FirstBlazorApp.Models
         public class poverty_pattani
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string house_code { get; set; }
             public string house_no { get; set; }
             public string village_name { get; set; }
@@ -615,7 +616,6 @@ namespace FirstBlazorApp.Models
             public string images { get; set; }
             public string createBy { get; set; }
             public string remark { get; set; }
-            public int? id { get; set; }
             public int? village_no { get; set; }
             public int? members_m { get; set; }
             public int? members_f { get; set; }
@@ -637,10 +637,10 @@ namespace FirstBlazorApp.Models
         public class snapshot
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string change_table { get; set; }
             public string change_type { get; set; }
             public string change_index { get; set; }
-            public int? id { get; set; }
             public int? change_id { get; set; }
             public int? change_time { get; set; }
         }
@@ -862,6 +862,7 @@ namespace FirstBlazorApp.Models
         public class tpmap_pattani
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string MBNO { get; set; }
             public string MM { get; set; }
             public string TMP1 { get; set; }
@@ -871,12 +872,12 @@ namespace FirstBlazorApp.Models
             public string PREFIX { get; set; }
             public string name { get; set; }
             public string sname { get; set; }
-            public int? id { get; set; }
             public int? MB { get; set; }
         }
         public class tpmap_pattani2
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string MBNO { get; set; }
             public string MM { get; set; }
             public string TMP { get; set; }
@@ -885,7 +886,6 @@ namespace FirstBlazorApp.Models
             public string PREFIX { get; set; }
             public string name { get; set; }
             public string sname { get; set; }
-            public int? id { get; set; }
             public int? MMNO { get; set; }
         }
         public class t_tambon
@@ -916,6 +916,7 @@ namespace FirstBlazorApp.Models
         public class users
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string email { get; set; }
             public string pwd { get; set; }
             public string level { get; set; }
@@ -931,7 +932,6 @@ namespace FirstBlazorApp.Models
             public string district { get; set; }
             public string sub_district { get; set; }
             public string phone { get; set; }
-            public int? id { get; set; }
             public int? last_login { get; set; }
             public int? last_edit { get; set; }
             public int? create_time { get; set; }
@@ -939,6 +939,7 @@ namespace FirstBlazorApp.Models
         public class volunteer
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string username { get; set; }
             public string password { get; set; }
             public string name { get; set; }
@@ -948,7 +949,6 @@ namespace FirstBlazorApp.Models
             public string line { get; set; }
             public string JUN { get; set; }
             public string level { get; set; }
-            public int? id { get; set; }
             public int? last_edit { get; set; }
             public int? create_time { get; set; }
         }
@@ -957,21 +957,22 @@ namespace FirstBlazorApp.Models
         public class livingon_tpmap
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string HC { get; set; }
             public string comment { get; set; }
-            public int? id { get; set; }
         }
         public class livingon_tpmap2
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string HC { get; set; }
             public string name { get; set; }
-            public int? id { get; set; }
             public int? idtpmap { get; set; }
         }
         public class livingon_tpmap4
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string HC { get; set; }
             public string name { get; set; }
             public string MBNO { get; set; }
@@ -981,12 +982,12 @@ namespace FirstBlazorApp.Models
             public string PREFIX { get; set; }
             public string name1 { get; set; }
             public string sname1 { get; set; }
-            public int? id { get; set; }
             public int? idtpmap { get; set; }
         }
         public class livingon_tpmap3
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string HC { get; set; }
             public string name { get; set; }
             public string MBNO { get; set; }
@@ -996,7 +997,6 @@ namespace FirstBlazorApp.Models
             public string PREFIX { get; set; }
             public string name1 { get; set; }
             public string sname1 { get; set; }
-            public int? id { get; set; }
             public int? idtpmap { get; set; }
         }
         public class survey_b3
@@ -1449,7 +1449,6 @@ namespace FirstBlazorApp.Models
         }
         public class survey_profile
         {
-            [IndexDbKey(AutoIncrement = true)]
             public string HC { get; set; }
             public string survey_year { get; set; }
             public string survey_no { get; set; }
@@ -1472,6 +1471,7 @@ namespace FirstBlazorApp.Models
             public string lng { get; set; }
             public string photo { get; set; }
             public string PERSON { get; set; }
+            [IndexDbKey(AutoIncrement = true)]
             public int? id { get; set; }
             public int? last_edit { get; set; }
             public int? create_time { get; set; }
@@ -1520,10 +1520,10 @@ namespace FirstBlazorApp.Models
         public class tasaban
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string JUN { get; set; }
             public string AMP { get; set; }
             public string name { get; set; }
-            public int? id { get; set; }
             public int? level { get; set; }
         }
         public class tpmap
@@ -1553,4 +1553,4 @@ namespace FirstBlazorApp.Models
         }
 
     }
-}
+
