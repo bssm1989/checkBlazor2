@@ -1,0 +1,221 @@
+﻿@page "/surveya3"
+@inject Models.EmployeeContext DBContext
+
+@using FirstBlazorApp.Models
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<form name='surway' method='POST' action='surveya3_add.php'>
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label for="firstName"><b>ตอนที่ 1 ข้อมูลสมาชิกในครัวเรือน (ทุนมนุษย์) (3/5)  (หน้าที่ 4/20)</b></label>
+		<label for="firstName">จำนวนเงินสวัสดิการให้ระบุจำนวนเงิน และความถี่ เช่น  กรณีผู้สูงอายุ 600 บาท ทุกเดือน   หรือ กรณีเงินเยียวยาจากโควิด 15,000 บาท  ครั้งเดียว</label>
+	</div>
+</div>
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+		<div class="col-lg-12">
+		<label><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC>?*@</font></b></label>
+	</div>
+</div>
+@*<?php
+$mysqli=mcon($mysql["host"], $mysql["user"], $mysql["pass"], $mysql["dbname"],$mysql["charset"]);
+$HC=$_SESSION["HC"];
+$query="select HHM,PP from survey_profile where HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
+$result=$mysqli->query($query);
+$row=$result->fetch_object();
+$count=$row->HHM+$row->PP;
+
+$query1="select a1,a2,a9,a10,a11,a12,a13 from survey_a1 where HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no' order by convert(a1,integer)";
+$result1=$mysqli->query($query1);
+$i=1;
+while($row1=$result1->fetch_object()){
+>?*@
+	<input type='hidden' name='a1[@*<?php echo$i>?*@]' value='@*<?php echo$row1->a1>?*@'>
+	<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+	<label for="firstName"><b>@*<?php echo$i;>?*@. @*<?php echo$row1->a2>?*@</b></label>
+
+	<div class="col-lg-12  mb-3">
+		<label for="firstName">9. อ่านภาษาไทย (A9)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('a91[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a92[@*<?php echo$i>?*@]').checked=false;
+				">
+		<div class="custom-control custom-radio">
+				<input id="a92[@*<?php echo$i>?*@]" name="a9[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='0' @*<?php if($row1->a9=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a92[@*<?php echo$i>?*@]"> 0) ไม่ได้</label>
+		</div>
+
+		<div class="custom-control custom-radio">
+				<input id="a91[@*<?php echo$i>?*@]" name="a9[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='1' @*<?php if($row1->a9=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a91[@*<?php echo$i>?*@]"> 1) ได้ </label>
+		</div>
+	</div>
+
+	<div class="col-lg-12  mb-3">
+		<label for="firstName">10. เขียนภาษาไทย (A10)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('a101[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a102[@*<?php echo$i>?*@]').checked=false;
+				">
+		<div class="custom-control custom-radio">
+				<input id="a102[@*<?php echo$i>?*@]" name="a10[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='0' @*<?php if($row1->a10=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a102[@*<?php echo$i>?*@]"> 0) ไม่ได้</label>
+		</div>
+
+		<div class="custom-control custom-radio">
+				<input id="a101[@*<?php echo$i>?*@]" name="a10[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='1' @*<?php if($row1->a10=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a101[@*<?php echo$i>?*@]"> 1) ได้ </label>
+		</div>
+	</div>
+
+	<div class="col-lg-12  mb-3">
+		<label for="firstName">11. การศึกษาสูงสุด (A11)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('a110[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a111[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a112[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a113[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a114[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a115[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a116[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a117[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a118[@*<?php echo$i>?*@]').checked=false;
+				">
+		<div class="custom-control custom-radio">
+				<input id="a110[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='0' @*<?php if($row1->a11=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a110[@*<?php echo$i>?*@]"> 0) ไม่ได้เรียน  </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a111[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='1' @*<?php if($row1->a11=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a111[@*<?php echo$i>?*@]"> 1) ต่ำกว่าประถม</label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a112[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='2' @*<?php if($row1->a11=='2'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a112[@*<?php echo$i>?*@]"> 2) ประถมศึกษา  </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a113[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='3' @*<?php if($row1->a11=='3'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a113[@*<?php echo$i>?*@]"> 3) มัธยมศึกษาตอนต้น</label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a114[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='4' @*<?php if($row1->a11=='4'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a114[@*<?php echo$i>?*@]"> 4) มัธยมศึกษาตอนปลายหรือเทียบเท่า </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a115[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='5' @*<?php if($row1->a11=='5'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a115[@*<?php echo$i>?*@]"> 5) ปวช./ประกาศนียบัตร </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a116[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='6' @*<?php if($row1->a11=='6'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a116[@*<?php echo$i>?*@]"> 6) ปวส./อนุปริญญา </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a117[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='7' @*<?php if($row1->a11=='7'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a117[@*<?php echo$i>?*@]"> 7) ป.ตรี หรือเทียบเท่า </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a118[@*<?php echo$i>?*@]" name="a11[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='8' @*<?php if($row1->a11=='8'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a118[@*<?php echo$i>?*@]"> 8) สูงกว่าปริญญาตรี  </label>
+		</div>
+	</div>
+
+	<div class="col-lg-12  mb-3">
+		<label for="firstName">12. กำลังศึกษาระดับ (A12)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('a120[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a121[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a122[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a123[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a124[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a125[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a126[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a127[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a128[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a129[@*<?php echo$i>?*@]').checked=false;
+				">
+		<div class="custom-control custom-radio">
+				<input id="a120[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='0' @*<?php if($row1->a12=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a120[@*<?php echo$i>?*@]"> 0) ไม่ได้เรียน  </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a121[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='1' @*<?php if($row1->a12=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a121[@*<?php echo$i>?*@]"> 1) ต่ำกว่าประถม</label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a122[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='2' @*<?php if($row1->a12=='2'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a122[@*<?php echo$i>?*@]"> 2) ประถมศึกษา  </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a123[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='3' @*<?php if($row1->a12=='3'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a123[@*<?php echo$i>?*@]"> 3) มัธยมศึกษาตอนต้น</label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a124[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='4' @*<?php if($row1->a12=='4'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a124[@*<?php echo$i>?*@]"> 4) มัธยมศึกษาตอนปลายหรือเทียบเท่า </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a125[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='5' @*<?php if($row1->a12=='5'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a125[@*<?php echo$i>?*@]"> 5) ปวช./ประกาศนียบัตร </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a126[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='6' @*<?php if($row1->a12=='6'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a126[@*<?php echo$i>?*@]"> 6) ปวส./อนุปริญญา </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a127[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='7' @*<?php if($row1->a12=='7'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a127[@*<?php echo$i>?*@]"> 7) ป.ตรี หรือเทียบเท่า </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a128[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='8' @*<?php if($row1->a12=='8'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a128[@*<?php echo$i>?*@]"> 8) สูงกว่าปริญญาตรี  </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a129[@*<?php echo$i>?*@]" name="a12[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='9' @*<?php if($row1->a12=='9'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a129[@*<?php echo$i>?*@]"> 9) เรียนสายศาสนา (อัลกรุอ่าน/กีตาบ)  </label>
+		</div>
+	</div>
+
+	<div class="col-lg-12  mb-3">
+		<label for="firstName">13. สถานภาพการศึกษา (A13)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('a131[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a132[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a133[@*<?php echo$i>?*@]').checked=false;
+						document.getElementById('a134[@*<?php echo$i>?*@]').checked=false;
+				">
+		<div class="custom-control custom-radio">
+				<input id="a131[@*<?php echo$i>?*@]" name="a13[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='0' @*<?php if($row1->a13=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a131[@*<?php echo$i>?*@]"> 0) ไม่ได้เรียน (เรียนจบแล้วไม่เรียนต่อ) </label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a132[@*<?php echo$i>?*@]" name="a13[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='1' @*<?php if($row1->a13=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a132[@*<?php echo$i>?*@]"> 1) ไปเรียนสม่ำเสมอ</label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a134[@*<?php echo$i>?*@]" name="a13[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='2' @*<?php if($row1->a13=='2'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a134[@*<?php echo$i>?*@]"> 2) หยุดเรียนเป็นระยะ ๆ</label>
+		</div>
+		<div class="custom-control custom-radio">
+				<input id="a133[@*<?php echo$i>?*@]" name="a13[@*<?php echo$i>?*@]" type="radio" class="custom-control-input" value='3' @*<?php if($row1->a13=='3'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="a133[@*<?php echo$i>?*@]"> 3) ออกกลางคัน (Dropout) </label>
+		</div>
+	</div>
+
+	</div>
+</div>
+@*<?php
+	$i++;
+}
+$mysqli->close();
+include('button.php');
+>?*@
+</form>

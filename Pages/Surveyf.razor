@@ -1,0 +1,83 @@
+﻿@page "/surveyf"
+@inject Models.EmployeeContext DBContext
+
+@using FirstBlazorApp.Models
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+@*@*<?php
+session_start();
+//phpinfo();
+if(!$_SESSION["HC"]){
+>?*@
+@*<script>
+location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
+</script>*@
+@*@*<?php
+	exit();
+}
+$mysqli=mcon($mysql["host"], $mysql["user"], $mysql["pass"], $mysql["dbname"],$mysql["charset"]);
+
+$HC=$_SESSION["HC"];
+$query="select comment1,comment2,r1,r2,r3,r4,r5,r6,r7,r8,r9 from survey_f1 where HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
+$result=$mysqli->query($query);
+$row1=$result->fetch_object();
+>?*@
+@*<script>
+function check_ok(obj){
+	if(confirm('ท่านต้องการบันทึกการตรวจสอบหรือไม่ \n เมื่อบันทึกแล้วจะทำผู้สำรวจไม่สามารถแก้ไขข้อมูลครัวเรือนได้')){
+		obj.action='survey_check2.php'
+		obj.submit();
+	}
+}
+</script>*@
+<form name='surway' method='POST' action='surveyef_add.php'>
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12">
+		<label for="firstName">ข้อเสนอแนะ (หน้าที่ 20/20)</label>
+	</div>
+</div>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+		<div class="col-lg-12">
+		<label><b><font size='6' color='red'>HC : @*@*<?php $HC=$_SESSION["HC"];echo$HC>?*@</font></b></label>
+	</div>
+</div>
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label for="firstName">ข้อเสนอแนะจากเจ้าของบ้านต่อผู้ว่าราชการจังหวัด/หน่วยงานราชการ</label>
+		<textarea name='comment1' class="form-control">@*@*<?php echo$row1->comment1;>?*@</textarea>
+	</div>
+</div>
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12 mb-3">
+		<label for="firstName">ข้อเสนอแนะจากอาสาสมัครต่อการสำรวจ</label>
+		<textarea name='comment2' class="form-control">@*@*<?php echo$row1->comment2;>?*@</textarea>
+	</div>
+</div>
+
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12 mb-3">
+		<label for="firstName">ท่านได้ข้อมูลครัวเรือนนี้มาจากแหล่งข้อมูลใด?</label>
+		<br><input type='checkbox' name='r1' value='1' @*@*<?php if($row1->r1==1){echo"checked";}>?*@> จปฐ.
+		<br><input type='checkbox' name='r2' value='2' @*@*<?php if($row1->r2==2){echo"checked";}>?*@> กชช.2ค.
+		<br><input type='checkbox' name='r3' value='3' @*@*<?php if($row1->r3==3){echo"checked";}>?*@> TPMAP
+		<br><input type='checkbox' name='r4' value='4' @*@*<?php if($row1->r4==4){echo"checked";}>?*@> พมจ.
+		<br><input type='checkbox' name='r5' value='5' @*@*<?php if($row1->r5==5){echo"checked";}>?*@> พอช.
+		<br><input type='checkbox' name='r6' value='6' @*@*<?php if($row1->r6==6){echo"checked";}>?*@> อสม./อาสาสมัครเก็บข้อมูล
+		<br><input type='checkbox' name='r7' value='7' @*@*<?php if($row1->r7==7){echo"checked";}>?*@> อบต./อบท.
+		<br><input type='checkbox' name='r8' value='8' @*@*<?php if($row1->r8==8){echo"checked";}>?*@> ชาวบ้าน
+		<br><input type='checkbox' name='r9' value='9' @*@*<?php if($row1->r9==9){echo"checked";}>?*@> อื่นๆ
+	</div>
+</div>
+@*@*<?php
+	$mysqli->close()
+>?*@
+@*@*<?php
+	$mysqli->close();
+include('button2.php');
+if($_SESSION["survey_check"]){echo"<input type='button' value='ตรวจสอบเรียบร้อย' onclick='check_ok(this.form)'>";}
+>?*@
+</form>

@@ -1,0 +1,476 @@
+﻿@page "/surveyb1"
+@inject Models.EmployeeContext DBContext
+
+@using FirstBlazorApp.Models
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+@*<?php
+session_start();
+//phpinfo();
+if(!$_SESSION["HC"]){
+>?*@
+@*<script>
+location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
+</script>*@
+@*<?php
+	exit();
+}
+
+$mysqli=mcon($mysql["host"], $mysql["user"], $mysql["pass"], $mysql["dbname"],$mysql["charset"]);
+
+$HC=$_SESSION["HC"];
+$query="select b1_1,b1_2,b2,b2_2,b2_3,b2_4_1,b2_4_1_1,b2_4_1_2,b2_4_1_3,b2_4_2,b2_4_2_1,b2_4_2_2,b2_4_2_3,b2_4_3,b2_4_3_1,b2_4_3_2,b2_4_3_3,b2_4_4,b2_4_4_1,b2_4_4_2,b2_4_4_3,b3,b4_1,b4_2,b4_3,b4_4,b5_1,b5_2,b6_1,b6_2,b6_3,b7_1,b7_1_1
+,b7_2
+,b7_2_1
+,b7_2_1_1
+,b7_2_2
+,b7_2_2_1
+
+,b7_3
+,b7_3_1
+,b7_3_1_1
+,b7_3_2
+,b7_3_2_1
+
+from survey_b1 where HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
+$result=$mysqli->query($query);
+$row1=$result->fetch_object();
+
+$query_up="select ch2_st from survey_staff where  HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
+$result_up=$mysqli->query($query_up);
+$row_up=$result_up->fetch_object();
+
+if($row_up->ch2_st==0){
+	$query_up1="update survey_staff set ch2_st='".date("U")."' where  HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
+	$result_up1=$mysqli->query($query_up1);
+}
+
+>?*@
+<form name='survey' method='POST' action='surveyb1_add.php'>
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+		<div class="col-lg-12 mb-3">
+			<b>ตอนที่ 2 ข้อมูลด้านกายภาพและสาธารณูปโภคสาธารณูปการ (ทุนกายภาพ) (1/4)  (หน้าที่ 7/20)</b>
+	</div>
+</div>
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+		<div class="col-lg-12">
+		<label><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC>?*@</font></b></label>
+	</div>
+</div>
+<br>
+
+
+
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label>1. ให้ระบบ pin location ของบ้านด้วย GIS (B1)</label><br>
+		<label>ละติจูด (latitude)</label><input type='text' name='b1_1' id="latlng1" value='@*<?php echo $row1->b1_1>?*@' class="form-control" onkeypress='if (event.keyCode != 46){if( event.keyCode < 48 || event.keyCode > 57 ){event.returnValue = false}}'>
+		<label>ลองจิจูด (longitude)</label><input type='text' name='b1_2' id="latlng2" value='@*<?php echo $row1->b1_2>?*@' class="form-control" onkeypress='if (event.keyCode != 46){if( event.keyCode < 48 || event.keyCode > 57 ){event.returnValue = false}}'>
+		<input type='button' value='Update ตำแหน่ง ปัจจุบัน' class="form-control" onclick="update_location('@*<?php echo$HC>?*@',this.form.b1_1.value,this.form.b1_2.value)" style='background-color: #FFA0A0;'>
+	</div>
+</div>
+@*<script>
+function update_location(hc,b1_1,b1_2){
+	if(confirm('ท่านต้องการบันทึกตำแหน่งบ้านใหม่ ใช่หรือไม่')){
+		var script = document.createElement('script');
+		script.src = 'update_location.php?hc='+hc+"&b1_1="+b1_1+"&b1_2="+b1_2+"&table=b"
+		document.head.appendChild(script);
+//		obj.next.value=0
+//		obj.submit();
+	}
+}
+</script>*@
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label>2. ท่านและสมาชิกในครัวเรือนมีบ้านเป็นของตนเองหรือไม่ (B2)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b21').checked=false;
+						document.getElementById('b22').checked=false;
+						document.getElementById('b23').checked=false;
+						document.getElementById('b24').checked=false;
+				">
+		<div class="custom-control custom-radio">
+			<input id="b21" name="b2" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b2=='1'){echo"checked";}>?*@ required>
+			<label class="custom-control-label" for="b21">1) อาศัยอยู่กับผู้อื่น  </label>
+		</div>
+		<div class="custom-control custom-radio">
+			<input id="b22" name="b2" type="radio" class="custom-control-input" value='2' @*<?php if($row1->b2=='2'){echo"checked";}>?*@>
+			<label class="custom-control-label" for="b22">2) เช่าบ้านอยู่ ค่าเช่า</label>
+			<input type='text' name='b2_2' placeholder='--บาท/เดือน--'  class="form-control" value='@*<?php echo$row1->b2_2>?*@'>
+		</div>
+		<div class="custom-control custom-radio">
+			<input id="b23" name="b2" type="radio" class="custom-control-input" value='3' @*<?php if($row1->b2=='3'){echo"checked";}>?*@>
+			<label class="custom-control-label" for="b23">3) ปลูกบ้านในที่ดินผู้อื่น เช่น ญาติ ที่ดินสาธารณะ หน่วยงานภาครัฐ เอกชน ศาสนสถาน เป็นต้น มีค่าเช่า</label>
+			<input type='text' name='b2_3' placeholder='--บาท/เดือน--'  class="form-control" value='@*<?php echo$row1->b2_3>?*@'>
+		</div>
+		<div class="custom-control custom-radio">
+			<input id="b24" name="b2" type="radio" class="custom-control-input" value='4' @*<?php if($row1->b2=='4'){echo"checked";}>?*@ required>
+			<label class="custom-control-label" for="b24">4) มีบ้านและที่ดินเป็นของตนเอง </label>
+		</div>
+
+		<div class="custom-control custom-checkbox">
+			&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' value='1' name='b2_4_1' id='b2_4_1'@*<?php if($row1->b2_4_1=='1'){echo"checked";}>?*@ class="custom-control-input">
+			<label class="custom-control-label" for="b2_4_1">บ้านไม่ติดจำนองหรือค้ำประกัน  </label><br>
+			<div class="col-lg-12  mb-3">
+				<label>พื้นที่</label><br>
+				<label>ไร่</label>
+				<input type='text' name='b2_4_1_1' value='@*<?php echo$row1->b2_4_1_1;>?*@' class="form-control" placeholder="ไร่">
+				<label>งาน</label>
+				<input type='text' name='b2_4_1_2' value='@*<?php echo$row1->b2_4_1_2;>?*@' class="form-control" placeholder="งาน">
+				<label>ตารางวา</label>
+				<input type='text' name='b2_4_1_3' value='@*<?php echo$row1->b2_4_1_3;>?*@' class="form-control" placeholder="ตารางวา">
+			</div>
+		</div>
+
+		<div class="custom-control custom-checkbox">
+			&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' value='2' name='b2_4_2' id='b2_4_2'@*<?php if($row1->b2_4_2=='2'){echo"checked";}>?*@ class="custom-control-input">
+			<label class="custom-control-label" for="b2_4_2">  บ้านติดจำนองหรือค้ำประกันกับสถาบันการเงิน ธนาคาร   </label>
+			<div class="col-lg-12  mb-3">
+				<label>พื้นที่</label><br>
+				<label>ไร่</label>
+				<input type='text' name='b2_4_2_1'  value='@*<?php echo$row1->b2_4_2_1;>?*@' class="form-control" placeholder="ไร่">
+				<label>งาน</label>
+				<input type='text' name='b2_4_2_2'  value='@*<?php echo$row1->b2_4_2_2;>?*@' class="form-control" placeholder="งาน">
+				<label>ตารางวา</label>
+				<input type='text' name='b2_4_2_3'  value='@*<?php echo$row1->b2_4_2_3;>?*@' class="form-control" placeholder="ตารางวา">
+				<label>ตารางวา</label>
+				<!--input type='text' name='b2_4_2_4'  value='@*<?php echo$row1->b2_4_2_4;>?*@' class="form-control" placeholder="ตารางวา"-->
+			</div>
+		</div>
+
+		<div class="custom-control custom-checkbox">
+			&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' value='3' name='b2_4_3' id='b2_4_3'@*<?php if($row1->b2_4_3=='3'){echo"checked";}>?*@ class="custom-control-input">
+			<label class="custom-control-label" for="b2_4_3">  บ้านติดจำนองหรือค้ำประกันกับเจ้าหนี้นอกระบบ   </label>
+			<div class="col-lg-12  mb-3">
+				<label>พื้นที่</label><br>
+				<label>ไร่</label>
+				<input type='text' name='b2_4_3_1'  value='@*<?php echo$row1->b2_4_3_1;>?*@' class="form-control" placeholder="ไร่">
+				<label>งาน</label>
+				<input type='text' name='b2_4_3_2'  value='@*<?php echo$row1->b2_4_3_2;>?*@' class="form-control" placeholder="งาน">
+				<label>ตารางวา</label>
+				<input type='text' name='b2_4_3_3'  value='@*<?php echo$row1->b2_4_3_3;>?*@' class="form-control" placeholder="ตารางวา">
+			</div>
+		</div>
+
+		<div class="custom-control custom-checkbox">
+			&nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' value='4' name='b2_4_4' id='b2_4_4'@*<?php if($row1->b2_4_5=='4'){echo"checked";}>?*@ class="custom-control-input">
+			<label class="custom-control-label" for="b2_4_4">  บ้านและที่ดินที่ไม่มีเอกสารสิทธิ์ตามกฎหมาย   </label>
+			<div class="col-lg-12  mb-3">
+				<label>พื้นที่</label><br>
+				<label>ไร่</label>
+				<input type='text' name='b2_4_4_1'  value='@*<?php echo$row1->b2_4_4_1;>?*@' class="form-control" placeholder="ไร่">
+				<label>งาน</label>
+				<input type='text' name='b2_4_4_2'  value='@*<?php echo$row1->b2_4_4_2;>?*@' class="form-control" placeholder="งาน">
+				<label>ตารางวา</label>
+				<input type='text' name='b2_4_4_3'  value='@*<?php echo$row1->b2_4_4_3;>?*@' class="form-control" placeholder="ตารางวา">
+			</div>
+		</div>
+	</div>
+</div>
+
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label>3. สภาพของบ้านที่อาศัยอยู่ในปัจจุบันเป็นอย่างไร (B3)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b31').checked=false;
+						document.getElementById('b32').checked=false;
+						document.getElementById('b33').checked=false;
+				">
+		<div class="custom-control custom-radio">
+			<input id="b31" name="b3" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b3=='1'){echo"checked";}>?*@ required>
+			<label class="custom-control-label" for="b31">1) สภาพทรุดโทรม หรือวัสดุก่อสร้างบ้านไม่ถาวร เช่น ไม้ไผ่ แผ่นไม้อัด มุงจาก มุงหญ้าคา  </label>
+		</div>
+
+		<div class="custom-control custom-radio">
+			<input id="b32" name="b3" type="radio" class="custom-control-input" value='2' @*<?php if($row1->b3=='2'){echo"checked";}>?*@ required>
+			<label class="custom-control-label" for="b32">2) บ้านไม้หรือตึก หลังคามุงกระเบื้องหรือสังกะสี ที่มีสภาพแข็งแรงปานกลาง  </label>
+		</div>
+
+		<div class="custom-control custom-radio">
+			<input id="b33" name="b3" type="radio" class="custom-control-input" value='3' @*<?php if($row1->b3=='3'){echo"checked";}>?*@ required>
+			<label class="custom-control-label" for="b33">3) บ้านอาคารไม้/ตึกที่มีสภาพมั่นคงแข็งแรง  </label>
+		</div>
+	</div>
+</div>
+
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label>4. ความเป็นระเบียบเรียบร้อย และถูกสุขลักษณะของบ้านพักอาศัย (ใช้การสังเกต) (B4)</label>
+
+		<div class="col-lg-12  mb-3">
+			<label>4.1 บ้านพักอาศัย<b><u>มี</u></b>การจัดเก็บสิ่งของเป็นระเบียบ<b><u>ไม่รกรุงรัง</u></b> </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b4_11').checked=false;
+						document.getElementById('b4_12').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b4_11" name="b4_1" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b4_1=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b4_11"> 1) ใช่ (ไม่รก)</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b4_12" name="b4_1" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b4_1=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b4_12"> 0) ไม่ใช่ (รก)</label>
+			</div>
+		</div>
+
+		<div class="col-lg-12  mb-3">
+			<label>4.2 บ้านพักอาศัย<b><u>มี</u></b>การจัดการ<b><u>ระบบระบายน้ำ</u></b>ในบ้าน </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b4_21').checked=false;
+						document.getElementById('b4_22').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b4_21" name="b4_2" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b4_2=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b4_21"> 1) ใช่ (มี)</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b4_22" name="b4_2" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b4_2=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b4_22"> 0) ไม่ใช่ (ไม่มี)</label>
+			</div>
+		</div>
+
+		<div class="col-lg-12  mb-3">
+			<label>4.3 บ้านพักอาศัย<b><u>มี</u></b>ห้องส้วมที่<b><u>สะอาด</u></b> แข็งแรง ระบายน้ำดี<b><u>ไม่มีกลิ่นเหม็น</u></b>  </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b4_31').checked=false;
+						document.getElementById('b4_32').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b4_31" name="b4_3" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b4_3=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b4_31"> 1) ใช่</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b4_32" name="b4_3" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b4_3=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b4_32"> 0) ไม่ใช่</label>
+			</div>
+		</div>
+
+		<div class="col-lg-12  mb-3">
+			<label>4.4 บ้านพักอาศัย<b><u>มี</u></b>การคัดแยกขยะและกำหนด<b><u>จุด</u></b>ทิ้งขยะ<b><u>ชัดเจน</u></b> </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b4_41').checked=false;
+						document.getElementById('b4_42').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b4_41" name="b4_4" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b4_4=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b4_41"> 1) ใช่ (มี)</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b4_42" name="b4_4" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b4_4=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b4_42"> 0) ไม่ใช่ (ไม่มี)</label>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label>5. การใช้ไฟฟ้าหรือพลังงานทางเลือก (B5)</label>
+		<div class="col-lg-12  mb-3">
+			<label>5.1 ครัวเรือนของท่านมีไฟฟ้าใช้หรือไม่  </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b5_11').checked=false;
+						document.getElementById('b5_12').checked=false;
+						document.getElementById('b5_13').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b5_11" name="b5_1" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b5_1=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b5_11">1) ไม่มี (เช่น เทียน ตะเกียง)</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b5_12" name="b5_1" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b5_1=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b5_12">2) ต่อพ่วงไฟฟ้าจากคนอื่น (ไม่มีมิเตอร์ไฟฟ้าของตนเอง)</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b5_13" name="b5_1" type="radio" class="custom-control-input" value='2' @*<?php if($row1->b5_1=='2'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b5_13">3) มีมิเตอร์ของตนเอง</label>
+			</div>
+		</div>
+
+		<div class="col-lg-12  mb-3">
+			<label>5.2 ครัวเรือนของท่านได้ใช้พลังงานทางเลือกหรือไม่ (เช่น พลังงานแสงอาทิตย์ พลังงานน้ำ พลังงานลม เครื่องปั่นไฟ แก๊สชีวภาพ แก๊สชีวมวล เป็นต้น)  </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b5_21').checked=false;
+						document.getElementById('b5_22').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b5_21" name="b5_2" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b5_2=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b5_21"> 1) ใช้</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b5_22" name="b5_2" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b5_2=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b5_22"> 2) ไม่ใช้</label>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label>6. น้ำในการอุปโภคบริโภคของครัวเรือนท่านมาจากแหล่งใด (ตอบได้มากกว่า 1 ข้อ) </label>
+
+		<div class="col-lg-12  mb-3">
+			<label>6.1 น้ำจากระบบประปา (นครหลวง, ภูมิภาค, ชุมชน, ต่อพ่วงคนอื่น) </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b6_11').checked=false;
+						document.getElementById('b6_12').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b6_11" name="b6_1" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b6_1=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b6_11"> 1) ใช้</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b6_12" name="b6_1" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b6_1=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b6_12"> 0) ไม่ใช้</label>
+			</div>
+		</div>
+
+		<div class="col-lg-12  mb-3">
+			<label>6.2 น้ำจากแหล่งน้ำต่างๆ (เช่น น้ำบ่อ น้ำห้วย บาดาล อ่างเก็บน้ำ น้ำฝน) </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b6_21').checked=false;
+						document.getElementById('b6_22').checked=false;
+						document.getElementById('b6_23').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b6_21" name="b6_2" type="radio" class="custom-control-input" value='2' @*<?php if($row1->b6_2=='2'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b6_21"> 2) เพียงพอตลอดปี</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b6_22" name="b6_2" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b6_2=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b6_22"> 1) ไม่เพียงพอ</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b6_23" name="b6_2" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b6_2=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b6_23"> 0) ไม่ใช้</label>
+			</div>
+		</div>
+
+		<div class="col-lg-12  mb-3">
+			<label>6.3 ซื้อน้ำ (น้ำถัง น้ำขวด ตู้กดน้ำดื่ม) </label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b6_31').checked=false;
+						document.getElementById('b6_32').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b6_31" name="b6_3" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b6_3=='1'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b6_31"> 1) ชื้อ</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b6_32" name="b6_3" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b6_3=='0'){echo"checked";}>?*@ required>
+				<label class="custom-control-label" for="b6_32"> 2) ไม่ชื้อ</label>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<br>
+<div class="row" style='border-style: dotted;border-width: 1px'>
+	<div class="col-lg-12  mb-3">
+		<label>7. ครัวเรือนของท่านมีอุปกรณ์สารสนเทศหรือไม่ (โทรศัพท์บ้าน โทรศัพท์มือถือ เครื่องคอมพิวเตอร์ และสัญญาณอินเตอร์เน็ต) (B7)</label>
+		<div class="col-lg-12  mb-3">
+			<label>7.1 โทรศัพท์บ้าน (B7.1)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b7_11').checked=false;
+						document.getElementById('b7_12').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b7_11" name="b7_1" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b7_1=='0'){echo"checked";}>?*@ >
+				<label class="custom-control-label" for="b7_11"> 0) ไม่มี</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b7_12" name="b7_1" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b7_1=='1'){echo"checked";}>?*@ >
+				<label class="custom-control-label" for="b7_12"> 1) มีโทรศัพท์บ้าน จำนวน</label>
+				<input type='text' name='b7_1_1' @*<?php if($row1->b7_2=='2'){echo"value='$row1->b7_1_1'";}>?*@ placeholder="เครื่อง" class="form-control">
+			</div>
+		</div>
+
+		<div class="col-lg-12  mb-3">
+			<label>7.2 โทรศัพท์มือถือ (B7.2)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b7_21').checked=false;
+						document.getElementById('b7_22').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b7_21" name="b7_2" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b7_2=='0'){echo"checked";}>?*@ >
+				<label class="custom-control-label" for="b7_21"> 0) ไม่มี</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b7_22" name="b7_2" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b7_2 > 0){echo"checked";}>?*@ >
+				<label class="custom-control-label" for="b7_22"> 1) มี</label>
+			</div>
+			<div class="col-lg-12  mb-3">
+				<div class="custom-control custom-checkbox">
+					<input id="b7_2_1" name="b7_2_1" type="checkbox" class="custom-control-input" value='1' @*<?php if($row1->b7_2_1=='1'){echo"checked";}>?*@ >
+					<label class="custom-control-label" for="b7_2_1"> 1) มีโทรศัพท์มือถือแต่ไม่มีอินเตอร์เน็ต จำนวน </label>
+					<input type='text' name='b7_2_1_1' value='@*<?php echo$row1->b7_2_1_1;>?*@' placeholder="เครื่อง" class="form-control">
+				</div>
+				<div class="custom-control custom-checkbox">
+					<input id="b7_2_2" name="b7_2_2" type="checkbox" class="custom-control-input" value='2' @*<?php if($row1->b7_2_2=='2'){echo"checked";}>?*@ >
+					<label class="custom-control-label" for="b7_2_2"> 2) มีโทรศัพท์มือถือและมีอินเตอร์เน็ต จำนวน </label>
+					<input type='text' name='b7_2_2_1' value='@*<?php echo$row1->b7_2_2_1;>?*@' placeholder="เครื่อง" class="form-control">
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-12  mb-3">
+			<label>7.3 เครื่องคอมพิวเตอร์ (B7.3)</label>
+				<input type='button' value='reset' 
+					onclick="
+						document.getElementById('b7_31').checked=false;
+						document.getElementById('b7_32').checked=false;
+				">
+			<div class="custom-control custom-radio">
+				<input id="b7_31" name="b7_3" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b7_3=='0'){echo"checked";}>?*@ >
+				<label class="custom-control-label" for="b7_31"> 0) ไม่มี</label>
+			</div>
+			<div class="custom-control custom-radio">
+				<input id="b7_32" name="b7_3" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b7_3 > 0){echo"checked";}>?*@ >
+				<label class="custom-control-label" for="b7_32"> 1) มี</label>
+			</div>
+
+			<div class="col-lg-12  mb-3">
+				<div class="custom-control custom-checkbox">
+					<input id="b7_3_1" name="b7_3_1" type="checkbox" class="custom-control-input" value='1' @*<?php if($row1->b7_3_1=='1'){echo"checked";}>?*@ >
+					<label class="custom-control-label" for="b7_3_1"> 1) มี แต่ไม่มีอินเตอร์เน็ต จำนวน </label>
+					<input type='text' name='b7_3_1_1' value='@*<?php echo$row1->b7_3_1_1>?*@' placeholder="เครื่อง" class="form-control">
+				</div>
+				<div class="custom-control custom-checkbox">
+					<input id="b7_3_2" name="b7_3_2" type="checkbox" class="custom-control-input" value='2' @*<?php if($row1->b7_3_2=='2'){echo"checked";}>?*@ >
+					<label class="custom-control-label" for="b7_3_2"> 2) มีและมีอินเตอร์เน็ต จำนวน </label>
+					<input type='text' name='b7_3_2_1' value='@*<?php echo$row1->b7_3_2_1>?*@' placeholder="เครื่อง" class="form-control">
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+</form>>
+@*<?php
+	$mysqli->close();
+	include('button.php');
+>?*@
