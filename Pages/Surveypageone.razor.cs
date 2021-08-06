@@ -193,8 +193,8 @@ namespace FirstBlazorApp.Pages
 			
 			int updateStamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 			recordSurveyProfile.JUN = SelectProvinceId;
-			//recordSurveyProfile.AMP = SelectDistrictId;
-		//	recordSurveyProfile.TMP = tambonId;
+			recordSurveyProfile.AMP = SelectDistrictId;
+			recordSurveyProfile.TMP = tambonId;
 			List<survey_profile> GetHC = await DBContext.GetByIndex<string, survey_profile>("survey_profile", recordSurveyProfile.HC, null, "hc", false);
 			if (GetHC.Count != 0)
 			{

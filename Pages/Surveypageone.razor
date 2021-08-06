@@ -46,15 +46,16 @@
 						document.getElementById('AGRI_NO1').checked=false;
 						document.getElementById('AGRI_NO2').checked=false;
 				">
-				<div class="custom-control custom-radio">
-					<input id="AGRI_NO1" name="AGRI_NO1" type="radio" class="custom-control-input" value='0' >
-					<label class="custom-control-label" for="AGRI_NO1">ไม่มี </label>
-				</div>
+					  <MatRadioGroup @bind-Value="@recordSurveyProfile.AGRI" TValue="string">
 			  <div class="custom-control custom-radio">
-					<input id="AGRI_NO2" name="AGRI_NO1" type="radio" class="custom-control-input" value='1' >
-					<label class="custom-control-label" for="AGRI_NO2">มี</label>
+			
+					<MatRadioButton Value="@("0")" Label="ไม่มี" TValue="string"></MatRadioButton>
+					</div>
+			  <div class="custom-control custom-radio">
+					<MatRadioButton Value="@("1")" Label="มี" TValue="string"></MatRadioButton>
 					<input type='text' name='AGRI_NO'  @bind-value="@recordSurveyProfile.AGRI_NO" placeholder='หมายเลขครัวเรือนเกษตรกร' class="form-control">
 				</div>
+				</MatRadioGroup>
 			</div>
 		</div>
 
@@ -153,7 +154,7 @@
 		<br>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
-				<label for="PERSON">ชื่อผู้ให้ข้อมูล</label>
+				<label for="PERSON">ชื่อผู้ให้ข้อมูล: @recordSurveyProfile.PREFIX</label>
 				<input type='button' value='reset' 
 					onclick="
 						document.getElementById('PREFIX1').checked=false;
@@ -161,26 +162,22 @@
 						document.getElementById('PREFIX3').checked=false;
 						document.getElementById('PREFIX4').checked=false;
 				">
-					<InputRadioGroup @bind-Value="@recordSurveyProfile.PREFIX" class="form-control">
-				<div class="custom-control custom-radio">
-					<InputRadio    id="PREFIX1"   class="custom-control-input" Value='1'/>
-					<label class="custom-control-label" for="PREFIX1"> นาย </label>
+					  <MatRadioGroup @bind-Value="@recordSurveyProfile.PREFIX" TValue="string">
+				<div  class="custom-control  custom-radio">
+					<MatRadioButton Value="@("1")" Label="นาย" TValue="string"></MatRadioButton>
+					</div>
+				<div  class="custom-control  custom-radio">
+					<MatRadioButton Value="@("2")" Label="นาง" TValue="string"></MatRadioButton>
 				</div>
-				<div class="custom-control custom-radio">
-					<InputRadio id="PREFIX2" class="custom-control-input" Value='2'/>
-					<label class="custom-control-label" for="PREFIX2"> นาง </label>
+				<div  class="custom-control  custom-radio">
+					<MatRadioButton Value="@("3")" Label="นางสาว" TValue="string"></MatRadioButton>
 				</div>
-				<div class="custom-control custom-radio"  >
-					<InputRadio id="PREFIX3"  class="custom-control-input" Value='3'/>
-					<label class="custom-control-label" for="PREFIX3"> นางสาว </label>
-				</div>
-				<div  class="custom-control custom-radio ">
-					<InputRadio id="PREFIX4"  class="custom-control-input" Value='4'/>
-					
-					<label class="custom-control-label" for="PREFIX4"> อื่น ๆ  </label>
+				<div  class="custom-control  custom-radio">
+					<MatRadioButton Value="@("4")" Label="อื่น ๆ" TValue="string"></MatRadioButton>
 					<input type='text' name='PERSON' @bind-value="@recordSurveyProfile.PERSON"  placeholder="--ชื่อผู้ให้ข้อมูล--" class="form-control">
 				</div>
-						</InputRadioGroup>
+					
+					  </MatRadioGroup>
 			</div>
 		</div>
 
