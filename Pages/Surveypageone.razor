@@ -62,7 +62,7 @@
 		<br>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
-				<label for="state">จังหวัด AMP: @SelectProvinceId <a href='index.php?curr=edit'>เปลี่ยนจังหวัดเริ่มต้น</a></label>
+				<label for="state">จังหวัด<a href='index.php?curr=edit'>เปลี่ยนจังหวัดเริ่มต้น</a></label>
 				   <MatSelect Label="จังหวัด" @bind-Value="@SelectProvinceId" TValue="string"Outlined="true" FullWidth>
 
 		@foreach(var item in provinces1)
@@ -80,7 +80,7 @@
 
 
 			<div class="col-lg-12  mb-3">
-				<label for="country">อำเภอ  item:@districtId  AMP: @SelectDistrictId</label>
+				<label for="country">อำเภอ</label>
 				<MatSelect Label="เลือกอำเภอ"  @bind-Value="@SelectDistrictId" TValue="string"  Outlined="true" FullWidth>
 	   
 	  
@@ -106,7 +106,7 @@
 				<input type="button"  @onclick="@(e => gotoSelAsync())" value="ถัดไป2" />
 
 			<div class="col-lg-12  mb-3">
-				<label for="country">ตำบล @tambonId2 TMP: @SelectTambonId</label>
+				<label for="country">ตำบล </label>
 				<!--input type="text" class="form-control" id="TMP" name="TMP" placeholder="--ตำบล--" value='<?php echo $row1->TMP?>'-->
 		
 				<MatSelect Label="เลือกอำเภอ"  @bind-Value="@SelectTambonId" TValue="string"  Outlined="true" FullWidth>
@@ -154,7 +154,7 @@
 		<br>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
-				<label for="PERSON">ชื่อผู้ให้ข้อมูล: @recordSurveyProfile.PREFIX</label>
+				<label for="PERSON">ชื่อผู้ให้ข้อมูล</label>
 				<input type='button' value='reset' 
 					onclick="
 						document.getElementById('PREFIX1').checked=false;
@@ -163,16 +163,16 @@
 						document.getElementById('PREFIX4').checked=false;
 				">
 					  <MatRadioGroup @bind-Value="@recordSurveyProfile.PREFIX" TValue="string">
-				<div  class="custom-control  custom-radio">
+				<div >
 					<MatRadioButton Value="@("1")" Label="นาย" TValue="string"></MatRadioButton>
 					</div>
-				<div  class="custom-control  custom-radio">
+				<div >
 					<MatRadioButton Value="@("2")" Label="นาง" TValue="string"></MatRadioButton>
 				</div>
-				<div  class="custom-control  custom-radio">
+				<div  >
 					<MatRadioButton Value="@("3")" Label="นางสาว" TValue="string"></MatRadioButton>
 				</div>
-				<div  class="custom-control  custom-radio">
+				<div >
 					<MatRadioButton Value="@("4")" Label="อื่น ๆ" TValue="string"></MatRadioButton>
 					<input type='text' name='PERSON' @bind-value="@recordSurveyProfile.PERSON"  placeholder="--ชื่อผู้ให้ข้อมูล--" class="form-control">
 				</div>

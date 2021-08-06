@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace FirstBlazorApp.Pages
 {
@@ -17,39 +18,76 @@ namespace FirstBlazorApp.Pages
 		[Parameter]
 		public string HC { get; set; }
 		List<survey_a1> recordSurveya1 = new List<survey_a1>();
+		List<bool> checked1 = new List<bool>();
+		List<string> checkedTitle = new List<string>();
+		public MultiSelectList recordDel { get; set; } = null;
 		List<survey_profile> survey_Profiles = new List<survey_profile>();
 		List<survey_a1> survey_A1s = new List<survey_a1>();
+		public class modelSurA1
+		{
+			public survey_a1 survey_A1{ get; set; }
+			public bool del {  get; set; }
+			public string title { get; set; }
+		}
+		List<modelSurA1> listMoSurA1=new List<modelSurA1>();
 		protected override async Task OnInitializedAsync()
 		{
 			await DBContext.OpenIndexedDb();
 			survey_Profiles = await DBContext.GetByIndex<string, survey_profile>("survey_profile", HC, null, "hc", false);
-			if (survey_Profiles != null)
+			if (survey_Profiles.Count >0)
 			{
 				var getAllSurveya1 = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
-				for (int i = 0; i < Convert.ToInt32( survey_Profiles.First().HHM); i++)
+				var surProFirst = survey_Profiles.First();
+				if (getAllSurveya1.Count<Convert.ToInt32(surProFirst.HHM)+Convert.ToInt32(surProFirst.PP))
+				for (int i = getAllSurveya1.Count+1; i <= Convert.ToInt32( surProFirst.HHM) + Convert.ToInt32(surProFirst.PP); i++)
                 {
 
 				var random=DBContext.randomNum();
 				await DBContext.AddItems<survey_a1>("survey_a1", new List<survey_a1>(){
 					new survey_a1()
 					{
-						a1="",HC=survey_Profiles.First().HC,id=random
+						a1="",HC=survey_Profiles.First().HC,id=i,
 					} 
 				});
                 }
 				survey_A1s = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
+				int index = 0;
+				foreach (var item in survey_A1s)
+                {
+					index++;
+					listMoSurA1.Add(new modelSurA1
+					{
+						survey_A1 = item,
+						del = false,
+						title = "ลบ คนที่" + index
+					}); 
+
+                }
 			}
 			//	_ = survey_A1s.in;
 
 			//survey_profile = await DBContext.GetAll<survey_profile>("survey_profile");
 			//provinces1 = await DBContext.GetAll<province>("province");
 		}
+		public async Task delAllsurveyA1()
+		{
+
+			await DBContext.OpenIndexedDb();
+			survey_A1s = await DBContext.GetByIndex<string, survey_a1>("survey_a1", HC, null, "hc", false);
+            foreach (var item in survey_A1s)
+            {
+
+			await DBContext.DeleteByKey<int>("survey_a1",item.id);
+            }
+		}
 		protected async Task HandleValidSubmit(EditContext context)
 		{
 			_ = survey_A1s;
 			//NavigationManager.NavigateTo("index2");
 		}
+
 	}
+	
 }
 /*<?php
 session_start();
