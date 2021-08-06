@@ -126,10 +126,12 @@ namespace FirstBlazorApp.Models
         public DateTime? ServerUpdate { get; set; }
         public string STATUS { get; set; }
         public string User { get; set; }
+
     }
+   
     public class EmployeeContext : IndexedDbInterop
     {
-
+ 
         public EmployeeContext(IJSRuntime jSRuntime, IndexedDbOptions<EmployeeContext> options) : base(jSRuntime, options) { }
         public async Task Add(Employee employee)
         {
@@ -256,7 +258,12 @@ namespace FirstBlazorApp.Models
             var result = this.GetAll<district>("district");
             return (List<district>)result.Result.Where(x => x.province_id == province_id);
         }
-
+        public int randomNum()
+        {
+            Random r = new Random();
+     int num = r.Next();
+            return num;
+        }
         public async Task<List<Employee>> GetAll()
         {
 

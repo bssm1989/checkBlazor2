@@ -1,3 +1,56 @@
+using FirstBlazorApp.Models;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace FirstBlazorApp.Pages
+{
+	public partial class Surveya1 : ComponentBase
+	{
+
+		[Parameter]
+		public string HC { get; set; }
+		List<survey_a1> recordSurveya1 = new List<survey_a1>();
+		List<survey_profile> survey_Profiles = new List<survey_profile>();
+		List<survey_a1> survey_A1s = new List<survey_a1>();
+		protected override async Task OnInitializedAsync()
+		{
+			await DBContext.OpenIndexedDb();
+			survey_Profiles = await DBContext.GetByIndex<string, survey_profile>("survey_profile", HC, null, "hc", false);
+			if (survey_Profiles != null)
+			{
+				var getAllSurveya1 = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
+				for (int i = 0; i < Convert.ToInt32( survey_Profiles.First().HHM); i++)
+                {
+
+				var random=DBContext.randomNum();
+				await DBContext.AddItems<survey_a1>("survey_a1", new List<survey_a1>(){
+					new survey_a1()
+					{
+						a1="",HC=survey_Profiles.First().HC,id=random
+					} 
+				});
+                }
+				survey_A1s = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
+			}
+			//	_ = survey_A1s.in;
+
+			//survey_profile = await DBContext.GetAll<survey_profile>("survey_profile");
+			//provinces1 = await DBContext.GetAll<province>("province");
+		}
+		protected async Task HandleValidSubmit(EditContext context)
+		{
+			_ = survey_A1s;
+			//NavigationManager.NavigateTo("index2");
+		}
+	}
+}
 /*<?php
 session_start();
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE &  ~E_WARNING);

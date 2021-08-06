@@ -653,6 +653,7 @@ namespace FirstBlazorApp.Models
         public class survey_a1
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int id { get; set; }
             public string HC { get; set; }
             public string survey_year { get; set; }
             public string survey_no { get; set; }

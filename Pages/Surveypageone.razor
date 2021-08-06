@@ -1,7 +1,10 @@
 ﻿@page "/surveypageone"
+@page "/surveypageone/{HC}"
+
 @inject Models.EmployeeContext DBContext
 
 @using FirstBlazorApp.Models
+@using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 <h3>Surveypageone</h3>
@@ -20,7 +23,7 @@
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
 				<label for="HC">รหัสบ้าน </label>
-				<input type='text' id="HC" name='HC' @bind-value="@recordSurveyProfile.HC" placeholder="ที่ระบุในทะเบียนบ้าน ขอดูทะเบียนบ้าน"  required >
+				<input type='text' id="HC" name='HC'onkeyup="autoTab(this,3)" onkeypress="autoTab(this,3)" maxlength='13' @bind-value="@recordSurveyProfile.HC" placeholder="ที่ระบุในทะเบียนบ้าน ขอดูทะเบียนบ้าน"  required >
 				<!--<input type='text' id="HC" name='HC' placeholder="ที่ระบุในทะเบียนบ้าน ขอดูทะเบียนบ้าน" onkeyup="autoTab(this,3)" onkeypress="autoTab(this,3)" maxlength='13' onblur="HC_out(this.form)" value='<?php echo$_SESSION['HC']?>' class="form-control" required >-->
 				<label>กรณีไม่สามารถจะขอดูทะเบียนบ้านได้ ให้สร้างรหัสเองได้ โดยใส่ 0 หน้าเลขรหัสจังหวัด 2 หลัก รหัสแบบสอบถาม  8 หลัก  รวมเป็น 11 หลัก</label><br>
 <!--				แล้วตามด้วยการสร้างโคดกันเองแยกเป็นตำบลหรือเลขที่บ้านกันเองได้ โดยไม่ให้มันซ้ำซ้อนกันครับ หรืออาจจะเป็น 0XY แล้วตามด้วยรหัสแบบสอบถามก็ได้นะครับ รหัสแบบสอบถาม 8 หลัก รวมเป็น 11 หลักครับ โดย 0 ตัวหน้าแปลว่า ไม่สามารถป้อนรหัสบ้านได้-->
@@ -58,50 +61,63 @@
 		<br>
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12  mb-3">
-				<label for="state">จังหวัด <a href='index.php?curr=edit'>เปลี่ยนจังหวัดเริ่มต้น</a></label>
-				   <MatSelect Label="จังหวัด2" @bind-Value="@SelectProvinceId" TValue="string"
-Outlined="true" FullWidth>
-	   @if (provinces1 != null)
-	{
+				<label for="state">จังหวัด AMP: @SelectProvinceId <a href='index.php?curr=edit'>เปลี่ยนจังหวัดเริ่มต้น</a></label>
+				   <MatSelect Label="จังหวัด" @bind-Value="@SelectProvinceId" TValue="string"Outlined="true" FullWidth>
+
 		@foreach(var item in provinces1)
 	{
+	
 		<MatOption TValue="string" Value="@item.province_id">@item.province_name_thai</MatOption>
 	}
-	}
+	
+	
 </MatSelect>
 				<div class="invalid-feedback">
-					กรุณาเลือกจังหวัด
+					กรุณาเลือกตำบล
 				</div>
 			</div>
 
+
 			<div class="col-lg-12  mb-3">
-				<label for="country">อำเภอ</label>
+				<label for="country">อำเภอ  item:@districtId  AMP: @SelectDistrictId</label>
 				<MatSelect Label="เลือกอำเภอ"  @bind-Value="@SelectDistrictId" TValue="string"  Outlined="true" FullWidth>
 	   
 	  
 	
 		@foreach(var item in districts)
-	{
-		<MatOption  TValue="String" Value="@item.district_id">@item.district_name_thai</MatOption>
+	{ if(item.district_id==recordSurveyProfile.AMP){
+		districtId=item.district_id;
 	}
+				
+
+						<MatOption  TValue="string" Value="@item.district_id" >@item.district_name_thai</MatOption>
+					
+				}
 	
 </MatSelect>
 				<div class="invalid-feedback">
 
-					กรุณาเลือกอำเภอ
+					กรุณาเลือกอำเภอ 
 				</div>
 			</div>
 
+		
+				<input type="button"  @onclick="@(e => gotoSelAsync())" value="ถัดไป2" />
+
 			<div class="col-lg-12  mb-3">
-				<label for="country">ตำบล</label>
+				<label for="country">ตำบล @tambonId2 TMP: @SelectTambonId</label>
 				<!--input type="text" class="form-control" id="TMP" name="TMP" placeholder="--ตำบล--" value='<?php echo $row1->TMP?>'-->
-				<MatSelect Label="เลือกอำเภอ" @bind-Value="@tambonId"  Outlined="true" FullWidth>
-	  <MatOptionString></MatOptionString>
+		
+				<MatSelect Label="เลือกอำเภอ"  @bind-Value="@SelectTambonId" TValue="string"  Outlined="true" FullWidth>
+	   
+	  
 	
 		@foreach(var item in tambons)
-	{
-		<MatOption TValue="string" Value="@item.tambon_id">@item.tambon_name_thai</MatOption>
-	}
+					{ 
+
+						<MatOption  TValue="string" Value="@item.tambon_id" >@item.tambon_name_thai</MatOption>
+					
+			}
 	
 </MatSelect>
 				<div class="invalid-feedback">
@@ -145,23 +161,26 @@ Outlined="true" FullWidth>
 						document.getElementById('PREFIX3').checked=false;
 						document.getElementById('PREFIX4').checked=false;
 				">
+					<InputRadioGroup @bind-Value="@recordSurveyProfile.PREFIX" class="form-control">
 				<div class="custom-control custom-radio">
-					<input id="PREFIX1" name="PREFIX"   type="radio" class="custom-control-input" value='1'>
+					<InputRadio    id="PREFIX1"   class="custom-control-input" Value='1'/>
 					<label class="custom-control-label" for="PREFIX1"> นาย </label>
 				</div>
 				<div class="custom-control custom-radio">
-					<input id="PREFIX2" name="PREFIX" type="radio" class="custom-control-input"  value='2'>
+					<InputRadio id="PREFIX2" class="custom-control-input" Value='2'/>
 					<label class="custom-control-label" for="PREFIX2"> นาง </label>
 				</div>
-				<div class="custom-control custom-radio">
-					<input id="PREFIX3" name="PREFIX" type="radio" class="custom-control-input"  value='3'>
+				<div class="custom-control custom-radio"  >
+					<InputRadio id="PREFIX3"  class="custom-control-input" Value='3'/>
 					<label class="custom-control-label" for="PREFIX3"> นางสาว </label>
 				</div>
-				<div class="custom-control custom-radio">
-					<input id="PREFIX4" name="PREFIX" type="radio" class="custom-control-input"  value='4'>
+				<div  class="custom-control custom-radio ">
+					<InputRadio id="PREFIX4"  class="custom-control-input" Value='4'/>
+					
 					<label class="custom-control-label" for="PREFIX4"> อื่น ๆ  </label>
-					<input type='text' name='PERSON'  placeholder="--ชื่อผู้ให้ข้อมูล--" class="form-control">
+					<input type='text' name='PERSON' @bind-value="@recordSurveyProfile.PERSON"  placeholder="--ชื่อผู้ให้ข้อมูล--" class="form-control">
 				</div>
+						</InputRadioGroup>
 			</div>
 		</div>
 
@@ -229,7 +248,8 @@ Outlined="true" FullWidth>
 		<div class="row">
 			<div class="col-lg-12  mb-3">
 				<input type='submit' value='บันทึก' >
-				<input type='button' value='ถัดไป' onclick='NextClick(this.form)' >
+				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+
 			</div>
 		</div>
 </EditForm>

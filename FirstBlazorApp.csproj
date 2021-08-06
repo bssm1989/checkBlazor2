@@ -21,6 +21,7 @@
     <PackageReference Include="Radzen.Blazor" Version="3.8.0" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.12" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="System.Threading" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="wwwroot\css\fonts\" />
+    <Folder Include="wwwroot\script\" />
   </ItemGroup>
 
 </Project>

@@ -108,7 +108,7 @@ namespace FirstBlazorApp.Pages
             survey_profile_list = await DBContext.GetAll<survey_profile>("survey_profile");
             employees = await DBContext.GetAll();
         }
-        private string AddResult = string.Empty;
+        
 
     }
 }
