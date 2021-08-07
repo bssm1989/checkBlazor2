@@ -219,6 +219,11 @@ namespace FirstBlazorApp.Pages
 //	$result_up1=$mysqli->query($query_up1);
 //}
 		}
+		private async Task gotoPage(string HC_nextPage)
+		{
+			NavigationManager.NavigateTo("/surveya2/" + HC_nextPage);
+
+		}
 
 	}
 	

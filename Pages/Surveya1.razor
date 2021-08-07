@@ -53,7 +53,7 @@ for($i=1;$i<=$count;$i++){//for($i=1;$i<=$count;$i++){
 <EditForm Model="@survey_A1s" OnValidSubmit="@HandleValidSubmit" >
 @foreach(var item1 in listMoSurA1){
 <b>dddd*</b>
-<MatCheckbox  @bind-Value="@item1.del"  Label="@item1.title" ></MatCheckbox>
+<MatCheckbox  @bind-Value="@item1.del" class="custom-control-input" >hjhjhjh</MatCheckbox>
 }
 
 @foreach(var item in listMoSurA1)
@@ -183,7 +183,7 @@ for($i=1;$i<=$count;$i++){//for($i=1;$i<=$count;$i++){
 <div class="row">
 			<div class="col-lg-12  mb-3">
 				<input type='submit' value='บันทึก' >
-				<input type="button" @* @onclick="@(e => gotoPage(@HC))"*@ value="ถัดไป" />
+				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
 
 			</div>
 		</div>
