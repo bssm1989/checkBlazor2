@@ -58,14 +58,21 @@ namespace FirstBlazorApp.Pages
 
 				
 				var index4 = index.ToString().PadLeft(4, '0');
-				return 1 + "|" + configSurvey.survey_year + "|" + HC + "|" + index4;
+				return configSurvey.survey_no_num + "|" + configSurvey.survey_year + "|" + HC + "|" + index4;
 
 			}
 			public static string HC_random(string hc)
             {
-				var index4 = (1).ToString().PadLeft(4, '0');
+				//var index4 = (1).ToString().PadLeft(4, '0');
 				string hc2 = hc.ToString() + "|" + configSurvey.randomNum();
-				return "1" + "|" + configSurvey.survey_year + "|" + hc2;
+				return configSurvey.survey_no_num + "|" + configSurvey.survey_year + "|" + hc2;
+				//return 1 + "|" + configSurvey.survey_year + "|" + hc + "|" + configSurvey.randomNum;
+
+			}public static string HC_noId(string hc)
+            {
+				//var index4 = (1).ToString().PadLeft(4, '0');
+				string hc2 = hc.ToString() ;
+				return configSurvey.survey_no_num + "|" + configSurvey.survey_year + "|" + hc2;
 				//return 1 + "|" + configSurvey.survey_year + "|" + hc + "|" + configSurvey.randomNum;
 
 			}
@@ -79,6 +86,19 @@ namespace FirstBlazorApp.Pages
             {
 				return   (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 			}
+			public static void commentUplog()
+            {
+				//await DBContext.AddItems<log_file>("log_file", new List<log_file> {
+				//	new log_file {
+				//		id=Convert.ToInt32(configSurvey.randomNum()),
+				//		username= await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name"),
+				//		time1=configSurvey.timestam(),
+				//		detail=detail
+				//		} });
+				
+			}
+
+
         }
 		public string SelectProvinceId
 		{
@@ -260,8 +280,8 @@ namespace FirstBlazorApp.Pages
 
 					new survey_staff
 					{
-						HC =configSurvey.survey_no(HC,num) ,
-						survey_no =configSurvey.survey_no_num ,
+						HC = HC,
+						survey_no =configSurvey.HC_random(HC),
 						survey_year = configSurvey.survey_year
 					}
 
@@ -276,17 +296,18 @@ namespace FirstBlazorApp.Pages
 
 		}
 		public async Task gotoSelAsync()
-		{ 
-		//{
-		//	await DBContext.OpenIndexedDb();
-		//	districts = await DBContext.GetByIndex<int?, district>("district", Convert.ToInt32(recordSurveyProfile.JUN), 0, "province_id", false);
-		//	tambons = await DBContext.GetByIndex<string, tambon>("tambon", "9402", null, "district_id", false);
+		{
+			//{
+			//	await DBContext.OpenIndexedDb();
+			//	districts = await DBContext.GetByIndex<int?, district>("district", Convert.ToInt32(recordSurveyProfile.JUN), 0, "province_id", false);
+			//	tambons = await DBContext.GetByIndex<string, tambon>("tambon", "9402", null, "district_id", false);
 
 			SelectProvinceId = "94";
-		//	//SelectDistrictId = recordSurveyProfile.AMP;
-		recordSurveyProfile.TMP = "940109";
+			//	//SelectDistrictId = recordSurveyProfile.AMP;
+			recordSurveyProfile.TMP = "940109";
 			recordSurveyProfile.AGRI_NO = "sdsdsdsdsdsdsds";
-		//	recordSurveyProfile.AMP = "9603";
+			//	recordSurveyProfile.AMP = "9603";
 		}
+	
 	}
 }
