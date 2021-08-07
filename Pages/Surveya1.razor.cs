@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using static FirstBlazorApp.Pages.Surveypageone;
 
 namespace FirstBlazorApp.Pages
 {
@@ -38,18 +39,65 @@ namespace FirstBlazorApp.Pages
 			{
 				var getAllSurveya1 = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
 				var surProFirst = survey_Profiles.First();
-				if (getAllSurveya1.Count<Convert.ToInt32(surProFirst.HHM)+Convert.ToInt32(surProFirst.PP))
-				for (int i = getAllSurveya1.Count+1; i <= Convert.ToInt32( surProFirst.HHM) + Convert.ToInt32(surProFirst.PP); i++)
-                {
-
-				var random=DBContext.randomNum();
-				await DBContext.AddItems<survey_a1>("survey_a1", new List<survey_a1>(){
-					new survey_a1()
+				if (getAllSurveya1.Count < Convert.ToInt32(surProFirst.HHM) + Convert.ToInt32(surProFirst.PP))
+					for (int i = 1; i <= Convert.ToInt32(surProFirst.HHM) + Convert.ToInt32(surProFirst.PP); i++)
 					{
-						a1="",HC=survey_Profiles.First().HC,id=i,
-					} 
-				});
-                }
+						if (getAllSurveya1.Count != 0)
+						{
+
+							var checkCutList = getAllSurveya1.Where(x=>x.id==i).ToList();
+							if(checkCutList.Count == 0)
+
+                            {
+								await DBContext.AddItems<survey_a1>("survey_a1", new List<survey_a1>(){
+								new survey_a1()
+								{
+
+									HC=survey_Profiles.First().HC,
+									id=i,
+										survey_no =configSurvey.survey_no(HC,i),
+									survey_year = configSurvey.survey_year
+								}
+										});
+								await DBContext.AddItems<survey_a2>("survey_a2",
+								new List<survey_a2>(){
+									new survey_a2()
+											{
+
+												HC=configSurvey.survey_no(HC,i),
+													survey_no =configSurvey.survey_no_num,
+												survey_year = configSurvey.survey_year
+											}
+										});
+							}
+						
+						}
+						else
+						{
+							await DBContext.AddItems<survey_a1>("survey_a1", new List<survey_a1>(){
+									new survey_a1()
+									{
+
+										HC=survey_Profiles.First().HC,
+										id=i,
+											survey_no =configSurvey.survey_no(HC,i),
+										survey_year = configSurvey.survey_year
+									}
+										});
+							await DBContext.AddItems<survey_a2>("survey_a2", 
+								new List<survey_a2>(){
+									new survey_a2()
+											{
+
+												HC=configSurvey.survey_no(HC,i),
+													survey_no =configSurvey.survey_no_num,
+												survey_year = configSurvey.survey_year
+											}
+										});
+						}
+
+					
+					}
 				survey_A1s = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
 				int index = 0;
 				foreach (var item in survey_A1s)
@@ -82,8 +130,94 @@ namespace FirstBlazorApp.Pages
 		}
 		protected async Task HandleValidSubmit(EditContext context)
 		{
-			_ = survey_A1s;
+			await DBContext.OpenIndexedDb();
+			int i = 0;
+			foreach (var item in listMoSurA1)
+			{ i++;
+                if (item.del)
+                {
+				await DBContext.DeleteByKey<string>("survey_a1", item.survey_A1.survey_no);
+				await DBContext.DeleteByKey<string>("survey_a2", item.survey_A1.survey_no);
+
+                }
+                else
+                {
+					await DBContext.UpdateItems<survey_a1>("survey_a1", new List<survey_a1>() { item.survey_A1 });
+					//			$mysqli->//	1		$query1="insert into survey_a1(HC,survey_year,survey_no,a1,a2,popid,a3,a4,a5,a6,a2_b) values('$HC','$survey_year','$survey_no','$a1[$i]','$a2[$i]','$popid[$i]','$a3[$i]','$a4[$i]','$a5[$i]','$a6[$i]','$a2_b[$i]');";
+					//			$mysqli->query($query1);
+					////echo$query1."<br>";
+
+					//		2	$query1="insert into survey_a2(HC,survey_year,survey_no,a1,a5) values('$HC','$survey_year','$survey_no','$a1[$i]','$a5[$i]');";
+					//			$mysqli->query($query1);
+					
+					await DBContext.UpdateItems<survey_a2>("survey_a2", new List<survey_a2>() {
+						new survey_a2{
+							HC=configSurvey.survey_no(HC,i),
+							survey_year=configSurvey.survey_year,
+							survey_no=configSurvey.survey_no_num,
+							a1=item.survey_A1.a1,
+							a5=item.survey_A1.a5
+						} }) ;
+
+			//		3	$query1="update survey_a1 set a2='$a2[$i]',popid='$popid[$i]',a3='$a3[$i]',a4='$a4[$i]',a5='$a5[$i]',a6='$a6[$i]',a2_b='$a2_b[$i]' where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+			//			$mysqli->query($query1);
+
+			//		4	$query1="update survey_a2 set a5='$a5[$i]' where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+			//			$mysqli->query($query1);
+
+                }
+			}
+			//for($i=1;$i<=$count;$i++){
+			//	if($del[$i]){//if($del[$i]){
+			//	1	$query="delete from survey_a1 where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+			//		$result=$mysqli->query($query);
+
+			//	2	$query="delete from survey_a2 where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+			//		$result=$mysqli->query($query);
+			//	}else{//if($del[$i]){
+			//		if($a2[$i]){//if($a1[$i]){
+			//	1		$query1="insert into survey_a1(HC,survey_year,survey_no,a1,a2,popid,a3,a4,a5,a6,a2_b) values('$HC','$survey_year','$survey_no','$a1[$i]','$a2[$i]','$popid[$i]','$a3[$i]','$a4[$i]','$a5[$i]','$a6[$i]','$a2_b[$i]');";
+			//			$mysqli->query($query1);
+			////echo$query1."<br>";
+
+			//		2	$query1="insert into survey_a2(HC,survey_year,survey_no,a1,a5) values('$HC','$survey_year','$survey_no','$a1[$i]','$a5[$i]');";
+			//			$mysqli->query($query1);
+
+
+			//		3	$query1="update survey_a1 set a2='$a2[$i]',popid='$popid[$i]',a3='$a3[$i]',a4='$a4[$i]',a5='$a5[$i]',a6='$a6[$i]',a2_b='$a2_b[$i]' where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+			//			$mysqli->query($query1);
+
+			//		4	$query1="update survey_a2 set a5='$a5[$i]' where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+
+			////echo$query1."<br>";
+			//		}
+			//	}//if($del[$i]){
+			//}
+			//_ = survey_A1s;
 			//NavigationManager.NavigateTo("index2");
+
+			//$log="insert into log_file ( id,username,time1,detail) values('','$username','".date("U") ."','แก้ไข $HC ตอนที่ 1 1/5')";
+			await DBContext.AddItems<log_file>("log_file", new List<log_file> {
+					new log_file {
+						id=Convert.ToInt32(configSurvey.randomNum()),
+						username= await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name"),
+						time1=configSurvey.timestam(),
+						detail="แก้ไข "+HC+" ตอนที่ 1 1/5"
+						} });
+//$result_log=$mysqli->query($log);
+
+//$log="insert into update_hc ( HC) values('$HC')";
+//$result_log=$mysqli->query($log);
+
+//$query_up="select ch1 from survey_staff where  HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+
+				
+
+//$result_up=$mysqli->query($query_up);
+//if($result_up->ch1){
+//	$query_up1="update survey_staff set ch1_st='".date("U")."' where  HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+//	$result_up1=$mysqli->query($query_up1);
+//}
 		}
 
 	}
@@ -122,46 +256,6 @@ location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 }
 
 $count=count($a1);
-for($i=1;$i<=$count;$i++){
-	if($del[$i]){//if($del[$i]){
-		$query="delete from survey_a1 where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
-		$result=$mysqli->query($query);
-
-		$query="delete from survey_a2 where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
-		$result=$mysqli->query($query);
-	}else{//if($del[$i]){
-		if($a2[$i]){//if($a1[$i]){
-			$query1="insert into survey_a1(HC,survey_year,survey_no,a1,a2,popid,a3,a4,a5,a6,a2_b) values('$HC','$survey_year','$survey_no','$a1[$i]','$a2[$i]','$popid[$i]','$a3[$i]','$a4[$i]','$a5[$i]','$a6[$i]','$a2_b[$i]');";
-			$mysqli->query($query1);
-//echo$query1."<br>";
-
-			$query1="insert into survey_a2(HC,survey_year,survey_no,a1,a5) values('$HC','$survey_year','$survey_no','$a1[$i]','$a5[$i]');";
-			$mysqli->query($query1);
-
-
-			$query1="update survey_a1 set a2='$a2[$i]',popid='$popid[$i]',a3='$a3[$i]',a4='$a4[$i]',a5='$a5[$i]',a6='$a6[$i]',a2_b='$a2_b[$i]' where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
-			$mysqli->query($query1);
-
-			$query1="update survey_a2 set a5='$a5[$i]' where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
-			$mysqli->query($query1);
-
-//echo$query1."<br>";
-		}
-	}//if($del[$i]){
-}
-
-$log="insert into log_file ( id,username,time1,detail) values('','$username','".date("U") ."','แก้ไข $HC ตอนที่ 1 1/5')";
-$result_log=$mysqli->query($log);
-
-$log="insert into update_hc ( HC) values('$HC')";
-$result_log=$mysqli->query($log);
-
-$query_up="select ch1 from survey_staff where  HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
-$result_up=$mysqli->query($query_up);
-if($result_up->ch1){
-	$query_up1="update survey_staff set ch1_st='".date("U")."' where  HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
-	$result_up1=$mysqli->query($query_up1);
-}
 
 
 exec("/usr/bin/wget -O /dev/null  https://livingonnewpace.com/survey/hc_sum/hc_sum_real.php?HC=$HC;");

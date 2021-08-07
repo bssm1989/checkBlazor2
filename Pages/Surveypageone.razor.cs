@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Newtonsoft.Json.Linq;
 using System.Threading;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FirstBlazorApp.Pages
 {
@@ -51,7 +52,33 @@ namespace FirstBlazorApp.Pages
 		public static class configSurvey
 		{
             public static string survey_year = "2563";
-            public static string survey_no = "1";
+            public static string survey_no_num = "1";
+            public static string survey_no (string HC,int? index)
+            {//-------no-------------survey year
+
+				
+				var index4 = index.ToString().PadLeft(4, '0');
+				return 1 + "|" + configSurvey.survey_year + "|" + HC + "|" + index4;
+
+			}
+			public static string HC_random(string hc)
+            {
+				var index4 = (1).ToString().PadLeft(4, '0');
+				string hc2 = hc.ToString() + "|" + configSurvey.randomNum();
+				return "1" + "|" + configSurvey.survey_year + "|" + hc2;
+				//return 1 + "|" + configSurvey.survey_year + "|" + hc + "|" + configSurvey.randomNum;
+
+			}
+			public static string randomNum()
+            {
+				Random r = new Random();
+				int num = r.Next();
+				return num.ToString();
+            }
+			public static int timestam()
+            {
+				return   (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+			}
         }
 		public string SelectProvinceId
 		{
@@ -225,7 +252,7 @@ namespace FirstBlazorApp.Pages
 			}
 			
 			List<survey_staff> getSurveyStaff = await DBContext.GetByIndex<string, survey_staff>("survey_staff", recordSurveyProfile.HC, null, "hc", false);
-			var getStaffBySurveyYear=getSurveyStaff.Where(x => x.survey_year == configSurvey.survey_year&&x.survey_no==configSurvey.survey_no).ToList();
+			var getStaffBySurveyYear=getSurveyStaff.Where(x => x.survey_year == configSurvey.survey_year&&x.survey_no.Split('|')[0]==configSurvey.survey_no(HC,0)).ToList();
 			//$query1="insert into survey_staff (HC,survey_year,survey_no,staff) value('$HC','$survey_year','$survey_no','$staff')";
 			if (getStaffBySurveyYear.Count == 0)
 			{
@@ -233,8 +260,8 @@ namespace FirstBlazorApp.Pages
 
 					new survey_staff
 					{
-						HC = recordSurveyProfile.HC,
-						survey_no = configSurvey.survey_no,
+						HC =configSurvey.survey_no(HC,num) ,
+						survey_no =configSurvey.survey_no_num ,
 						survey_year = configSurvey.survey_year
 					}
 

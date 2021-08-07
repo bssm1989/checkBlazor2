@@ -147,10 +147,10 @@ namespace FirstBlazorApp.Models
         public class hc_result
         {
             [IndexDbKey(AutoIncrement = true)]
+            public int? id { get; set; }
             public string detail { get; set; }
             public string min { get; set; }
             public string max { get; set; }
-            public int? id { get; set; }
         }
         public class hc_sum
         {
@@ -652,10 +652,10 @@ namespace FirstBlazorApp.Models
         }
         public class survey_a1
         {
-            [IndexDbKey(AutoIncrement = true)]
             public int id { get; set; }
             public string HC { get; set; }
             public string survey_year { get; set; }
+            [IndexDbKey(AutoIncrement = true)]
             public string survey_no { get; set; }
             public string a1 { get; set; }
             public string a2 { get; set; }
@@ -1480,9 +1480,9 @@ namespace FirstBlazorApp.Models
         }
         public class survey_staff
         {
-            [IndexDbKey(AutoIncrement = true)]
             public string HC { get; set; }
             public string survey_year { get; set; }
+            [IndexDbKey(AutoIncrement = true)]
             public string survey_no { get; set; }
             public string staff { get; set; }
             public int? ch1_st { get; set; }
