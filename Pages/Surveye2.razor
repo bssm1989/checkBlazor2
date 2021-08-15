@@ -1,4 +1,6 @@
 ﻿@page "/surveye2"
+
+@page "/surveye2/{HC}"
 @inject Models.EmployeeContext DBContext
 
 @using FirstBlazorApp.Models
@@ -9,7 +11,7 @@
 session_start();
 //phpinfo();
 if(!$_SESSION["HC"]){
->?*@
+?>*@
 @*<script>
 location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 </script>*@
@@ -22,8 +24,9 @@ $HC=$_SESSION["HC"];
 $query="select e2_1_1,e2_1_2,e2_1_3,e2_1_4,e2_2_1,e2_2_2,e2_2_3,e2_2_4,e2_3_1,e2_3_2,e2_3_3,e2_3_4,e2_4_1,e2_4_2,e2_4_3,e2_4_4,e2_5_5,e2_5_1,e2_5_2,e2_5_3,e2_5_4 from survey_e2 where HC='$HC'  and survey_year='$survey_year' and survey_no='$survey_no'";
 $result=$mysqli->query($query);
 $row1=$result->fetch_object();
->?*@
-<form name='surway' method='POST' action='surveye2_add.php'>
+?>*@
+@*<form name='surway' method='POST' action='surveye2_add.php'>*@
+<EditForm Model="@formData" OnValidSubmit="@HandleValidSubmit">
 <table>
 	<tr>
 		<td align='center'>แบบสอบถาม<br>
@@ -34,7 +37,7 @@ $row1=$result->fetch_object();
 		<td><b>ตอนที่ 5 การเกื้อกูลและระบบรองรับทางสังคม (ทุนทางสังคม) (2/3) (หน้าที่ 18/20)</b></td>
 	</tr>
 	<tr>
-		<td><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC>?*@</font></b></td>
+		<td><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC?>*@</font></b></td>
 	</tr>
 	<tr>
 		<td>
@@ -53,18 +56,29 @@ $row1=$result->fetch_object();
 						this.form.e2_1_4.value='';
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ระดับการมีส่วนร่วม (E2.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_1_1' id='e2_1_10' @*<?php if($row1->e2_1_1=='0'){echo"checked";}>?*@> ไม่ร่วม
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_1_1' id='e2_1_11' @*<?php if($row1->e2_1_1=='1'){echo"checked";}>?*@> เข้าร่วมรับรู้ รับฟัง 
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_1_1' id='e2_1_12' @*<?php if($row1->e2_1_1=='2'){echo"checked";}>?*@> เสนอความคิดเห็น ลงแรง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e2_1_1' id='e2_1_13' @*<?php if($row1->e2_1_1=='3'){echo"checked";}>?*@> ตัดสินใจ
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่ร่วม</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมรับรู้ รับฟัง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เสนอความคิดเห็น ลงแรง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >ตัดสินใจ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ในการเข้าร่วม (ระบุ) (E2.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_1_2' id='e2_1_20' @*<?php if($row1->e2_1_2=='0'){echo"checked";}>?*@> ไม่เคยเข้าร่วมเลย
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_1_2' id='e2_1_21' @*<?php if($row1->e2_1_2=='1'){echo"checked";}>?*@> เข้าร่วมบางครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_1_2' id='e2_1_22' @*<?php if($row1->e2_1_2=='2'){echo"checked";}>?*@> เข้าร่วมทุกครั้ง 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่เคยเข้าร่วมเลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมบางครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เข้าร่วมทุกครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_1_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ประโยชน์ในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_1_3' value='@*<?php echo $row1->e2_1_3>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_1_3'  @bind-value="@formData.surveyTemp.e2_1_3">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.5)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_1_4' value='@*<?php echo $row1->e2_1_4>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_1_4'  @bind-value="@formData.surveyTemp.e2_1_4">
 			<hr>
 
 			&nbsp;&nbsp;&nbsp 2) <font color='blue'> กิจกรรมประชาคม (E2.1)</font>
@@ -81,18 +95,29 @@ $row1=$result->fetch_object();
 						this.form.e2_2_4.value='';
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ระดับการมีส่วนร่วม (E2.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_2_1'  id='e2_2_10' @*<?php if($row1->e2_1_1=='0'){echo"checked";}>?*@> ไม่ร่วม
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_2_1'  id='e2_2_11' @*<?php if($row1->e2_2_1=='1'){echo"checked";}>?*@> เข้าร่วมรับรู้ รับฟัง 
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_2_1'  id='e2_2_12' @*<?php if($row1->e2_2_1=='2'){echo"checked";}>?*@> เสนอความคิดเห็น ลงแรง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e2_2_1'  id='e2_2_13' @*<?php if($row1->e2_2_1=='3'){echo"checked";}>?*@> ตัดสินใจ
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่ร่วม</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมรับรู้ รับฟัง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เสนอความคิดเห็น ลงแรง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >ตัดสินใจ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ในการเข้าร่วม (ระบุ) (E2.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_2_2'  id='e2_2_20' @*<?php if($row1->e2_2_2=='0'){echo"checked";}>?*@> ไม่เคยเข้าร่วมเลย
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_2_2'  id='e2_2_21' @*<?php if($row1->e2_2_2=='1'){echo"checked";}>?*@> เข้าร่วมบางครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_2_2'  id='e2_2_22' @*<?php if($row1->e2_2_2=='2'){echo"checked";}>?*@> เข้าร่วมทุกครั้ง 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่เคยเข้าร่วมเลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมบางครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เข้าร่วมทุกครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_2_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ประโยชน์ในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_2_3' value='@*<?php echo $row1->e2_2_3>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_2_3'  @bind-value="@formData.surveyTemp.e2_2_3">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.5)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_2_4' value='@*<?php echo $row1->e2_2_4>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_2_4'  @bind-value="@formData.surveyTemp.e2_2_4">
 			<hr>
 
 			&nbsp;&nbsp;&nbsp 3) <font color='blue'> กิจกรรมทางการพัฒนา (E2.1)</font>
@@ -109,18 +134,29 @@ $row1=$result->fetch_object();
 						this.form.e2_3_4.value='';
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ระดับการมีส่วนร่วม (E2.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_3_1'  id='e2_3_10' @*<?php if($row1->e2_3_1=='0'){echo"checked";}>?*@> ไม่ร่วม
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_3_1'  id='e2_3_11' @*<?php if($row1->e2_3_1=='1'){echo"checked";}>?*@> เข้าร่วมรับรู้ รับฟัง 
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_3_1'  id='e2_3_12' @*<?php if($row1->e2_3_1=='2'){echo"checked";}>?*@> เสนอความคิดเห็น ลงแรง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e2_3_1'  id='e2_3_13' @*<?php if($row1->e2_3_1=='3'){echo"checked";}>?*@> ตัดสินใจ
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่ร่วม</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมรับรู้ รับฟัง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เสนอความคิดเห็น ลงแรง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >ตัดสินใจ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ในการเข้าร่วม (ระบุ) (E2.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_3_2'  id='e2_3_20' @*<?php if($row1->e2_3_2=='0'){echo"checked";}>?*@> ไม่เคยเข้าร่วมเลย
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_3_2'  id='e2_3_21' @*<?php if($row1->e2_3_2=='1'){echo"checked";}>?*@> เข้าร่วมบางครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_3_2'  id='e2_3_22' @*<?php if($row1->e2_3_2=='2'){echo"checked";}>?*@> เข้าร่วมทุกครั้ง 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่เคยเข้าร่วมเลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมบางครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เข้าร่วมทุกครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_3_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ประโยชน์ในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_3_3' value='@*<?php echo $row1->e2_3_3>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_3_3'  @bind-value="@formData.surveyTemp.e2_3_3">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.5)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_3_4' value='@*<?php echo $row1->e2_3_4>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_3_4'  @bind-value="@formData.surveyTemp.e2_3_4">
 			<hr>
 		
 			&nbsp;&nbsp;&nbsp 4) <font color='blue'> การอนุรักษ์/ฟื้นฟู (E2.1)</font>
@@ -137,21 +173,32 @@ $row1=$result->fetch_object();
 						this.form.e2_4_4.value='';
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ระดับการมีส่วนร่วม (E2.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_4_1'  id='e2_4_10'  @*<?php if($row1->e2_4_1=='0'){echo"checked";}>?*@> ไม่ร่วม
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_4_1'  id='e2_4_11' @*<?php if($row1->e2_4_1=='1'){echo"checked";}>?*@> เข้าร่วมรับรู้ รับฟัง 
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_4_1'  id='e2_4_12' @*<?php if($row1->e2_4_1=='2'){echo"checked";}>?*@> เสนอความคิดเห็น ลงแรง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e2_4_1'  id='e2_4_13' @*<?php if($row1->e2_4_1=='3'){echo"checked";}>?*@> ตัดสินใจ
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่ร่วม</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมรับรู้ รับฟัง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เสนอความคิดเห็น ลงแรง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >ตัดสินใจ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ในการเข้าร่วม (ระบุ) (E2.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_4_2'  id='e2_4_20' @*<?php if($row1->e2_4_2=='0'){echo"checked";}>?*@> ไม่เคยเข้าร่วมเลย
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_4_2'  id='e2_4_21' @*<?php if($row1->e2_4_2=='1'){echo"checked";}>?*@> เข้าร่วมบางครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_4_2'  id='e2_4_22' @*<?php if($row1->e2_4_2=='2'){echo"checked";}>?*@> เข้าร่วมทุกครั้ง 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่เคยเข้าร่วมเลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมบางครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เข้าร่วมทุกครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_4_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ประโยชน์ในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_4_3' value='@*<?php echo $row1->e2_4_3>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_4_3'  @bind-value="@formData.surveyTemp.e2_4_3">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.5)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_4_4' value='@*<?php echo $row1->e2_4_4>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_4_4'  @bind-value="@formData.surveyTemp.e2_4_4">
 			<hr>
 
-			&nbsp;&nbsp;&nbsp 5) <font color='blue'>อื่น ๆ (ระบุ) (E2.1)</font> <input type='text' name='e2_5_5' value='@*<?php echo $row1->e2_5_5>?*@'>
+			&nbsp;&nbsp;&nbsp 5) <font color='blue'>อื่น ๆ (ระบุ) (E2.1)</font> <input type='text' name='e2_5_5'  @bind-value="@formData.surveyTemp.e2_5_5">
 				<input type='button' value='reset' 
 					onclick="
 						this.form.e2_5_5.value='';
@@ -166,18 +213,29 @@ $row1=$result->fetch_object();
 						this.form.e2_5_4.value='';
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ระดับการมีส่วนร่วม (E2.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_5_1'  id='e2_5_10' @*<?php if($row1->e2_5_1=='0'){echo"checked";}>?*@> ไม่ร่วม
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_5_1'  id='e2_5_11' @*<?php if($row1->e2_5_1=='1'){echo"checked";}>?*@> เข้าร่วมรับรู้ รับฟัง 
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_5_1'  id='e2_5_12' @*<?php if($row1->e2_5_1=='2'){echo"checked";}>?*@> เสนอความคิดเห็น ลงแรง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e2_5_1'  id='e2_5_13' @*<?php if($row1->e2_5_1=='3'){echo"checked";}>?*@> ตัดสินใจ
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่ร่วม</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมรับรู้ รับฟัง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เสนอความคิดเห็น ลงแรง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >ตัดสินใจ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ในการเข้าร่วม (ระบุ) (E2.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e2_5_2'  id='e2_5_20' @*<?php if($row1->e2_5_2=='0'){echo"checked";}>?*@> ไม่เคยเข้าร่วมเลย
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e2_5_2'  id='e2_5_21' @*<?php if($row1->e2_5_2=='1'){echo"checked";}>?*@> เข้าร่วมบางครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e2_5_2'  id='e2_5_22' @*<?php if($row1->e2_5_2=='2'){echo"checked";}>?*@> เข้าร่วมทุกครั้ง 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >ไม่เคยเข้าร่วมเลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >เข้าร่วมบางครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >เข้าร่วมทุกครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e2_5_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ประโยชน์ในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_5_3' value='@*<?php echo $row1->e2_5_3>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_5_3'  @bind-value="@formData.surveyTemp.e2_5_3">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมชุมชน (ระบุ) (E2.5)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_5_4' value='@*<?php echo $row1->e2_5_4>?*@'>
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='text' name='e2_5_4'  @bind-value="@formData.surveyTemp.e2_5_4">
 			<hr>
 		
 		</td>
@@ -186,6 +244,16 @@ $row1=$result->fetch_object();
 @*<?php
 	$mysqli->close();
 include('button2.php');
->?*@
+?>*@
 </table>
-</form>
+@*</form>*@
+ 
+ <br>
+		<div class="row">
+			<div class="col-lg-12  mb-3">
+				<input type='submit' value='บันทึก' >
+				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+
+			</div>
+		</div>
+</EditForm>@**@

@@ -1,4 +1,6 @@
 ﻿@page "/surveye1"
+
+@page "/surveye1/{HC}"
 @inject Models.EmployeeContext DBContext
 
 @using FirstBlazorApp.Models
@@ -9,7 +11,7 @@
 session_start();
 //phpinfo();
 if(!$_SESSION["HC"]){
->?*@
+?>*@
 @*</script>
 location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 </script>*@
@@ -30,8 +32,9 @@ if($row_up->ch5_st==0){
 	$query_up1="update survey_staff set ch5_st='".date("U")."' where  HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
 	$result_up1=$mysqli->query($query_up1);
 }
->?*@
-<form name='surway' method='POST' action='surveye1_add.php'>
+?>*@
+@*<form name='surway' method='POST' action='surveye1_add.php'>*@
+<EditForm Model="@formData" OnValidSubmit="@HandleValidSubmit">
 <table>
 	<tr>
 		<td align='center'>แบบสอบถาม<br>
@@ -42,7 +45,7 @@ if($row_up->ch5_st==0){
 		<td><b>ตอนที่ 5 การเกื้อกูลและระบบรองรับทางสังคม (ทุนทางสังคม) (1/3) (หน้าที่17/20)</b></td>
 	</tr>
 	<tr>
-		<td><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC>?*@</font></b></td>
+		<td><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC?>*@</font></b></td>
 	</tr>
 	<tr>
 		<td>
@@ -59,15 +62,28 @@ if($row_up->ch5_st==0){
 						document.getElementById('e1_1_31').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การเป็นสมาชิก (E1.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_1_1' id='e1_1_10' @*<?php if($row1->e1_1_1=='0'){echo"checked";}>?*@> 0) ไม่เป็น
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_1_1' id='e1_1_11' @*<?php if($row1->e1_1_1=='1'){echo"checked";}>?*@> 1) เป็น
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การพึ่งพาในกรณีที่ได้รับความเดือดร้อน (E1.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_1_2' id='e1_1_21' @*<?php if($row1->e1_1_2=='1'){echo"checked";}>?*@> 1) พึ่งได้มาก
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e1_1_2' id='e1_1_22' @*<?php if($row1->e1_1_2=='2'){echo"checked";}>?*@> 2) พึ่งได้บ้าง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e1_1_2' id='e1_1_23' @*<?php if($row1->e1_1_2=='3'){echo"checked";}>?*@> 3) พึ่งไม่ได้เลย 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) พึ่งได้มาก</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) พึ่งได้บ้าง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) พึ่งไม่ได้เลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมกลุ่ม (E1.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_1_3' id='e1_1_30' @*<?php if($row1->e1_1_3=='0'){echo"checked";}>?*@> 1) มี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_1_3' id='e1_1_31' @*<?php if($row1->e1_1_3=='1'){echo"checked";}>?*@> 2) ไม่มี
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_3" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >1) มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_3" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >2) ไม่มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_1_3" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 
 			<br>&nbsp;&nbsp;&nbsp 2) <font color='blue'>กลุ่มการเงิน (เช่น กองทุน กลุ่มออมทรัพย์) (E1.1)</font>
@@ -82,15 +98,28 @@ if($row_up->ch5_st==0){
 						document.getElementById('e1_2_31').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การเป็นสมาชิก (E1.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_2_1' id='e1_2_10' @*<?php if($row1->e1_2_1=='0'){echo"checked";}>?*@> 0) ไม่เป็น
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_2_1' id='e1_2_11' @*<?php if($row1->e1_2_1=='1'){echo"checked";}>?*@> 1) เป็น
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การพึ่งพาในกรณีที่ได้รับความเดือดร้อน (E1.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_2_2' id='e1_2_21' @*<?php if($row1->e1_2_2=='1'){echo"checked";}>?*@> 1) พึ่งได้มาก
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e1_2_2' id='e1_2_22' @*<?php if($row1->e1_2_2=='2'){echo"checked";}>?*@> 2) พึ่งได้บ้าง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e1_2_2' id='e1_2_23' @*<?php if($row1->e1_2_2=='3'){echo"checked";}>?*@> 3) พึ่งไม่ได้เลย 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) พึ่งได้มาก</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) พึ่งได้บ้าง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) พึ่งไม่ได้เลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมกลุ่ม (E1.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_2_3' id='e1_2_30' @*<?php if($row1->e1_2_3=='0'){echo"checked";}>?*@> 1) มี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_2_3' id='e1_2_31' @*<?php if($row1->e1_2_3=='1'){echo"checked";}>?*@> 2) ไม่มี
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_3" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >1) มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_3" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >2) ไม่มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_2_3" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 
 			<br>&nbsp;&nbsp;&nbsp 3) <font color='blue'>กลุ่มสวัสดิการสังคม (เช่น กลุ่มฌาปนกิจ กองทุนสวัสดิการชุมชน) (E1.1)</font>
@@ -105,15 +134,28 @@ if($row_up->ch5_st==0){
 						document.getElementById('e1_3_31').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การเป็นสมาชิก (E1.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_3_1' id='e1_3_10' @*<?php if($row1->e1_3_1=='0'){echo"checked";}>?*@> 0) ไม่เป็น
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_3_1' id='e1_3_11' @*<?php if($row1->e1_3_1=='1'){echo"checked";}>?*@> 1) เป็น
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การพึ่งพาในกรณีที่ได้รับความเดือดร้อน (E1.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_3_2' id='e1_3_21' @*<?php if($row1->e1_3_2=='1'){echo"checked";}>?*@> 1) พึ่งได้มาก
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e1_3_2' id='e1_3_22' @*<?php if($row1->e1_3_2=='2'){echo"checked";}>?*@> 2) พึ่งได้บ้าง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e1_3_2' id='e1_3_23' @*<?php if($row1->e1_3_2=='3'){echo"checked";}>?*@> 3) พึ่งไม่ได้เลย 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) พึ่งได้มาก</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) พึ่งได้บ้าง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) พึ่งไม่ได้เลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมกลุ่ม (E1.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_3_3' id='e1_3_30' @*<?php if($row1->e1_3_3=='0'){echo"checked";}>?*@> 1) มี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_3_3' id='e1_3_31' @*<?php if($row1->e1_3_3=='1'){echo"checked";}>?*@> 2) ไม่มี
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_3" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >1) มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_3" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >2) ไม่มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_3_3" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 
 			<br>&nbsp;&nbsp;&nbsp 4) <font color='blue'>กลุ่มด้านสังคม (เช่น กลุ่มเยาวชน กลุ่มผู้สูงอายุ กลุ่มสตรี/แม่บ้าน กลุ่มศาสนา) (E1.1)</font>
@@ -128,15 +170,28 @@ if($row_up->ch5_st==0){
 						document.getElementById('e1_4_31').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การเป็นสมาชิก (E1.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_4_1' id='e1_4_10' @*<?php if($row1->e1_4_1=='0'){echo"checked";}>?*@> 0) ไม่เป็น
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_4_1' id='e1_4_11' @*<?php if($row1->e1_4_1=='1'){echo"checked";}>?*@> 1) เป็น
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การพึ่งพาในกรณีที่ได้รับความเดือดร้อน (E1.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_4_2' id='e1_4_21' @*<?php if($row1->e1_4_2=='1'){echo"checked";}>?*@> 1) พึ่งได้มาก
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e1_4_2' id='e1_4_22' @*<?php if($row1->e1_4_2=='2'){echo"checked";}>?*@> 2) พึ่งได้บ้าง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e1_4_2' id='e1_4_23' @*<?php if($row1->e1_4_2=='3'){echo"checked";}>?*@> 3) พึ่งไม่ได้เลย 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) พึ่งได้มาก</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) พึ่งได้บ้าง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) พึ่งไม่ได้เลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมกลุ่ม (E1.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_4_3' id='e1_4_30' @*<?php if($row1->e1_4_3=='0'){echo"checked";}>?*@> 1) มี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_4_3' id='e1_4_31' @*<?php if($row1->e1_4_3=='1'){echo"checked";}>?*@> 2) ไม่มี
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_3" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >1) มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_3" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >2) ไม่มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_4_3" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 
 			<br>&nbsp;&nbsp;&nbsp 5) <font color='blue'>กลุ่มทรัพยากรธรรมชาติ (เช่น กลุ่มอนุรักษ์ฯ กลุ่มผู้ใช้น้ำ) (E1.1)</font>
@@ -151,18 +206,31 @@ if($row_up->ch5_st==0){
 						document.getElementById('e1_5_31').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การเป็นสมาชิก (E1.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_5_1' id='e1_5_10' @*<?php if($row1->e1_5_1=='0'){echo"checked";}>?*@> 0) ไม่เป็น
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_5_1' id='e1_5_11' @*<?php if($row1->e1_5_1=='1'){echo"checked";}>?*@> 1) เป็น
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การพึ่งพาในกรณีที่ได้รับความเดือดร้อน (E1.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_5_2' id='e1_5_21' @*<?php if($row1->e1_5_2=='1'){echo"checked";}>?*@> 1) พึ่งได้มาก
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='e1_5_2' id='e1_5_22' @*<?php if($row1->e1_5_2=='2'){echo"checked";}>?*@> 2) พึ่งได้บ้าง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e1_5_2' id='e1_5_23' @*<?php if($row1->e1_5_2=='3'){echo"checked";}>?*@> 3) พึ่งไม่ได้เลย 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) พึ่งได้มาก</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) พึ่งได้บ้าง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) พึ่งไม่ได้เลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมกลุ่ม (E1.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_5_3' id='e1_5_30' @*<?php if($row1->e1_5_3=='0'){echo"checked";}>?*@> 1) มี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_5_3' id='e1_5_31' @*<?php if($row1->e1_5_3=='1'){echo"checked";}>?*@> 2) ไม่มี
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_3" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >1) มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_3" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >2) ไม่มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_5_3" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 
-			<br>&nbsp;&nbsp;&nbsp 6) <font color='blue'>กลุ่มอื่น ๆ (ระบุ)  (E1.1)</font><input type='text' name='e1_6_4' value='@*<?php echo$row1->e1_6_4>?*@'>
+			<br>&nbsp;&nbsp;&nbsp 6) <font color='blue'>กลุ่มอื่น ๆ (ระบุ)  (E1.1)</font><input type='text' name='e1_6_4'  @bind-value="@formData.surveyTemp.e1_6_4">
 				<input type='button' value='reset' 
 					onclick="
 						this.form.e1_6_4.value='';
@@ -175,15 +243,28 @@ if($row_up->ch5_st==0){
 						document.getElementById('e1_6_31').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การเป็นสมาชิก (E1.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_6_1' id='e1_6_10' @*<?php if($row1->e1_6_1=='0'){echo"checked";}>?*@> 0) ไม่เป็น
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_6_1' id='e1_6_11' @*<?php if($row1->e1_6_1=='1'){echo"checked";}>?*@> 1) เป็น
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) เป็น</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การพึ่งพาในกรณีที่ได้รับความเดือดร้อน (E1.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_6_2' id='e1_6_21' @*<?php if($row1->e1_6_2=='1'){echo"checked";}>?*@> 1) พึ่งได้มาก
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_6_2' id='e1_6_22' @*<?php if($row1->e1_6_2=='2'){echo"checked";}>?*@> 2) พึ่งได้บ้าง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='e1_6_2' id='e1_6_23' @*<?php if($row1->e1_6_2=='3'){echo"checked";}>?*@> 3) พึ่งไม่ได้เลย 
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) พึ่งได้มาก</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >2) พึ่งได้บ้าง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) พึ่งไม่ได้เลย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_2" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ปัญหาในการเข้าร่วมกิจกรรมกลุ่ม (E1.4)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='e1_6_3' id='e1_6_30' @*<?php if($row1->e1_6_3=='0'){echo"checked";}>?*@> 1) มี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='e1_6_3' id='e1_6_31' @*<?php if($row1->e1_6_3=='1'){echo"checked";}>?*@> 2) ไม่มี
+<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_3" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >1) มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_3" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >2) ไม่มี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.e1_6_3" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 
 		</td>
@@ -191,6 +272,15 @@ if($row_up->ch5_st==0){
 @*<?php
 	$mysqli->close();
 include('button2.php');
->?*@
+?>*@
 </table>
-</form>
+@*</form>*@
+ <br>
+		<div class="row">
+			<div class="col-lg-12  mb-3">
+				<input type='submit' value='บันทึก' >
+				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+
+			</div>
+		</div>
+</EditForm>@**@

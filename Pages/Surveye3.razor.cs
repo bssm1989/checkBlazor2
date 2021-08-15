@@ -61,7 +61,185 @@ location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 /*<?php
 	exit();
 }
+*/
 
+
+
+using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FirstBlazorApp.Models;
+using Microsoft.AspNetCore.Components.Forms;
+using static FirstBlazorApp.Pages.Surveypageone;
+
+namespace FirstBlazorApp.Pages
+{
+    public partial class Surveye3 : ComponentBase
+    {
+
+        [Parameter]
+        public string HC { get; set; }
+        chksurveyb2 formData = new chksurveyb2();
+        class chksurveyb2
+        {
+            public bool e7_1 { get; set; }
+            public bool e7_2 { get; set; }
+            public bool e7_3 { get; set; }
+            public bool e7_4 { get; set; }
+            public bool e7_5 { get; set; }
+            public bool e7_6 { get; set; }
+            public bool e7_7 { get; set; }
+            public bool e7_8 { get; set; }
+            public bool e7_9 { get; set; }
+            public bool e7_10 { get; set; }
+            public bool e7_11 { get; set; }
+            public bool e8_1_1 { get; set; }
+            public bool e8_1_2 { get; set; }
+            public bool e8_1_3 { get; set; }
+            public bool e8_1_4 { get; set; }
+            public bool e8_2_1 { get; set; }
+            public bool e8_2_2 { get; set; }
+            public bool e8_2_3 { get; set; }
+            public bool e8_2_4 { get; set; }
+            public bool e8_2_5 { get; set; }
+            public bool e8_2_6 { get; set; }
+            public bool e8_2_7 { get; set; }
+            public bool e8_2_8 { get; set; }
+            public bool e8_2_9 { get; set; }
+            public bool e8_2_10 { get; set; }
+            public bool e8_2_11 { get; set; }
+            public bool e9_1 { get; set; }
+            public bool e9_2 { get; set; }
+            public bool e9_3 { get; set; }
+            public bool e9_4 { get; set; }
+            public bool e10_1 { get; set; }
+            public bool e10_2 { get; set; }
+            public bool e10_3 { get; set; }
+            public bool e10_4 { get; set; }
+            public survey_e3 surveyTemp = new survey_e3();
+
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await DBContext.OpenIndexedDb();
+            string hc = configSurvey.HC_noId(HC);
+            List<survey_e3> getAllSurPro = await DBContext.GetByIndex<string, survey_e3>("survey_e3", hc, null, "hc", false);
+
+            if (getAllSurPro.Count() > 0)
+            {
+
+                formData.surveyTemp = getAllSurPro.FirstOrDefault();
+            }
+
+            formData.e7_1 = String.IsNullOrEmpty(formData.surveyTemp.e7_1) ? false : true;
+            formData.e7_2 = String.IsNullOrEmpty(formData.surveyTemp.e7_2) ? false : true;
+            formData.e7_3 = String.IsNullOrEmpty(formData.surveyTemp.e7_3) ? false : true;
+            formData.e7_4 = String.IsNullOrEmpty(formData.surveyTemp.e7_4) ? false : true;
+            formData.e7_5 = String.IsNullOrEmpty(formData.surveyTemp.e7_5) ? false : true;
+            formData.e7_6 = String.IsNullOrEmpty(formData.surveyTemp.e7_6) ? false : true;
+            formData.e7_7 = String.IsNullOrEmpty(formData.surveyTemp.e7_7) ? false : true;
+            formData.e7_8 = String.IsNullOrEmpty(formData.surveyTemp.e7_8) ? false : true;
+            formData.e7_9 = String.IsNullOrEmpty(formData.surveyTemp.e7_9) ? false : true;
+            formData.e7_10 = String.IsNullOrEmpty(formData.surveyTemp.e7_10) ? false : true;
+            formData.e7_11 = String.IsNullOrEmpty(formData.surveyTemp.e7_11) ? false : true;
+            formData.e8_1_1 = String.IsNullOrEmpty(formData.surveyTemp.e8_1_1) ? false : true;
+            formData.e8_1_2 = String.IsNullOrEmpty(formData.surveyTemp.e8_1_2) ? false : true;
+            formData.e8_1_3 = String.IsNullOrEmpty(formData.surveyTemp.e8_1_3) ? false : true;
+            formData.e8_1_4 = String.IsNullOrEmpty(formData.surveyTemp.e8_1_4) ? false : true;
+            formData.e8_2_1 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_1) ? false : true;
+            formData.e8_2_2 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_2) ? false : true;
+            formData.e8_2_3 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_3) ? false : true;
+            formData.e8_2_4 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_4) ? false : true;
+            formData.e8_2_5 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_5) ? false : true;
+            formData.e8_2_6 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_6) ? false : true;
+            formData.e8_2_7 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_7) ? false : true;
+            formData.e8_2_8 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_8) ? false : true;
+            formData.e8_2_9 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_9) ? false : true;
+            formData.e8_2_10 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_10) ? false : true;
+            formData.e8_2_11 = String.IsNullOrEmpty(formData.surveyTemp.e8_2_11) ? false : true;
+            formData.e9_1 = String.IsNullOrEmpty(formData.surveyTemp.e9_1) ? false : true;
+            formData.e9_2 = String.IsNullOrEmpty(formData.surveyTemp.e9_2) ? false : true;
+            formData.e9_3 = String.IsNullOrEmpty(formData.surveyTemp.e9_3) ? false : true;
+            formData.e9_4 = String.IsNullOrEmpty(formData.surveyTemp.e9_4) ? false : true;
+            formData.e10_1 = String.IsNullOrEmpty(formData.surveyTemp.e10_1) ? false : true;
+            formData.e10_2 = String.IsNullOrEmpty(formData.surveyTemp.e10_2) ? false : true;
+            formData.e10_3 = String.IsNullOrEmpty(formData.surveyTemp.e10_3) ? false : true;
+            formData.e10_4 = String.IsNullOrEmpty(formData.surveyTemp.e10_4) ? false : true;
+
+
+
+        }
+        protected async Task HandleValidSubmit(EditContext context)
+        {
+            int index = 0;
+            //$query="update survey_a1 set a7_0='$a7_0[$i]',a7_1='$a7_1[$i]',a7_1_1='$a7_1_1[$i]',a7_1_2='$a7_1_2[$i]',a7_2='$a7_2[$i]',a7_2_1='$a7_2_1[$i]',a7_2_2='$a7_2_2[$i]',a7_3='$a7_3[$i]',a7_3_1='$a7_3_1[$i]',a7_3_2='$a7_3_2[$i]',a7_4='$a7_4[$i]',a7_4_1='$a7_4_1[$i]',a7_4_2='$a7_4_2[$i]',a7_5='$a7_5[$i]',a7_5_1='$a7_5_1[$i]',a7_5_2='$a7_5_2[$i]',a7_6='$a7_6[$i]',a7_6_1='$a7_6_1[$i]',a7_6_2='$a7_6_2[$i]',a7_7='$a7_7[$i]',a7_7_1='$a7_7_1[$i]',a7_7_2='$a7_7_2[$i]',a7_8='$a7_8[$i]',a7_8_1='$a7_8_1[$i]',a7_8_2='$a7_8_2[$i]' where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+            formData.surveyTemp.e7_1 = formData.e7_1 ? "1" : "";
+            formData.surveyTemp.e7_2 = formData.e7_2 ? "2" : "";
+            formData.surveyTemp.e7_3 = formData.e7_3 ? "3" : "";
+            formData.surveyTemp.e7_4 = formData.e7_4 ? "4" : "";
+            formData.surveyTemp.e7_5 = formData.e7_5 ? "5" : "";
+            formData.surveyTemp.e7_6 = formData.e7_6 ? "6" : "";
+            formData.surveyTemp.e7_7 = formData.e7_7 ? "7" : "";
+            formData.surveyTemp.e7_8 = formData.e7_8 ? "8" : "";
+            formData.surveyTemp.e7_9 = formData.e7_9 ? "9" : "";
+            formData.surveyTemp.e7_10 = formData.e7_10 ? "10" : "";
+            formData.surveyTemp.e7_11 = formData.e7_11 ? "11" : "";
+            formData.surveyTemp.e8_1_1 = formData.e8_1_1 ? "1" : "";
+            formData.surveyTemp.e8_1_2 = formData.e8_1_2 ? "2" : "";
+            formData.surveyTemp.e8_1_3 = formData.e8_1_3 ? "3" : "";
+            formData.surveyTemp.e8_1_4 = formData.e8_1_4 ? "4" : "";
+            formData.surveyTemp.e8_2_1 = formData.e8_2_1 ? "1" : "";
+            formData.surveyTemp.e8_2_2 = formData.e8_2_2 ? "2" : "";
+            formData.surveyTemp.e8_2_3 = formData.e8_2_3 ? "3" : "";
+            formData.surveyTemp.e8_2_4 = formData.e8_2_4 ? "4" : "";
+            formData.surveyTemp.e8_2_5 = formData.e8_2_5 ? "5" : "";
+            formData.surveyTemp.e8_2_6 = formData.e8_2_6 ? "6" : "";
+            formData.surveyTemp.e8_2_7 = formData.e8_2_7 ? "7" : "";
+            formData.surveyTemp.e8_2_8 = formData.e8_2_8 ? "8" : "";
+            formData.surveyTemp.e8_2_9 = formData.e8_2_9 ? "9" : "";
+            formData.surveyTemp.e8_2_10 = formData.e8_2_10 ? "10" : "";
+            formData.surveyTemp.e8_2_11 = formData.e8_2_11 ? "11" : "";
+            formData.surveyTemp.e9_1 = formData.e9_1 ? "1" : "";
+            formData.surveyTemp.e9_2 = formData.e9_2 ? "2" : "";
+            formData.surveyTemp.e9_3 = formData.e9_3 ? "3" : "";
+            formData.surveyTemp.e9_4 = formData.e9_4 ? "4" : "";
+            formData.surveyTemp.e10_1 = formData.e10_1 ? "1" : "";
+            formData.surveyTemp.e10_2 = formData.e10_2 ? "2" : "";
+            formData.surveyTemp.e10_3 = formData.e10_3 ? "3" : "";
+            formData.surveyTemp.e10_4 = formData.e10_4 ? "4" : "";
+
+            string hc = configSurvey.HC_noId(HC);
+            formData.surveyTemp.HC = hc;
+            formData.surveyTemp.survey_year = configSurvey.survey_year;
+            formData.surveyTemp.survey_no = configSurvey.survey_no_num;
+            //List<survey_b2> getAllSurPro = await DBContext.GetByIndex<string, survey_b2>("survey_b2", hc, null, "hc", false);
+            //if(getAllSurPro.Count() > 0)
+            //{
+            await DBContext.UpdateItems<survey_e3>("survey_e3", new List<survey_e3>() {
+                formData.surveyTemp
+             });
+
+            //else
+            //{
+            //    getAdd=await DBContext.AddItems<survey_b2>("survey_b2", new List<survey_b2>() {
+            //            formData.survey_B2
+            //});
+            //}
+
+        }
+
+
+        private async Task gotoPage(string HC_nextPage)
+        {
+            NavigationManager.NavigateTo("/surveyd2/" + HC_nextPage);
+        }
+    }
+}
+
+/*
 $query="select HC from survey_e3 where HC='$HC'";
 $result=$mysqli->query($query);
 $row=$result->fetch_object();

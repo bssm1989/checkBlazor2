@@ -1,23 +1,25 @@
 ﻿@page "/surveya5"
+@page "/surveya5/{HC}"
 @inject Models.EmployeeContext DBContext
 
 @using FirstBlazorApp.Models
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
-
 @*<?php
 session_start();
 //phpinfo();
 if(!$_SESSION["HC"]){
->?*@
+?>*@
 @*<script>
 location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 </script>*@
 @*<?php
 	exit();
 }
->?*@
-<form name='surway' method='POST' action='surveya5_add.php'>
+?>*@
+
+		
+		
 <br>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 	<div class="col-lg-12  mb-3">
@@ -27,7 +29,7 @@ location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 <br>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 		<div class="col-lg-12">
-		<label><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC>?*@</font></b></label>
+		<label><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC?>*@</font></b></label>
 	</div>
 </div>
 @*<?php
@@ -45,94 +47,105 @@ $i=1;
 while($row2=$result2->fetch_object()){
 	$query1="select a16_0,a16_1,a16_2,a16_3,a16_4,a16_5,a16_6,a16_7,a16_8,a16_9,a16_10,a16_10_1,a17_1,a17_2,a17_3_1,a17_3_2 from survey_a2 where HC='$HC' and a1='$row2->a1' and survey_year='$survey_year' and survey_no='$survey_no'";
 	$result1=$mysqli->query($query1);
-	$row1=$result1->fetch_object();
+	$row1=$result1->fetch_object();?>*@
+	@{
+		int i=0;
+	}
 
->?*@
-	<br>
-	<input type='hidden' name='a1[@*<?php echo$i>?*@]' value='@*<?php echo$row2->a1>?*@'>
+<EditForm Model="@modelSurA2sByHc" OnValidSubmit="@HandleValidSubmit" >
+
+	@foreach(var item in modelSurA2sByHc )
+	{
+		if (i < modelSurA2sByHc.Count)
+		{
+			
+		i++;
+		}
+		else
+		{
+			i = 1;
+		}
+		
+		var index=i;
+			<br>
+	<input type='hidden' name='a1' value='@*<?php echo$row2->a1?>*@'>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 	<div class="col-lg-12  mb-3">
-		<label for="firstName"><b>@*<?php echo$i;>?*@. @*<?php echo$row2->a2>?*@</b></label>
+		<label for="firstName"><b>@*<?php echo$i;?>*@. @*<?php echo$row2->a2?>*@</b></label>
 	</div>
 
 	<div class="col-lg-12  mb-3">
 	<label>&nbsp;&nbsp;&nbsp;16. ทักษะอาชีพที่สามารถสร้างรายได้ (ตอบได้มากกว่า 1) (A16)</label>
 	<div class="col-lg-12  mb-3" >
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='0' name='a16_0[@*<?php echo$i>?*@]' id='a16_0[@*<?php echo$i>?*@]'@*<?php if($row1->a16_0=='0'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_0[@*<?php echo$i>?*@]">0) ไม่มี  </label>
+		
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_0" >0) ไม่มี</MatCheckbox> 												
 	</div>
 
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='1' name='a16_1[@*<?php echo$i>?*@]' id='a16_1[@*<?php echo$i>?*@]'@*<?php if($row1->a16_1=='1'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_1[@*<?php echo$i>?*@]">1) เกษตรกรรม  </label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_1" >1) เกษตรกรรม</MatCheckbox> 										
 	</div>
 
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='2' name='a16_2[@*<?php echo$i>?*@]' id='a16_2[@*<?php echo$i>?*@]'@*<?php if($row1->a16_2=='2'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_2[@*<?php echo$i>?*@]">2) ประมง  </label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_2" >2) ประมง</MatCheckbox> 											
 	</div>
 
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='3' name='a16_3[@*<?php echo$i>?*@]' id='a16_3[@*<?php echo$i>?*@]'@*<?php if($row1->a16_3=='3'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_3[@*<?php echo$i>?*@]">3) ช่าง (ช่างก่อสร้าง ช่างไฟฟ้า ช่างประปา ช่างซ่อม ช่างเสริมสวย)</label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_3" >3) ช่าง (ช่างก่อสร้าง ช่างไฟฟ้า ช่างประปา ช่างซ่อม ช่างเสริมสวย)</MatCheckbox> 	
 	</div>
 
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='4' name='a16_4[@*<?php echo$i>?*@]' id='a16_4[@*<?php echo$i>?*@]'@*<?php if($row1->a16_4=='4'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_4[@*<?php echo$i>?*@]">4) ศิลปะ งานฝีมือ หัตถกรรม </label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_4" >4) ศิลปะ งานฝีมือ หัตถกรรม</MatCheckbox> 								
 	</div>
 
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='5' name='a16_5[@*<?php echo$i>?*@]' id='a16_5[@*<?php echo$i>?*@]'@*<?php if($row1->a16_5=='5'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_5[@*<?php echo$i>?*@]">5) อาหาร ขนม แปรรูป ถนอมอาหาร  </label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_5" >5) อาหาร ขนม แปรรูป ถนอมอาหาร</MatCheckbox> 							
 	</div>
 
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='6' name='a16_6[@*<?php echo$i>?*@]' id='a16_6[@*<?php echo$i>?*@]'@*<?php if($row1->a16_6=='6'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_6[@*<?php echo$i>?*@]">6) สมุนไพร หัตถเวช   </label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_6" >6) สมุนไพร หัตถเวช</MatCheckbox> 									
 	</div>
 
 		<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='7' name='a16_7[@*<?php echo$i>?*@]' id='a16_7[@*<?php echo$i>?*@]'@*<?php if($row1->a16_7=='7'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_7[@*<?php echo$i>?*@]">7) เทคโนโลยีสารสนเทศ   </label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_7" >7) เทคโนโลยีสารสนเทศ</MatCheckbox> 									
 	</div>
 
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='8' name='a16_8[@*<?php echo$i>?*@]' id='a16_8[@*<?php echo$i>?*@]'@*<?php if($row1->a16_8=='8'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_8[@*<?php echo$i>?*@]">8) พิธีกรรมทางศาสนา  </label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_8" >8) พิธีกรรมทางศาสนา</MatCheckbox> 									
 	</div>
 
 	<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='9' name='a16_9[@*<?php echo$i>?*@]' id='a16_9[@*<?php echo$i>?*@]'@*<?php if($row1->a16_9=='9'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_9[@*<?php echo$i>?*@]">9) บริหารธุรกิจ/การตลาด  </label>
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_9" >9) บริหารธุรกิจ/การตลาด</MatCheckbox> 									
 	</div>
 
 		<div class="custom-control custom-checkbox">
-		<input type='checkbox' value='10' name='a16_10[@*<?php echo$i>?*@]' id='a16_10[@*<?php echo$i>?*@]'@*<?php if($row1->a16_10=='10'){echo"checked";}>?*@ class="custom-control-input">
-		<label class="custom-control-label" for="a16_10[@*<?php echo$i>?*@]">10) อื่น ๆ (ระบุ)  </label>
-		<input type='text' name='a16_10_1[@*<?php echo$i>?*@]' placeholder="--อื่น ๆ--" value='@*<?php echo$row1->a16_10_1>?*@' class="form-control">
+		<MatCheckbox  @bind-Value="@item.checkSurveya2.a16_10" >10) อื่น ๆ (ระบุ)</MatCheckbox> 									
+		<input type='text' name='a16_10_1' placeholder="--อื่น ๆ--"  @bind-value="@item.survey_A1.a16_10_1" class="form-control">
 	</div>
 </div>
 	<div class="col-lg-12  mb-3">
 			<label>17. รายได้นอกภาคเกษตรเฉลี่ย (บาท/เดือน) (A17)</label><br>
 			<label>[กรอกเฉพาะบุคคลที่ไม่ได้มีรายได้จากภาคการเกษตร]</label><br>
 			<label>1) ลูกจ้างรายวัน เฉลี่ย</label>
-			<input type='text' name='a17_1[@*<?php echo$i>?*@]'  placeholder="--บาท/เดือน--" value='@*<?php echo$row1->a17_1;>?*@' class="form-control">
+			<input type='text' name='a17_1'  placeholder="--บาท/เดือน--"  @bind-value="@item.survey_A1.a17_1" class="form-control">
 			<label>2) รายได้ส่งกลับ เฉลี่ย</label>
-			<input type='text' name='a17_2[@*<?php echo$i>?*@]'  placeholder="--บาท/เดือน--" value='@*<?php echo$row1->a17_2;>?*@' class="form-control">
+			<input type='text' name='a17_2'  placeholder="--บาท/เดือน--"  @bind-value="@item.survey_A1.a17_2" class="form-control">
 			<label>3) อื่น ๆ (ระบุ)</label>
-			<input type='text' name='a17_3_1[@*<?php echo$i>?*@]' placeholder="--อื่น ๆ--" value='@*<?php echo$row1->a17_3_1>?*@' class="form-control">
+			<input type='text' name='a17_3_1' placeholder="--อื่น ๆ--"  @bind-value="@item.survey_A1.a17_3_1" class="form-control">
 			<label>เฉลี่ย</label>
-			<input type='text' name='a17_3_2[@*<?php echo$i>?*@]'  placeholder="--บาท/เดือน--" value='@*<?php echo$row1->a17_3_2;>?*@' class="form-control">
+			<input type='text' name='a17_3_2'  placeholder="--บาท/เดือน--"  @bind-value="@item.survey_A1.a17_3_2" class="form-control">
 	</div>
 		<hr>
 </div>
 </div>
-@*<?php
-	$i++;
-}
-$mysqli->close();
-include('button.php');
->?*@
-</form>
+
+ }
+ <br>
+		<div class="row">
+			<div class="col-lg-12  mb-3">
+				<input type='submit' value='บันทึก' >
+				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+
+			</div>
+		</div>
+</EditForm>

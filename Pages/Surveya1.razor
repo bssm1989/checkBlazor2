@@ -51,10 +51,7 @@ for($i=1;$i<=$count;$i++){//for($i=1;$i<=$count;$i++){
 	string[] title=new string[]{"อยู่ในทะเบียนบ้าน","ไม่อยู่ในทะเบียนบ้าน"};
 }
 <EditForm Model="@survey_A1s" OnValidSubmit="@HandleValidSubmit" >
-@foreach(var item1 in listMoSurA1){
-<b>dddd*</b>
-<MatCheckbox  @bind-Value="@item1.del" class="custom-control-input" >hjhjhjh</MatCheckbox>
-}
+
 
 @foreach(var item in listMoSurA1)
 	{

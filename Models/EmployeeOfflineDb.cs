@@ -289,10 +289,10 @@ namespace FirstBlazorApp.Models
             var empById = emp.Where(x => x.Id == id);
             return (Employee)empById.First();
         }
-        public async Task getToHttp()
-        {
+        //public async Task getToHttp()
+        //{
 
-        }
+        //}
         public async Task UpdateById(Employee emp)
         {
             await this.OpenIndexedDb();

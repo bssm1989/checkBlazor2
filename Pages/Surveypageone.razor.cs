@@ -276,12 +276,13 @@ namespace FirstBlazorApp.Pages
 			//$query1="insert into survey_staff (HC,survey_year,survey_no,staff) value('$HC','$survey_year','$survey_no','$staff')";
 			if (getStaffBySurveyYear.Count == 0)
 			{
+
 				_ = await DBContext.AddItems<survey_staff>("survey_staff", new List<survey_staff> {
 
 					new survey_staff
 					{
-						HC = HC,
-						survey_no =configSurvey.HC_random(HC),
+						HC =  recordSurveyProfile.HC,
+						survey_no =configSurvey.HC_random(recordSurveyProfile.HC),
 						survey_year = configSurvey.survey_year
 					}
 

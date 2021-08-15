@@ -1,185 +1,93 @@
-/*<?php
-session_start();
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE &  ~E_WARNING);
-//phpinfo();
-//exit();
-require_once ("config.php");
-require_once ("function.php");
-$next=str_replace("'","\'",$_POST["next"]);
-$gps=str_replace("'","\'",$_POST["gps"]);
+using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FirstBlazorApp.Models;
+using Microsoft.AspNetCore.Components.Forms;
+using static FirstBlazorApp.Pages.Surveypageone;
 
-if($next){
-$mysqli=mcon($mysql["host"], $mysql["user"], $mysql["pass"], $mysql["dbname"],$mysql["charset"]);
+namespace FirstBlazorApp.Pages
+{
+    public partial class Surveyb1 : ComponentBase
+    {
 
-$HC=$_SESSION["HC"];
-$b1_1=$_POST[b1_1];
-$b1_2=$_POST[b1_2];
-$b2=$_POST[b2];
-$b2_2=$_POST[b2_2];
-$b2_3=$_POST[b2_3];
-$b2_4_1=$_POST[b2_4_1];
-$b2_4_1_1=$_POST[b2_4_1_1];
-$b2_4_1_2=$_POST[b2_4_1_2];
-$b2_4_1_3=$_POST[b2_4_1_3];
-$b2_4_2=$_POST[b2_4_2];
-$b2_4_2_1=$_POST[b2_4_2_1];
-$b2_4_2_2=$_POST[b2_4_2_2];
-$b2_4_2_3=$_POST[b2_4_2_3];
-$b2_4_3=$_POST[b2_4_3];
-$b2_4_3_1=$_POST[b2_4_3_1];
-$b2_4_3_2=$_POST[b2_4_3_2];
-$b2_4_3_3=$_POST[b2_4_3_3];
-$b2_4_4=$_POST[b2_4_4];
-$b2_4_4_1=$_POST[b2_4_4_1];
-$b2_4_4_2=$_POST[b2_4_4_2];
-$b2_4_4_3=$_POST[b2_4_4_3];
-$b3=$_POST[b3];
-$b4_1=$_POST[b4_1];
-$b4_2=$_POST[b4_2];
-$b4_3=$_POST[b4_3];
-$b4_4=$_POST[b4_4];
-$b5_1=$_POST[b5_1];
-$b5_2=$_POST[b5_2];
-$b6_1=$_POST[b6_1];
-$b6_2=$_POST[b6_2];
-$b6_3=$_POST[b6_3];
-$b7_1=$_POST[b7_1];
-$b7_1_1=$_POST[b7_1_1];
+        [Parameter]
+        public string HC { get; set; }
+        chksurveyb2 formData = new chksurveyb2();
+        class chksurveyb2
+        {
+            public bool b2_4_1 { get; set; }
+            public bool b2_4_2 { get; set; }
+            public bool b2_4_3 { get; set; }
+            public bool b2_4_4 { get; set; }
+            public bool b7_2_1 { get; set; }
+            public bool b7_2_2 { get; set; }
+            public bool b7_3_1 { get; set; }
+            public bool b7_3_2 { get; set; }
+            public survey_b1 surveyTemp = new survey_b1();
 
-$b7_2=$_POST[b7_2];
-$b7_2_1=$_POST[b7_2_1];
-$b7_2_1_1=$_POST[b7_2_1_1];
-$b7_2_2=$_POST[b7_2_2];
-$b7_2_2_1=$_POST[b7_2_2_1];
+        }
+      
+        protected override async Task OnInitializedAsync()
+        {
+            await DBContext.OpenIndexedDb();
+            string hc = configSurvey.HC_noId(HC);
+            List<survey_b1> getAllSurPro = await DBContext.GetByIndex<string, survey_b1>("survey_b1", hc, null, "hc", false);
 
-$b7_3=$_POST[b7_3];
-$b7_3_1=$_POST[b7_3_1];
-$b7_3_1_1=$_POST[b7_3_1_1];
-$b7_3_2=$_POST[b7_3_2];
-$b7_3_2_1=$_POST[b7_3_2_1];
+            if (getAllSurPro.Count() > 0)
+            {
 
-if(!$_SESSION["HC"]){
-?>
-<script>
-location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
-</script>*/
-/*<?php
-	exit();
+                formData.surveyTemp = getAllSurPro.FirstOrDefault();
+            }
+
+            formData.b2_4_1 = String.IsNullOrEmpty(formData.surveyTemp.b2_4_1) ? false : true;
+            formData.b2_4_2 = String.IsNullOrEmpty(formData.surveyTemp.b2_4_2) ? false : true;
+            formData.b2_4_3 = String.IsNullOrEmpty(formData.surveyTemp.b2_4_3) ? false : true;
+            formData.b2_4_4 = String.IsNullOrEmpty(formData.surveyTemp.b2_4_4) ? false : true;
+            formData.b7_2_1 = String.IsNullOrEmpty(formData.surveyTemp.b7_2_1) ? false : true;
+            formData.b7_2_2 = String.IsNullOrEmpty(formData.surveyTemp.b7_2_2) ? false : true;
+            formData.b7_3_1 = String.IsNullOrEmpty(formData.surveyTemp.b7_3_1) ? false : true;
+            formData.b7_3_2 = String.IsNullOrEmpty(formData.surveyTemp.b7_3_2) ? false : true;
+
+        }
+        protected async Task HandleValidSubmit(EditContext context)
+        {
+            int index = 0;
+            //$query="update survey_a1 set a7_0='$a7_0[$i]',a7_1='$a7_1[$i]',a7_1_1='$a7_1_1[$i]',a7_1_2='$a7_1_2[$i]',a7_2='$a7_2[$i]',a7_2_1='$a7_2_1[$i]',a7_2_2='$a7_2_2[$i]',a7_3='$a7_3[$i]',a7_3_1='$a7_3_1[$i]',a7_3_2='$a7_3_2[$i]',a7_4='$a7_4[$i]',a7_4_1='$a7_4_1[$i]',a7_4_2='$a7_4_2[$i]',a7_5='$a7_5[$i]',a7_5_1='$a7_5_1[$i]',a7_5_2='$a7_5_2[$i]',a7_6='$a7_6[$i]',a7_6_1='$a7_6_1[$i]',a7_6_2='$a7_6_2[$i]',a7_7='$a7_7[$i]',a7_7_1='$a7_7_1[$i]',a7_7_2='$a7_7_2[$i]',a7_8='$a7_8[$i]',a7_8_1='$a7_8_1[$i]',a7_8_2='$a7_8_2[$i]' where HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+
+            formData.surveyTemp.b2_4_1 = formData.b2_4_1 ? "0" : "";
+            formData.surveyTemp.b2_4_2 = formData.b2_4_2 ? "0" : "";
+            formData.surveyTemp.b2_4_3 = formData.b2_4_3 ? "0" : "";
+            formData.surveyTemp.b2_4_4 = formData.b2_4_4 ? "0" : "";
+            formData.surveyTemp.b7_2_1 = formData.b7_2_1 ? "0" : "";
+            formData.surveyTemp.b7_2_2 = formData.b7_2_2 ? "0" : "";
+            formData.surveyTemp.b7_3_1 = formData.b7_3_1 ? "0" : "";
+            formData.surveyTemp.b7_3_2 = formData.b7_3_2 ? "0" : "";
+            string hc = configSurvey.HC_noId(HC);
+            formData.surveyTemp.HC = hc;
+            formData.surveyTemp.survey_year = configSurvey.survey_year;
+            formData.surveyTemp.survey_no = configSurvey.survey_no_num;
+            //List<survey_b2> getAllSurPro = await DBContext.GetByIndex<string, survey_b2>("survey_b2", hc, null, "hc", false);
+            //if(getAllSurPro.Count() > 0)
+            //{
+         await DBContext.UpdateItems<survey_b1>("survey_b1", new List<survey_b1>() {
+                formData.surveyTemp
+             });
+
+            //else
+            //{
+            //    getAdd=await DBContext.AddItems<survey_b2>("survey_b2", new List<survey_b2>() {
+            //            formData.survey_B2
+            //});
+            //}
+
+        }
+
+
+        private async Task gotoPage(string HC_nextPage)
+        {
+            NavigationManager.NavigateTo("/surveyb2/" + HC_nextPage);
+        }
+    }
 }
-
-if(empty($b1_1) || empty($b1_2)){
-	$qu="select HC from survey_profile where HC='$HC' and lat ='' and lng ='' ";
-	$re=$mysqli->query($qu);
-	$ro=$re->fetch_object();
-
-	if($ro->HC){
-		$query_local="select lat,lng from jun_location where JUN='$row_HC->JUN'";
-		$result_local=$mysqli->query($query_local);
-		$row_local=$result_local->fetch_object();
-		$lat=$row_local->lat;
-		$lng=$row_local->lng;
-		$rand1=rand(-1000,1000);
-		$rand2=rand(-1000,1000);
-		$lat2=$rand1/1000000;
-		$lng2=$rand2/1000000;
-		$lat1=$lat+$lat2;
-		$lng1=$lng+$lng2;	
-
-		$update1="update survey_profile set lat='$lat1',lng='$lng1' where HC='$HC'";
-		$mysqli->query($update1);
-	}
-}else{
-	$qu="select HC from survey_profile where HC='$HC' and lat ='' and lng ='' ";
-	$re=$mysqli->query($qu);
-	$ro=$re->fetch_object();
-
-	if($ro->HC){
-		$update1="update survey_profile set lat='$b1_1',lng='$b1_2' where HC='$HC'";
-		$mysqli->query($update1);
-	}
-}
-
-$query1="insert into survey_b1 (HC,survey_year,survey_no,b1_1,b1_2	,b2,b2_2,b2_3,b2_4_1,b2_4_1_1,b2_4_1_2,b2_4_1_3,b2_4_2,b2_4_2_1,b2_4_2_2,b2_4_2_3,b2_4_3,b2_4_3_1,b2_4_3_2,b2_4_3_3,b2_4_4,b2_4_4_1,b2_4_4_2,b2_4_4_3,b3,b4_1,b4_2,b4_3,b4_4,b5_1,b5_2,b6_1,b6_2,b6_3,b7_1,b7_1_1
-,b7_2
-,b7_2_1
-,b7_2_1_1
-,b7_2_2
-,b7_2_2_1
-
-,b7_3
-,b7_3_1
-,b7_3_1_1
-,b7_3_2
-,b7_3_2_1
-
-
-)values('$HC','$survey_year','$survey_no','$b1_1','$b1_2','$b2','$b2_2','$b2_3','$b2_4_1','$b2_4_1_1','$b2_4_1_2','$b2_4_1_3','$b2_4_2','$b2_4_2_1','$b2_4_2_2','$b2_4_2_3','$b2_4_3','$b2_4_3_1','$b2_4_3_2','$b2_4_3_3','$b2_4_4','$b2_4_4_1','$b2_4_4_2','$b2_4_4_3','$b3','$b4_1','$b4_2','$b4_3','$b4_4','$b5_1','$b5_2','$b6_1','$b6_2','$b6_3','$b7_1','$b7_1_1'
-
-,'$b7_2'
-,'$b7_2_1'
-,'$b7_2_1_1'
-,'$b7_2_2'
-,'$b7_2_2_1'
-
-,'$b7_3'
-,'$b7_3_1'
-,'$b7_3_1_1'
-,'$b7_3_2'
-,'$b7_3_2_1'
-
-);";
-$mysqli->query($query1);
-
-$query1="update survey_b1 set b2='$b2',b2_2='$b2_2',b2_3='$b2_3',b2_4_1='$b2_4_1',b2_4_1_1='$b2_4_1_1',b2_4_1_2='$b2_4_1_2',b2_4_1_3='$b2_4_1_3',b2_4_2='$b2_4_2',b2_4_2_1='$b2_4_2_1',b2_4_2_2='$b2_4_2_2',b2_4_2_3='$b2_4_2_3',b2_4_3='$b2_4_3',b2_4_3_1='$b2_4_3_1',b2_4_3_2='$b2_4_3_2',b2_4_3_3='$b2_4_3_3',b2_4_4='$b2_4_4',b2_4_4_1='$b2_4_4_1',b2_4_4_2='$b2_4_4_2',b2_4_4_3='$b2_4_4_3',b3='$b3',b4_1='$b4_1',b4_2='$b4_2',b4_3='$b4_3',b4_4='$b4_4',b5_1='$b5_1',b5_2='$b5_2',b6_1='$b6_1',b6_2='$b6_2',b6_3='$b6_3',b7_1='$b7_1',b7_1_1='$b7_1_1'
-,b7_2='$b7_2'
-,b7_2_1='$b7_2_1'
-,b7_2_1_1='$b7_2_1_1'
-,b7_2_2='$b7_2_2'
-,b7_2_2_1='$b7_2_2_1'
-
-,b7_3='$b7_3'
-,b7_3_1='$b7_3_1'
-,b7_3_1_1='$b7_3_1_1'
-,b7_3_2='$b7_3_2'
-,b7_3_2_1='$b7_3_2_1'
- where HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
-
-$mysqli->query($query1);
-
-$username=$_COOKIE[username_log];
-$log="insert into log_file ( id,username,time1,detail) values('','$username','".date("U") ."','แก้ไข $HC ตอนที่ 2 1/4')";
-$result_log=$mysqli->query($log);
-
-$query3="select HC,TMP from survey_profile where HC='$HC' and (lat='' or lng='' or lat is NULL or lng is NULL)";
-$result3=$mysqli->query($query3);
-$row3=$result3->fetch_object();
-if($row3->HC){
-	if(empty($b1_1) || empty($b1_2)){
-		$qu_tmp="select tambon_name_thai,lat,lng from tambon where tambon_id='$row3->TMP'";
-		$re_tmp=$mysqli->query($qu_tmp);
-		$ro_tmp=$re_tmp->fetch_object();
-
-		$rand1=rand(-1000,1000);
-		$rand2=rand(-1000,1000);
-		$lat2=$rand1/1000000;
-		$lng2=$rand2/1000000;
-		$lat2=$ro_tmp->lat+$lat2;
-		$lng2=$ro_tmp->lng+$lng2;
-		$query_up="update survey_profile set lat='$lat2',lng='$lng2' where HC='$HC';";
-	}else{
-		$query_up="update survey_profile set lat='$b1_1',lng='$b1_2' where HC='$HC'";
-	}
-	$mysqli->query($query_up);
-}
-//echo$query1."<br>";
-
-$log="insert into update_hc ( HC) values('$HC')";
-$result_log=$mysqli->query($log);
-exec("/usr/bin/wget -O /dev/null  https://livingonnewpace.com/survey/hc_sum/hc_sum_real.php?HC=$HC;");
-$mysqli->close();
-}
-?>
-<script>
-	location='index.php?curr=surveyb2'
-</script>*/
-

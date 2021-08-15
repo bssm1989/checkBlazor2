@@ -1,4 +1,6 @@
 ﻿@page "/surveyb4"
+
+@page "/surveyb4/{HC}"
 @inject Models.EmployeeContext DBContext
 
 @using FirstBlazorApp.Models
@@ -9,7 +11,7 @@
 session_start();
 //phpinfo();
 if(!$_SESSION["HC"]){
->?*@
+?>*@
 @*<script>
 location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 </script>*@
@@ -22,8 +24,9 @@ $HC=$_SESSION["HC"];
 $query="select b11_1,b11_1_1,b11_2,b11_2_1,b12_1,b12_2,b12_3,b12_4,b12_5,b12_6,b12_7,b12_8,b12_9,b12_10,b12_11,b12_12,b12_12_1,b13_1,b13_2,b13_3,b13_4,b13_5,b13_6,b13_7,b13_8,b13_9,b13_10,b13_11,b13_12,b14,b15,b13_12_1 from survey_b3 where HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
 $result=$mysqli->query($query);
 $row1=$result->fetch_object();
->?*@
-<form name='survey' method='POST' action='surveyb4_add.php'>
+?>*@
+@*<form name='survey' method='POST' action='surveyb4_add.php'>*@
+<EditForm Model="@formData" OnValidSubmit="@HandleValidSubmit">
 <br>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 	<div class="col-lg-12 mb-3">
@@ -33,7 +36,7 @@ $row1=$result->fetch_object();
 <br>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 		<div class="col-lg-12">
-		<label><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC>?*@</font></b></label>
+		<label><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC?>*@</font></b></label>
 	</div>
 </div>
 <br>
@@ -49,24 +52,26 @@ $row1=$result->fetch_object();
 						document.getElementById('b11_1_c').checked=false;
 						document.getElementById('b11_1_d').checked=false;
 				">
-			<div class="custom-control custom-radio">
-				<input id="b11_1_a" name="b11_1" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b11_1=='1'){echo"checked";}>?*@ >
-				<label class="custom-control-label" for="b11_1_a">1) ไม่มีถนนเข้าถึงที่อยู่อาศัย </label>
+<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_1" TValue="string">
+			<div class="custom-control custom-radio">checkbug
+				<MatRadioButton Value="@("1")" TValue="string"   >1) ไม่มีถนนเข้าถึงที่อยู่อาศัย</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_1" TValue="string">*@				@*<label class="custom-control-label" for="b11_1_a">1) ไม่มีถนนเข้าถึงที่อยู่อาศัย </label>*@
 			</div>
 			<div class="custom-control custom-radio">
-				<input id="b11_1_b" name="b11_1" type="radio" class="custom-control-input" value='2' @*<?php if($row1->b11_1=='2'){echo"checked";}>?*@ >
-				<label class="custom-control-label" for="b11_1_b">2) ถนนเข้าถึงที่อยู่อาศัยใช้การได้บางฤดูกาล  </label>
+				<MatRadioButton Value="@("2")" TValue="string"   >2) ถนนเข้าถึงที่อยู่อาศัยใช้การได้บางฤดูกาล</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_1" TValue="string">*@				@*<label class="custom-control-label" for="b11_1_b">2) ถนนเข้าถึงที่อยู่อาศัยใช้การได้บางฤดูกาล  </label>*@
 			</div>
 			<div class="custom-control custom-radio">
-				<input id="b11_1_c" name="b11_1" type="radio" class="custom-control-input" value='3' @*<?php if($row1->b11_1=='3'){echo"checked";}>?*@ >
-				<label class="custom-control-label" for="b11_1_c">3) ถนนเข้าถึงที่อยู่อาศัยใช้การได้  </label>
+				<MatRadioButton Value="@("3")" TValue="string"   >3) ถนนเข้าถึงที่อยู่อาศัยใช้การได้</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_1" TValue="string">*@				@*<label class="custom-control-label" for="b11_1_c">3) ถนนเข้าถึงที่อยู่อาศัยใช้การได้  </label>*@
 			</div>
 			<div class="custom-control custom-radio">
-				<input id="b11_1_d" name="b11_1" type="radio" class="custom-control-input" value='4' @*<?php if($row1->b11_1=='4'){echo"checked";}>?*@ >
-				<label class="custom-control-label" for="b11_1_d">4) มีการเดินทางในรูปแบบอื่น (ระบุ) </label>
-				<input type='text' name='b11_1_1' value='@*<?php echo$row1->b11_1_1>?*@' placeholder="--ระบุ--" class="form-control">
+				<MatRadioButton Value="@("4")" TValue="string"   >4) มีการเดินทางในรูปแบบอื่น (ระบุ)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_1" TValue="string">*@				@*<label class="custom-control-label" for="b11_1_d">4) มีการเดินทางในรูปแบบอื่น (ระบุ) </label>*@
+				<input type='text' name='b11_1_1'  @bind-value="@formData.surveyTemp.b11_1_1" placeholder="--ระบุ--" class="form-control">
 			</div>
-		</div>
+
+</MatRadioGroup>		</div>
 
 		<div class="col-lg-12  mb-3">
 			<label>11.2 ถนน/เส้นทางสาธารณะและการเดินทางเข้าที่ทำกิน (B11.2)</label>
@@ -77,24 +82,26 @@ $row1=$result->fetch_object();
 						document.getElementById('b11_2_c').checked=false;
 						document.getElementById('b11_2_d').checked=false;
 				">
+<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_2" TValue="string">
 			<div class="custom-control custom-radio">
-				<input id="b11_2_a" name="b11_2" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b11_2=='1'){echo"checked";}>?*@ >
-				<label class="custom-control-label" for="b11_2_a">1) ไม่มีถนนเข้าถึงที่ทำกิน </label>
+				<MatRadioButton Value="@("1")" TValue="string"   >1) ไม่มีถนนเข้าถึงที่ทำกิน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_2" TValue="string">*@				@*<label class="custom-control-label" for="b11_2_a">1) ไม่มีถนนเข้าถึงที่ทำกิน </label>*@
 			</div>
 			<div class="custom-control custom-radio">
-				<input id="b11_2_b" name="b11_2" type="radio" class="custom-control-input" value='2' @*<?php if($row1->b11_2=='2'){echo"checked";}>?*@ >
-				<label class="custom-control-label" for="b11_2_b">2) ถนนเข้าถึงททำกินใช้การได้บางฤดูกาล  </label>
+				<MatRadioButton Value="@("2")" TValue="string"   >2) ถนนเข้าถึงททำกินใช้การได้บางฤดูกาล</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_2" TValue="string">*@				@*<label class="custom-control-label" for="b11_2_b">2) ถนนเข้าถึงททำกินใช้การได้บางฤดูกาล  </label>*@
 			</div>
 			<div class="custom-control custom-radio">
-				<input id="b11_2_c" name="b11_2" type="radio" class="custom-control-input" value='3' @*<?php if($row1->b11_2=='3'){echo"checked";}>?*@ >
-				<label class="custom-control-label" for="b11_2_c">3) ถนนเข้าถึงที่ทำกินใช้การได้  </label>
+				<MatRadioButton Value="@("3")" TValue="string"   >3) ถนนเข้าถึงที่ทำกินใช้การได้</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_2" TValue="string">*@				@*<label class="custom-control-label" for="b11_2_c">3) ถนนเข้าถึงที่ทำกินใช้การได้  </label>*@
 			</div>
 			<div class="custom-control custom-radio">
-				<input id="b11_2_d" name="b11_2" type="radio" class="custom-control-input" value='4' @*<?php if($row1->b11_2=='4'){echo"checked";}>?*@ >
-				<label class="custom-control-label" for="b11_2_d">4) มีการเดินทางในรูปแบบอื่น (ระบุ) </label>
-				<input type='text' name='b11_2_1' value='@*<?php echo$row1->b11_2_1>?*@'  placeholder="--ระบุ--" class="form-control">
+				<MatRadioButton Value="@("4")" TValue="string"   >4) มีการเดินทางในรูปแบบอื่น (ระบุ)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b11_2" TValue="string">*@				@*<label class="custom-control-label" for="b11_2_d">4) มีการเดินทางในรูปแบบอื่น (ระบุ) </label>*@
+				<input type='text' name='b11_2_1'  @bind-value="@formData.surveyTemp.b11_2_1"  placeholder="--ระบุ--" class="form-control">
 			</div>
-		</div>
+
+</MatRadioGroup>		</div>
 	</div>
 </div>
 			
@@ -103,53 +110,41 @@ $row1=$result->fetch_object();
 	<div class="col-lg-12  mb-3">
 		<label>12. ครัวเรือนของท่านรับรู้ข้อมูลข่าวสารของหน่วยงานราชการจากแหล่งใด (ตอบได้มากกว่า 1 ข้อ) (B12)</label>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_1" name="b12_1" type="checkbox" class="custom-control-input" value='1' @*<?php if($row1->b12_1=='1'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_1">1) ไม่ได้รับข่าวสาร </label>
+			<MatCheckbox  @bind-Value="@formData.b12_1" >1) ไม่ได้รับข่าวสาร</MatCheckbox>			@*<label class="custom-control-label" for="b12_1">1) ไม่ได้รับข่าวสาร </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_2" name="b12_2" type="checkbox" class="custom-control-input" value='2' @*<?php if($row1->b12_2=='2'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_2">2) โทรทัศน์  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_2" >2) โทรทัศน์</MatCheckbox>			@*<label class="custom-control-label" for="b12_2">2) โทรทัศน์  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_3" name="b12_3" type="checkbox" class="custom-control-input" value='3' @*<?php if($row1->b12_3=='3'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_3">3) วิทยุ  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_3" >3) วิทยุ</MatCheckbox>			@*<label class="custom-control-label" for="b12_3">3) วิทยุ  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_4" name="b12_4" type="checkbox" class="custom-control-input" value='4' @*<?php if($row1->b12_4=='4'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_4">4) หนังสือพิมพ์  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_4" >4) หนังสือพิมพ์</MatCheckbox>			@*<label class="custom-control-label" for="b12_4">4) หนังสือพิมพ์  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_5" name="b12_5" type="checkbox" class="custom-control-input" value='5' @*<?php if($row1->b12_5=='5'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_5">5) วารสารการเกษตร  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_5" >5) วารสารการเกษตร</MatCheckbox>			@*<label class="custom-control-label" for="b12_5">5) วารสารการเกษตร  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_6" name="b12_6" type="checkbox" class="custom-control-input" value='6' @*<?php if($row1->b12_6=='6'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_6">6) อินเตอร์เน็ต /Social media กลุ่มไลน์  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_6" >6) อินเตอร์เน็ต /Social media กลุ่มไลน์</MatCheckbox>			@*<label class="custom-control-label" for="b12_6">6) อินเตอร์เน็ต /Social media กลุ่มไลน์  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_7" name="b12_7" type="checkbox" class="custom-control-input" value='7' @*<?php if($row1->b12_7=='7'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_7">7) ประชุมหมู่บ้าน </label>
+			<MatCheckbox  @bind-Value="@formData.b12_7" >7) ประชุมหมู่บ้าน</MatCheckbox>			@*<label class="custom-control-label" for="b12_7">7) ประชุมหมู่บ้าน </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_8" name="b12_8" type="checkbox" class="custom-control-input" value='8' @*<?php if($row1->b12_8=='8'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_8">8) หอกระจายข่าวในหมู่บ้าน  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_8" >8) หอกระจายข่าวในหมู่บ้าน</MatCheckbox>			@*<label class="custom-control-label" for="b12_8">8) หอกระจายข่าวในหมู่บ้าน  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_9" name="b12_9" type="checkbox" class="custom-control-input" value='9' @*<?php if($row1->b12_9=='9'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_9">9) เพื่อนบ้าน ญาติพี่น้อง ร้านค้าในหมู่บ้าน  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_9" >9) เพื่อนบ้าน ญาติพี่น้อง ร้านค้าในหมู่บ้าน</MatCheckbox>			@*<label class="custom-control-label" for="b12_9">9) เพื่อนบ้าน ญาติพี่น้อง ร้านค้าในหมู่บ้าน  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_10" name="b12_10" type="checkbox" class="custom-control-input" value='10' @*<?php if($row1->b12_10=='10'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_10">10) ติดประกาศที่เทศบาล/อบต. / หน่วยงาน  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_10" >10) ติดประกาศที่เทศบาล/อบต. / หน่วยงาน</MatCheckbox>			@*<label class="custom-control-label" for="b12_10">10) ติดประกาศที่เทศบาล/อบต. / หน่วยงาน  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_11" name="b12_11" type="checkbox" class="custom-control-input" value='11' @*<?php if($row1->b12_11=='11'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_11">11) รถประชาสัมพันธ์ของหน่วยงาน  </label>
+			<MatCheckbox  @bind-Value="@formData.b12_11" >11) รถประชาสัมพันธ์ของหน่วยงาน</MatCheckbox>			@*<label class="custom-control-label" for="b12_11">11) รถประชาสัมพันธ์ของหน่วยงาน  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b12_12" name="b12_12" type="checkbox" class="custom-control-input" value='12' @*<?php if($row1->b12_12=='12'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b12_12">12) อื่น ๆ (ระบุ) </label>
-			<input type='text' name='b12_12_1' value='@*<?php echo$row1->b12_12_1>?*@'>
+			<MatCheckbox  @bind-Value="@formData.b12_12" >12) อื่น ๆ (ระบุ)</MatCheckbox>			@*<label class="custom-control-label" for="b12_12">12) อื่น ๆ (ระบุ) </label>*@
+			<input type='text' name='b12_12_1'  @bind-value="@formData.surveyTemp.b12_12_1">
 		</div>
 	</div>
 </div>
@@ -159,53 +154,41 @@ $row1=$result->fetch_object();
 	<div class="col-lg-12  mb-3">
 		<label>13. ครัวเรือนของท่านรับรู้/ใช้ประโยชน์ข้อมูลข่าวสารที่เกี่ยวข้องกับการดำรงชีพและสร้างรายได้ ของหน่วยงานราชการจากแหล่งใด (ตอบได้มากกว่า1 ข้อ) (B13)</label>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_1" name="b13_1" type="checkbox" class="custom-control-input" value='1' @*<?php if($row1->b13_1=='1'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_1">1) ไม่ได้รับข่าวสาร </label>
+			<MatCheckbox  @bind-Value="@formData.b13_1" >1) ไม่ได้รับข่าวสาร</MatCheckbox>			@*<label class="custom-control-label" for="b13_1">1) ไม่ได้รับข่าวสาร </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_2" name="b13_2" type="checkbox" class="custom-control-input" value='2' @*<?php if($row1->b13_2=='2'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_2">2) โทรทัศน์  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_2" >2) โทรทัศน์</MatCheckbox>			@*<label class="custom-control-label" for="b13_2">2) โทรทัศน์  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_3" name="b13_3" type="checkbox" class="custom-control-input" value='3' @*<?php if($row1->b13_3=='3'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_3">3) วิทยุ  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_3" >3) วิทยุ</MatCheckbox>			@*<label class="custom-control-label" for="b13_3">3) วิทยุ  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_4" name="b13_4" type="checkbox" class="custom-control-input" value='4' @*<?php if($row1->b13_4=='4'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_4">4) หนังสือพิมพ์  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_4" >4) หนังสือพิมพ์</MatCheckbox>			@*<label class="custom-control-label" for="b13_4">4) หนังสือพิมพ์  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_5" name="b13_5" type="checkbox" class="custom-control-input" value='5' @*<?php if($row1->b13_5=='5'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_5">5) วารสารการเกษตร  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_5" >5) วารสารการเกษตร</MatCheckbox>			@*<label class="custom-control-label" for="b13_5">5) วารสารการเกษตร  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_6" name="b13_6" type="checkbox" class="custom-control-input" value='6' @*<?php if($row1->b13_6=='6'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_6">6) อินเตอร์เน็ต /Social media กลุ่มไลน์  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_6" >6) อินเตอร์เน็ต /Social media กลุ่มไลน์</MatCheckbox>			@*<label class="custom-control-label" for="b13_6">6) อินเตอร์เน็ต /Social media กลุ่มไลน์  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_7" name="b13_7" type="checkbox" class="custom-control-input" value='7' @*<?php if($row1->b13_7=='7'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_7">7) ประชุมหมู่บ้าน </label>
+			<MatCheckbox  @bind-Value="@formData.b13_7" >7) ประชุมหมู่บ้าน</MatCheckbox>			@*<label class="custom-control-label" for="b13_7">7) ประชุมหมู่บ้าน </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_8" name="b13_8" type="checkbox" class="custom-control-input" value='8' @*<?php if($row1->b13_8=='8'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_8">8) หอกระจายข่าวในหมู่บ้าน  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_8" >8) หอกระจายข่าวในหมู่บ้าน</MatCheckbox>			@*<label class="custom-control-label" for="b13_8">8) หอกระจายข่าวในหมู่บ้าน  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_9" name="b13_9" type="checkbox" class="custom-control-input" value='9' @*<?php if($row1->b13_9=='9'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_9">9) เพื่อนบ้าน ญาติพี่น้อง ร้านค้าในหมู่บ้าน  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_9" >9) เพื่อนบ้าน ญาติพี่น้อง ร้านค้าในหมู่บ้าน</MatCheckbox>			@*<label class="custom-control-label" for="b13_9">9) เพื่อนบ้าน ญาติพี่น้อง ร้านค้าในหมู่บ้าน  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_10" name="b13_10" type="checkbox" class="custom-control-input" value='10' @*<?php if($row1->b13_10=='10'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_10">10) ติดประกาศที่เทศบาล/อบต. / หน่วยงาน  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_10" >10) ติดประกาศที่เทศบาล/อบต. / หน่วยงาน</MatCheckbox>			@*<label class="custom-control-label" for="b13_10">10) ติดประกาศที่เทศบาล/อบต. / หน่วยงาน  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_11" name="b13_11" type="checkbox" class="custom-control-input" value='11' @*<?php if($row1->b13_11=='11'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_11">11) รถประชาสัมพันธ์ของหน่วยงาน  </label>
+			<MatCheckbox  @bind-Value="@formData.b13_11" >11) รถประชาสัมพันธ์ของหน่วยงาน</MatCheckbox>			@*<label class="custom-control-label" for="b13_11">11) รถประชาสัมพันธ์ของหน่วยงาน  </label>*@
 		</div>
 		<div class="custom-control custom-checkbox">
-			<input id="b13_12" name="b13_12" type="checkbox" class="custom-control-input" value='12' @*<?php if($row1->b13_12=='12'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b13_12">12) อื่น ๆ (ระบุ) </label>
-			<input type='text' name='b13_12_1' value='@*<?php echo$row1->b13_12_1>?*@'>
+			<MatCheckbox  @bind-Value="@formData.b13_12" >12) อื่น ๆ (ระบุ)</MatCheckbox>			@*<label class="custom-control-label" for="b13_12">12) อื่น ๆ (ระบุ) </label>*@
+			<input type='text' name='b13_12_1'  @bind-value="@formData.surveyTemp.b13_12_1">
 		</div>
 	</div>
 </div>
@@ -213,34 +196,48 @@ $row1=$result->fetch_object();
 <br>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 	<div class="col-lg-12  mb-3">
-		<label for="firstName">14. ครัวเรือนของท่านใช้เทคโนโลยีดิจิทัลในการขอรับสวัสดิการจากภาครัฐหรือไม่ (B14)</label>
+		@*<label for="firstName">14. ครัวเรือนของท่านใช้เทคโนโลยีดิจิทัลในการขอรับสวัสดิการจากภาครัฐหรือไม่ (B14)</label>*@
+<MatRadioGroup @bind-Value="@formData.surveyTemp.b14" TValue="string">
 		<div class="custom-control custom-radio">
-			<input id="b14_1" name="b14" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b14=='0'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b14_1"> 1) ไม่ใช้ </label>
+			<MatRadioButton Value="@("0")" TValue="string"   >1) ไม่ใช้</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b14" TValue="string">*@			@*<label class="custom-control-label" for="b14_1"> 1) ไม่ใช้ </label>*@
 		</div>
 		<div class="custom-control custom-radio">
-			<input id="b14_b" name="b14" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b14=='1'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b14_b"> 2) ใช้</label>
+			<MatRadioButton Value="@("1")" TValue="string"   >2) ใช้</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b14" TValue="string">*@			@*<label class="custom-control-label" for="b14_b"> 2) ใช้</label>*@
 		</div>
-	</div>
+
+</MatRadioGroup>	</div>
 </div>
 
 <br>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 	<div class="col-lg-12  mb-3">
-		<label for="firstName">15. ครัวเรือนของท่านได้รับประโยชน์ในการดำรงชีพและสร้างรายได้จากเทคโนโลยีดิจิทัลหรือไม่ (B15)</label>
+		@*<label for="firstName">15. ครัวเรือนของท่านได้รับประโยชน์ในการดำรงชีพและสร้างรายได้จากเทคโนโลยีดิจิทัลหรือไม่ (B15)</label>*@
+<MatRadioGroup @bind-Value="@formData.surveyTemp.b15" TValue="string">
 		<div class="custom-control custom-radio">
-			<input id="b15_1" name="b15" type="radio" class="custom-control-input" value='0' @*<?php if($row1->b15=='0'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b15_1"> 1) ไม่ได้ </label>
+			<MatRadioButton Value="@("0")" TValue="string"   >1) ไม่ได้</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b15" TValue="string">*@			@*<label class="custom-control-label" for="b15_1"> 1) ไม่ได้ </label>*@
 		</div>
 		<div class="custom-control custom-radio">
-			<input id="b15_b" name="b15" type="radio" class="custom-control-input" value='1' @*<?php if($row1->b15=='1'){echo"checked";}>?*@ >
-			<label class="custom-control-label" for="b15_b"> 2) ได้</label>
+			<MatRadioButton Value="@("1")" TValue="string"   >2) ได้</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.b15" TValue="string">*@			@*<label class="custom-control-label" for="b15_b"> 2) ได้</label>*@
 		</div>
-	</div>
+
+</MatRadioGroup>	</div>
 </div>
 @*<?php
 	$mysqli->close();
 include('button.php');
->?*@
-</form>
+?>*@
+@*</form>*@
+ }
+ <br>
+		<div class="row">
+			<div class="col-lg-12  mb-3">
+				<input type='submit' value='บันทึก' >
+				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+
+			</div>
+		</div>
+</EditForm>

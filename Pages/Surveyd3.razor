@@ -1,4 +1,6 @@
 ﻿@page "/surveyd3"
+
+@page "/surveyd3/{HC}"
 @inject Models.EmployeeContext DBContext
 
 @using FirstBlazorApp.Models
@@ -9,7 +11,7 @@
 session_start();
 //phpinfo();
 if(!$_SESSION["HC"]){
->?*@
+?>*@
 @*<script>
 location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 </script>*@
@@ -22,8 +24,9 @@ $HC=$_SESSION["HC"];
 $query="select d5,d5_1,d5_1_1,d5_1_2,d5_2,d5_2_1,d5_2_2,d5_3,d5_3_1,d5_3_2,d5_4,d5_4_1,d5_4_2,d5_5,d5_5_1,d5_5_2,d5_6,d5_6_1,d5_6_2,d5_7,d5_7_1,d5_7_2,d5_8,d5_8_1,d5_8_2,d5_9,d5_9_1,d5_9_2,d5_10,d5_10_1,d5_10_2,d5_11,d5_11_1,d5_11_2 from survey_d3 where HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
 $result=$mysqli->query($query);
 $row1=$result->fetch_object();
->?*@
-<form name='surway' method='POST' action='surveyd3_add.php'>
+?>*@
+@*<form name='surway' method='POST' action='surveyd3_add.php'>*@
+<EditForm Model="@formData" OnValidSubmit="@HandleValidSubmit">
 <table>
 	<tr>
 		<td align='center'>แบบสอบถาม<br>
@@ -34,7 +37,7 @@ $row1=$result->fetch_object();
 		<td><b>ตอนที่ 4 ทรัพยากรธรรมชาติ และภัยพิบัติต่างๆ  (ทุนทรัพยากรธรรมชาติ) (3/3) (หน้าที่ 16/20)</b></td>
 	</tr>
 	<tr>
-		<td><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC>?*@</font></b></td>
+		<td><b><font size='6' color='red'>HC : @*<?php $HC=$_SESSION["HC"];echo$HC?>*@</font></b></td>
 	</tr>
 	<tr>
 		<td>
@@ -44,8 +47,12 @@ $row1=$result->fetch_object();
 						document.getElementById('d50').checked=false;
 						document.getElementById('d51').checked=false;
 				">
-			<br>&nbsp&nbsp;&nbsp;&nbsp <input type='radio' value='0' name='d5' id='d50' @*<?php if($row1->d5=='0'){echo"checked";}>?*@> ไม่อยู่ 
-			<br>&nbsp&nbsp;&nbsp;&nbsp <input type='radio' value='1' name='d5' id='d51' @*<?php if($row1->d5=='1'){echo"checked";}>?*@> อยู่
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5" TValue="string">
+			<br>&nbsp&nbsp;&nbsp;&nbsp <MatRadioButton Value="@("0")" TValue="string"   >ไม่อยู่</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp;&nbsp <MatRadioButton Value="@("1")" TValue="string"   >อยู่</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='1' name='d5_1'> 1) <font color='blue'>อุทกภัย (D5.1)</font>
 				<input type='button' value='reset' 
 					onclick="
@@ -60,16 +67,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_1_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_1_1' id='d5_1_10' @*<?php if($row1->d5_1_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_1_1' id='d5_1_11' @*<?php if($row1->d5_1_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_1_1' id='d5_1_12' @*<?php if($row1->d5_1_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_1_1' id='d5_1_13' @*<?php if($row1->d5_1_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_1_1' id='d5_1_14' @*<?php if($row1->d5_1_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_1_2' id='d5_1_20' @*<?php if($row1->d5_1_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_1_2' id='d5_1_21' @*<?php if($row1->d5_1_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_1_2' id='d5_1_22' @*<?php if($row1->d5_1_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_1_2' id='d5_1_23' @*<?php if($row1->d5_1_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_1_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='2' name='d5_2'> 2) <font color='blue'>ดินโคลนถล่ม (D5.1)</font>
 				<input type='button' value='reset' 
@@ -85,16 +105,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_2_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_2_1' id='d5_2_10' @*<?php if($row1->d5_2_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_2_1' id='d5_2_11'@*<?php if($row1->d5_2_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_2_1' id='d5_2_12' @*<?php if($row1->d5_2_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_2_1' id='d5_2_13' @*<?php if($row1->d5_2_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_2_1' id='d5_2_14' @*<?php if($row1->d5_2_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_2_2' id='d5_2_20' @*<?php if($row1->d5_2_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_2_2' id='d5_2_21' @*<?php if($row1->d5_2_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_2_2' id='d5_2_22' @*<?php if($row1->d5_2_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_2_2' id='d5_2_23' @*<?php if($row1->d5_2_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_2_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='3' name='d5_3'> 3) <font color='blue'>วาตภัย (D5.1)</font>
 				<input type='button' value='reset' 
@@ -110,16 +143,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_3_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_3_1' id='d5_3_10' @*<?php if($row1->d5_3_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_3_1' id='d5_3_11' @*<?php if($row1->d5_3_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_3_1' id='d5_3_12' @*<?php if($row1->d5_3_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_3_1' id='d5_3_13' @*<?php if($row1->d5_3_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_3_1' id='d5_3_14' @*<?php if($row1->d5_3_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_3_2' id='d5_3_20' @*<?php if($row1->d5_3_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_3_2' id='d5_3_21' @*<?php if($row1->d5_3_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_3_2' id='d5_3_22' @*<?php if($row1->d5_3_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_3_2' id='d5_3_23' @*<?php if($row1->d5_3_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_3_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='4' name='d5_4'> 4) <font color='blue'>อัคคีภัย (D5.1)</font>
 				<input type='button' value='reset' 
@@ -135,16 +181,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_4_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_4_1' id='d5_4_10' @*<?php if($row1->d5_4_2=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_4_1' id='d5_4_11' @*<?php if($row1->d5_4_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_4_1' id='d5_4_12' @*<?php if($row1->d5_4_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_4_1' id='d5_4_13' @*<?php if($row1->d5_4_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_4_1' id='d5_4_14' @*<?php if($row1->d5_4_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_4_2' id='d5_4_20' @*<?php if($row1->d5_4_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_4_2' id='d5_4_21' @*<?php if($row1->d5_4_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_4_2' id='d5_4_22' @*<?php if($row1->d5_4_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_4_2' id='d5_4_23' @*<?php if($row1->d5_4_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_4_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='5' name='d5_5'> 5) <font color='blue'>ภัยจากสารเคมีและวัตถุอันตราย (D5.1)</font>
 				<input type='button' value='reset' 
@@ -160,16 +219,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_5_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_5_1' id='d5_5_10' @*<?php if($row1->d5_5_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_5_1' id='d5_5_11' @*<?php if($row1->d5_5_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_5_1' id='d5_5_12' @*<?php if($row1->d5_5_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_5_1' id='d5_5_13' @*<?php if($row1->d5_5_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_5_1' id='d5_5_14' @*<?php if($row1->d5_5_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_5_2' id='d5_5_20' @*<?php if($row1->d5_5_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_5_2' id='d5_5_21' @*<?php if($row1->d5_5_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_5_2' id='d5_5_22' @*<?php if($row1->d5_5_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_5_2' id='d5_5_23' @*<?php if($row1->d5_5_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_5_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='6' name='d5_6'> 6) <font color='blue'> ภัยแล้ง (D5.1)</font>
 				<input type='button' value='reset' 
@@ -185,16 +257,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_6_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_6_1' id='d5_6_10' @*<?php if($row1->d5_6_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_6_1' id='d5_6_11' @*<?php if($row1->d5_6_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_6_1' id='d5_6_12' @*<?php if($row1->d5_6_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_6_1' id='d5_6_13' @*<?php if($row1->d5_6_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_6_1' id='d5_6_14' @*<?php if($row1->d5_6_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_6_2' id='d5_6_20' @*<?php if($row1->d5_6_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_6_2' id='d5_6_21' @*<?php if($row1->d5_6_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_6_2' id='d5_6_22' @*<?php if($row1->d5_6_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_6_2' id='d5_6_23' @*<?php if($row1->d5_6_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว			
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_6_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='7' name='d5_7'> 7) <font color='blue'>ไฟจากไฟป่าและหมอกควัน (D5.1)</font>
 				<input type='button' value='reset' 
@@ -210,16 +295,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_7_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_7_1' id='d5_7_10' @*<?php if($row1->d5_7_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_7_1' id='d5_7_11' @*<?php if($row1->d5_7_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_7_1' id='d5_7_12' @*<?php if($row1->d5_7_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_7_1' id='d5_7_13' @*<?php if($row1->d5_7_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_7_1' id='d5_7_14' @*<?php if($row1->d5_7_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_7_2' id='d5_7_20' @*<?php if($row1->d5_7_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_7_2' id='d5_7_21' @*<?php if($row1->d5_7_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_7_2' id='d5_7_22' @*<?php if($row1->d5_7_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_7_2' id='d5_7_23' @*<?php if($row1->d5_7_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_7_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='8' name='d5_8'> 8) <font color='blue'>ภัยโรคระบาดในมนุษย์ (D5.1)</font>
 				<input type='button' value='reset' 
@@ -235,16 +333,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_8_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_8_1' id='d5_8_10' @*<?php if($row1->d5_8_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_8_1' id='d5_8_11' @*<?php if($row1->d5_8_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_8_1' id='d5_8_12' @*<?php if($row1->d5_8_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_8_1' id='d5_8_13' @*<?php if($row1->d5_8_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_8_1' id='d5_8_14' @*<?php if($row1->d5_8_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_8_2' id='d5_8_20' @*<?php if($row1->d5_8_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_8_2' id='d5_8_21' @*<?php if($row1->d5_8_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_8_2' id='d5_8_22' @*<?php if($row1->d5_8_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_8_2' id='d5_8_23' @*<?php if($row1->d5_8_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_8_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='9' name='d5_9'> 9) <font color='blue'>ภัยจากแมลง สัตว์ ศัตรูพืชระบาด (D5.1)</font>
 				<input type='button' value='reset' 
@@ -260,16 +371,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_9_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_9_1' id='d5_9_10' @*<?php if($row1->d5_9_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_9_1' id='d5_9_11' @*<?php if($row1->d5_9_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_9_1' id='d5_9_12' @*<?php if($row1->d5_9_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_9_1' id='d5_9_13' @*<?php if($row1->d5_9_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_9_1' id='d5_9_14' @*<?php if($row1->d5_9_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_9_2' id='d5_9_20' @*<?php if($row1->d5_9_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_9_2' id='d5_9_21' @*<?php if($row1->d5_9_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_9_2' id='d5_9_22' @*<?php if($row1->d5_9_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_9_2' id='d5_9_23' @*<?php if($row1->d5_9_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_9_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='10' name='d5_10'> 10) <font color='blue'>ภัยโรคระบาดสัตว์ และสัตว์น้ำ (D5.1)</font>
 				<input type='button' value='reset' 
@@ -285,16 +409,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_10_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_10_1' id='d5_10_10' @*<?php if($row1->d5_10_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_10_1' id='d5_10_11' @*<?php if($row1->d5_10_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_10_1' id='d5_10_12' @*<?php if($row1->d5_10_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_10_1' id='d5_10_13' @*<?php if($row1->d5_10_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_10_1' id='d5_10_14' @*<?php if($row1->d5_10_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_10_2' id='d5_10_20' @*<?php if($row1->d5_10_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_10_2' id='d5_10_21' @*<?php if($row1->d5_10_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_10_2' id='d5_10_22' @*<?php if($row1->d5_10_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_10_2' id='d5_10_23' @*<?php if($row1->d5_10_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_10_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 			<br>&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp <input type='hidden' value='11' name='d5_11'> 11) <font color='blue'>ภัยจากสถานการณ์ความไม่สงบ (ภัยจากมนุษย์) (D5.1)</font>
 				<input type='button' value='reset' 
@@ -310,16 +447,29 @@ $row1=$result->fetch_object();
 						document.getElementById('d5_11_23').checked=false;
 				">
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>ความถี่ประสบภัยพิบัติ (D5.2)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_11_1' id='d5_11_10' @*<?php if($row1->d5_11_1=='0'){echo"checked";}>?*@> 0) ไม่เคยประสบภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_11_1' id='d5_11_11' @*<?php if($row1->d5_11_1=='1'){echo"checked";}>?*@> 1) 1 ครั้ง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_11_1' id='d5_11_12' @*<?php if($row1->d5_11_1=='2'){echo"checked";}>?*@> 2) 2-3 ครั้งในรอบ 5 ปี
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_11_1' id='d5_11_13' @*<?php if($row1->d5_11_1=='3'){echo"checked";}>?*@> 3) ทุกปี (ปีละครั้ง)
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='4' name='d5_11_1' id='d5_11_14' @*<?php if($row1->d5_11_1=='4'){echo"checked";}>?*@> 4) มากกว่าปีละ 1 ครั้ง
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_1" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่เคยประสบภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) 2-3 ครั้งในรอบ 5 ปี</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ทุกปี (ปีละครั้ง)</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_1" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("4")" TValue="string"   >4) มากกว่าปีละ 1 ครั้ง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_1" TValue="string">*@
+</MatRadioGroup>
 			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<font color='red'>การรับมือกับภัยพิบัติ (D5.3)</font>
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='0' name='d5_11_2' id='d5_11_20' @*<?php if($row1->d5_11_2=='0'){echo"checked";}>?*@> 0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='1' name='d5_11_2' id='d5_11_21' @*<?php if($row1->d5_11_2=='1'){echo"checked";}>?*@> 1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='2' name='d5_11_2' id='d5_11_22' @*<?php if($row1->d5_11_2=='2'){echo"checked";}>?*@> 2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ
-			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<input type='radio' value='3' name='d5_11_2' id='d5_11_23' @*<?php if($row1->d5_11_2=='3'){echo"checked";}>?*@> 3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว
+<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_2" TValue="string">
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("0")" TValue="string"   >0) ไม่ได้รับความช่วยเหลือ/ช่วยเหลือตัวเอง</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("1")" TValue="string"   >1) ได้รับการช่วยเหลือและชดเชยเยียวยาจากภาครัฐ/เอกชน</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("2")" TValue="string"   >2) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติ</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_2" TValue="string">*@
+			<br>&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp&nbsp&nbsp;&nbsp;&nbsp<MatRadioButton Value="@("3")" TValue="string"   >3) ชุมชนมีระบบบริหารจัดการรองรับภัยพิบัติและสามารถฟื้นตัวเข้าสู่ภาวะปกติได้เร็ว</MatRadioButton>
+@*<MatRadioGroup @bind-Value="@formData.surveyTemp.d5_11_2" TValue="string">*@
+</MatRadioGroup>
 			<hr>
 		</td>
 	</tr>
@@ -327,6 +477,16 @@ $row1=$result->fetch_object();
 @*<?php
 	$mysqli->close();
 include('button2.php');
->?*@
+?>*@
 </table>
-</form>
+@*</form>*@
+ }
+ <br>
+		<div class="row">
+			<div class="col-lg-12  mb-3">
+				<input type='submit' value='บันทึก' >
+				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+
+			</div>
+		</div>
+</EditForm>@**@
