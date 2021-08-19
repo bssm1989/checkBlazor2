@@ -16,7 +16,7 @@ namespace FirstBlazorApp.Models
         public EmployeeOfflineDb()
         {
             Name = "EmployeeData";
-            Version = 60;
+            Version = 62;
             Stores = _stores;
         }
         private IndexedDbStore _tableFieldStore => new TStore<Employee>();

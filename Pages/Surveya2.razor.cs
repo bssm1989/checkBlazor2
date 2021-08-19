@@ -86,15 +86,7 @@ namespace FirstBlazorApp.Pages
 		public bool a7_8  { get; set; }  
 
 		}
-		private	bool  	a7_0Val	  =false;
-		private	bool  	a7_1Val	  =false;
-		private	bool  	a7_2Val	  =false;
-		private	bool  	a7_3Val	  =false;
-		private	bool  	a7_4Val	  =false;
-		private	bool  	a7_5Val	  =false;
-		private	bool  	a7_6Val	  =false;
-		private	bool  	a7_7Val	  =false;
-		private bool	a7_8Val = false;
+
 
 
 
@@ -109,7 +101,7 @@ namespace FirstBlazorApp.Pages
 			foreach (var item in getallsurveya1)
 			{
 
-				var hc_no_year = item.survey_no.Split('|');
+				var hc_no_year = item.HC.Split('|');
 				listMoSurA2.Add(new modelSurA2
 				{
 					survey_A1 = item,

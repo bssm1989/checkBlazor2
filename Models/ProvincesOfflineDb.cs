@@ -653,9 +653,9 @@ namespace FirstBlazorApp.Models
         public class survey_a1
         {
             public int id { get; set; }
+            [IndexDbKey(AutoIncrement = true)]
             public string HC { get; set; }
             public string survey_year { get; set; }
-            [IndexDbKey(AutoIncrement = true)]
             public string survey_no { get; set; }
             public string a1 { get; set; }
             public string a2 { get; set; }
@@ -1480,9 +1480,9 @@ namespace FirstBlazorApp.Models
         }
         public class survey_staff
         {
+            [IndexDbKey(AutoIncrement = true)]
             public string HC { get; set; }
             public string survey_year { get; set; }
-            [IndexDbKey(AutoIncrement = true)]
             public string survey_no { get; set; }
             public string staff { get; set; }
             public int? ch1_st { get; set; }

@@ -281,9 +281,10 @@ namespace FirstBlazorApp.Pages
 
 					new survey_staff
 					{
-						HC =  recordSurveyProfile.HC,
-						survey_no =configSurvey.HC_random(recordSurveyProfile.HC),
-						survey_year = configSurvey.survey_year
+						//HC =  recordSurveyProfile.HC,
+						HC =configSurvey.HC_random(recordSurveyProfile.HC),
+						survey_year = configSurvey.survey_year,
+						survey_no = configSurvey.survey_no_num
 					}
 
 				});

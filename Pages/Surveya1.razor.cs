@@ -1,12 +1,10 @@
 using FirstBlazorApp.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using static FirstBlazorApp.Pages.Surveypageone;
@@ -29,31 +27,37 @@ namespace FirstBlazorApp.Pages
 			public survey_a1 survey_A1{ get; set; }
 			public bool del {  get; set; }
 			public string title { get; set; }
+			public string HC { get; set; }
+			public string index { get; set; }
 		}
 		List<modelSurA1> listMoSurA1=new List<modelSurA1>();
 		protected override async Task OnInitializedAsync()
 		{
 			await DBContext.OpenIndexedDb();
-			survey_Profiles = await DBContext.GetByIndex<string, survey_profile>("survey_profile", HC, null, "hc", false);
+			survey_Profiles = await DBContext.GetByIndex<string, survey_profile>("survey_profile",  HC, null, "hc", false);
+			List<survey_a1> checkCutList=new List<survey_a1>();
 			if (survey_Profiles.Count >0)
 			{
-				var getAllSurveya1 = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
+				//var getAllSurveya1 = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
+				var getAllSurveya1 = await DBContext.GetAll< survey_a1>("survey_a1");
+
+				var getListByHc=getAllSurveya1.Where(x=>x.HC.Contains(HC)).ToList();	
 				var surProFirst = survey_Profiles.First();
-				if (getAllSurveya1.Count < Convert.ToInt32(surProFirst.HHM) + Convert.ToInt32(surProFirst.PP))
+				if (getListByHc.Count < Convert.ToInt32(surProFirst.HHM) + Convert.ToInt32(surProFirst.PP))
 					for (int i = 1; i <= Convert.ToInt32(surProFirst.HHM) + Convert.ToInt32(surProFirst.PP); i++)
 					{
 						if (getAllSurveya1.Count != 0)
 						{
 
-							var checkCutList = getAllSurveya1.Where(x=>x.id==i).ToList();
-							if(checkCutList.Count == 0)
+							 checkCutList = getListByHc.Where(x=>x.id==i).ToList();
+							if(checkCutList.Count <1)
 
                             {
 								await DBContext.AddItems<survey_a1>("survey_a1", new List<survey_a1>(){
 								new survey_a1()
 								{
 
-									HC=survey_Profiles.First().HC,
+									HC=configSurvey.survey_no(HC,i),
 									id=i,
 										survey_no =configSurvey.survey_no(HC,i),
 									survey_year = configSurvey.survey_year
@@ -78,7 +82,7 @@ namespace FirstBlazorApp.Pages
 									new survey_a1()
 									{
 
-										HC=survey_Profiles.First().HC,
+										HC=configSurvey.survey_no(HC,i),
 										id=i,
 											survey_no =configSurvey.survey_no(HC,i),
 										survey_year = configSurvey.survey_year
@@ -98,9 +102,14 @@ namespace FirstBlazorApp.Pages
 
 					
 					}
-				survey_A1s = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
+				getAllSurveya1 = await DBContext.GetAll<survey_a1>("survey_a1");
+
+				getListByHc = getAllSurveya1.Where(x => x.HC.Contains(HC)).ToList();
+
+
+				//survey_A1s = await DBContext.GetByIndex<string, survey_a1>("survey_a1", survey_Profiles.First().HC, null, "hc", false);
 				int index = 0;
-				foreach (var item in survey_A1s)
+				foreach (var item in getListByHc)
                 {
 					index++;
 					listMoSurA1.Add(new modelSurA1
@@ -136,8 +145,8 @@ namespace FirstBlazorApp.Pages
 			{ i++;
                 if (item.del)
                 {
-				await DBContext.DeleteByKey<string>("survey_a1", item.survey_A1.survey_no);
-				await DBContext.DeleteByKey<string>("survey_a2", item.survey_A1.survey_no);
+				await DBContext.DeleteByKey<string>("survey_a1", item.survey_A1.HC);
+				await DBContext.DeleteByKey<string>("survey_a2", item.survey_A1.HC);
 
                 }
                 else
