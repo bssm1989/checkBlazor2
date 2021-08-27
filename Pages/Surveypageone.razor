@@ -246,8 +246,15 @@
 				<input type='submit' value='บันทึก' >
 				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
 				<button @onclick="@( e => Navigate(@HC))">Navigate</button>
-
-
+				@{
+					
+						var txtLink="surveya1/"+@HC;
+						}
+				<MatButtonLink Href='@txtLink' Raised="true" Style="Default">Dense</MatButtonLink>
+				<MatThemeProvider Theme="@theme">
+    <MatButton Raised="true" Label="Primary" />
+    <MatButton Raised="true" Label="Secondary" Class="mdc-theme--secondary-bg mdc-theme--on-secondary"/>
+</MatThemeProvider>
 			</div>
 		</div>
 </EditForm>

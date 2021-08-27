@@ -13,6 +13,7 @@ using System.Threading;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Web.Mvc;
+using MatBlazor;
 
 namespace FirstBlazorApp.Pages
 {
@@ -316,8 +317,8 @@ namespace FirstBlazorApp.Pages
 			//	recordSurveyProfile.AMP = "9603";
 		}
 
-		
-void Navigate(string HC_nextPage)
+		public MatTheme theme = new MatTheme { Primary = "#AAAA00", Secondary = "#00AAAA", OnSecondary = "#FAFAAA" };
+		void Navigate(string HC_nextPage)
 		{
 			UriHelper.NavigateTo("/surveya1/" + HC_nextPage);
 		}
