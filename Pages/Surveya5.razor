@@ -24,7 +24,7 @@ location='https://livingonnewpace.com/survey/index.php?curr=survey_profile';
 <br>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 	<div class="col-lg-12  mb-3">
-		@*<label for="firstName"><b>ตอนที่ 1 ข้อมูลสมาชิกในครัวเรือน (ทุนมนุษย์) (5/5) (หน้าที่ 6/20)</b></label>*@
+		<label for="firstName"><b>ตอนที่ 1 ข้อมูลสมาชิกในครัวเรือน (ทุนมนุษย์) (5/5) (หน้าที่ 6/20)</b></label>
 	</div>
 </div>
 <br>
@@ -138,8 +138,8 @@ include('button.php');
  <br>
 		<div class="row">
 			<div class="col-lg-12  mb-3">
-				<input type='submit' value='บันทึก' >
-				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+				<MatButton Raised="true" type="submit" >บันทึก @complete</MatButton>
+				@{var txtLink="surveyb1/"+@HC;}<MatButtonLink Href='@txtLink' Raised="true" Style="Default">ถัดไป</MatButtonLink>
 
 			</div>
 		</div>

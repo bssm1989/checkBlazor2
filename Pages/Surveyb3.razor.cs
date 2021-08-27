@@ -52,6 +52,7 @@ namespace FirstBlazorApp.Pages
 
         [Parameter]
         public string HC { get; set; }
+string complete = "";
         chksurveyb2 formData = new chksurveyb2();
         class chksurveyb2
         {
@@ -126,7 +127,7 @@ namespace FirstBlazorApp.Pages
             await DBContext.UpdateItems<survey_b2>("survey_b2", new List<survey_b2>() {
                 formData.surveyTemp
              });
-
+            complete = "เรียบร้อย";
         }
 
 

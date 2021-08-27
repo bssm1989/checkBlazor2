@@ -24,6 +24,7 @@ namespace FirstBlazorApp.Pages
 
         [Parameter]
         public string HC { get; set; }
+string complete = "";
         chksurveyb2 formData = new chksurveyb2();
         class chksurveyb2
         {
@@ -113,15 +114,15 @@ namespace FirstBlazorApp.Pages
             getUpdate = await DBContext.UpdateItems<survey_b2>("survey_b2", new List<survey_b2>() {
                 formData.survey_B2
              });
-        
-        //else
-        //{
-    //    getAdd=await DBContext.AddItems<survey_b2>("survey_b2", new List<survey_b2>() {
-    //            formData.survey_B2
-    //});
+            complete = "เรียบร้อย";
+            //else
+            //{
+            //    getAdd=await DBContext.AddItems<survey_b2>("survey_b2", new List<survey_b2>() {
+            //            formData.survey_B2
+            //});
             //}
-           
-}
+
+        }
             
         
                 private async Task gotoPage(string HC_nextPage)

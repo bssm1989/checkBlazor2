@@ -16,6 +16,7 @@ namespace FirstBlazorApp.Pages
 
 		[Parameter]
 		public string HC { get; set; }
+string complete = "";
 		List<survey_a1> recordSurveya1 = new List<survey_a1>();
 		List<bool> checked1 = new List<bool>();
 		List<string> checkedTitle = new List<string>();
@@ -213,20 +214,21 @@ namespace FirstBlazorApp.Pages
 						time1=configSurvey.timestam(),
 						detail="แก้ไข "+HC+" ตอนที่ 1 1/5"
 						} });
-//$result_log=$mysqli->query($log);
+			complete = "เรียบร้อย";
+			//$result_log=$mysqli->query($log);
 
-//$log="insert into update_hc ( HC) values('$HC')";
-//$result_log=$mysqli->query($log);
+			//$log="insert into update_hc ( HC) values('$HC')";
+			//$result_log=$mysqli->query($log);
 
-//$query_up="select ch1 from survey_staff where  HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+			//$query_up="select ch1 from survey_staff where  HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
 
-				
 
-//$result_up=$mysqli->query($query_up);
-//if($result_up->ch1){
-//	$query_up1="update survey_staff set ch1_st='".date("U")."' where  HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
-//	$result_up1=$mysqli->query($query_up1);
-//}
+
+			//$result_up=$mysqli->query($query_up);
+			//if($result_up->ch1){
+			//	$query_up1="update survey_staff set ch1_st='".date("U")."' where  HC='$HC' and a1='$a1[$i]' and survey_year='$survey_year' and survey_no='$survey_no'";
+			//	$result_up1=$mysqli->query($query_up1);
+			//}
 		}
 		private async Task gotoPage(string HC_nextPage)
 		{

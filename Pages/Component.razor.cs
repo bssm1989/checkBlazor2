@@ -20,6 +20,7 @@ namespace FirstBlazorApp.Pages
 	{
 		[Parameter]
 		public string HC { get; set; }
+string complete = "";
 		List<survey_a1> recordSurveya1 = new List<survey_a1>();
 		List<bool> checked1 = new List<bool>();
 		List<string> checkedTitle = new List<string>();

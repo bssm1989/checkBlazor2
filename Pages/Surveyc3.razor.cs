@@ -51,6 +51,7 @@ namespace FirstBlazorApp.Pages
 
         [Parameter]
         public string HC { get; set; }
+string complete = "";
         chksurveyb2 formData = new chksurveyb2();
         class chksurveyb2
         {
@@ -133,7 +134,7 @@ namespace FirstBlazorApp.Pages
             //            formData.survey_B2
             //});
             //}
-
+            complete = "เรียบร้อย";
         }
 
 

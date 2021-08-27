@@ -30,7 +30,7 @@ $row1=$result->fetch_object();
 <br>
 <div class="row" style='border-style: dotted;border-width: 1px'>
 	<div class="col-lg-12 mb-3">
-			<b>ตอนที่ 2 ข้อมูลด้านกายภาพและสาธารณูปโภคสาธารณูปการ (ทุนกายภาพ) (3/4) (หน้าที่ 9/20</b>
+			<b>ตอนที่ 2 ข้อมูลด้านกายภาพและสาธารณูปโภคสาธารณูปการ (ทุนกายภาพ) (3/4) (หน้าที่ 9/20)</b>
 	</div>
 </div>
 <br>
@@ -123,8 +123,8 @@ include('button.php');
  <br>
 		<div class="row">
 			<div class="col-lg-12  mb-3">
-				<input type='submit' value='บันทึก' >
-				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+				<MatButton Raised="true" type="submit" >บันทึก @complete</MatButton>
+				@{var txtLink="surveyb4/"+@HC;}<MatButtonLink Href='@txtLink' Raised="true" Style="Default">ถัดไป</MatButtonLink>
 
 			</div>
 		</div>

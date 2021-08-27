@@ -34,6 +34,7 @@ namespace FirstBlazorApp.Pages
 		string districtId;
 		string districtId2;
 		string tambonId2;
+		string complete = "";
 		private string threatId3 = null;
 		public string tambonId
 		{
@@ -296,7 +297,7 @@ namespace FirstBlazorApp.Pages
 				});
 			}
 			//$log="insert into log_file ( id,username,time1,detail) values('','$username','".date("U") ."','เพิ่ม $HC')";
-
+			complete = "เรียบร้อย";
 		}
 		private async Task gotoPage(string HC_nextPage)
         {

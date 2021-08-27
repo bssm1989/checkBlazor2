@@ -60,6 +60,7 @@ namespace FirstBlazorApp.Pages
 
         [Parameter]
         public string HC { get; set; }
+string complete = "";
         List<chksurveyb2> formData = new List<chksurveyb2>();
         class chksurveyb2
         {
@@ -138,13 +139,13 @@ public survey_a2 surveyTemp = new survey_a2();
              });
                 index++;
             }
-            
-            
+
+
 
             //List<survey_b2> getAllSurPro = await DBContext.GetByIndex<string, survey_b2>("survey_b2", hc, null, "hc", false);
             //if(getAllSurPro.Count() > 0)
             //{
-           
+
 
             //else
             //{
@@ -152,7 +153,7 @@ public survey_a2 surveyTemp = new survey_a2();
             //            formData.survey_B2
             //});
             //}
-
+            complete = "เรียบร้อย";
         }
 
 

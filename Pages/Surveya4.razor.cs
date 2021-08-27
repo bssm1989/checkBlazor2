@@ -76,6 +76,7 @@ namespace FirstBlazorApp.Pages
 	{
 		[Parameter]
 		public string HC { get; set; }
+string complete = "";
 		List<survey_a1> recordSurveya1 = new List<survey_a1>();
 		List<bool> checked1 = new List<bool>();
 		List<string> checkedTitle = new List<string>();
@@ -236,6 +237,7 @@ namespace FirstBlazorApp.Pages
 						time1=configSurvey.timestam(),
 						detail="แก้ไข $HC ตอนที่ 1 4/5')"
 						} });
+			complete = "เรียบร้อย";
 			StateHasChanged();
 		}
 		private async Task gotoPage(string HC_nextPage)
