@@ -3,7 +3,7 @@
 
 @inject Models.EmployeeContext DBContext
 @inject Models.EmployeeContext DBContext
-
+@inject NavigationManager UriHelper
 @using FirstBlazorApp.Models
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
@@ -102,7 +102,7 @@
 			</div>
 
 		
-				<input type="button"  @onclick="@(e => gotoSelAsync())" value="ถัดไป2" />
+				
 
 			<div class="col-lg-12  mb-3">
 				<label for="country">ตำบล </label>
@@ -245,6 +245,8 @@
 			<div class="col-lg-12  mb-3">
 				<input type='submit' value='บันทึก' >
 				<input type="button"  @onclick="@(e => gotoPage(@HC))" value="ถัดไป" />
+				<button @onclick="@( e => Navigate(@HC))">Navigate</button>
+
 
 			</div>
 		</div>

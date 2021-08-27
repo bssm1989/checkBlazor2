@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Web.Mvc;
 
 namespace FirstBlazorApp.Pages
 {
@@ -242,6 +243,9 @@ namespace FirstBlazorApp.Pages
 			recordSurveyProfile.JUN = SelectProvinceId;
 			recordSurveyProfile.AMP = SelectDistrictId;
 			recordSurveyProfile.TMP = tambonId;
+			var HCFromInput = configSurvey.HC_random(recordSurveyProfile.HC);
+
+			recordSurveyProfile.survey_no = HCFromInput;
 			List<survey_profile> GetHC = await DBContext.GetByIndex<string, survey_profile>("survey_profile", recordSurveyProfile.HC, null, "hc", false);
 			if (GetHC.Count != 0)
 			{
@@ -282,9 +286,10 @@ namespace FirstBlazorApp.Pages
 					new survey_staff
 					{
 						//HC =  recordSurveyProfile.HC,
-						HC =configSurvey.HC_random(recordSurveyProfile.HC),
+						HC =HCFromInput,
 						survey_year = configSurvey.survey_year,
-						survey_no = configSurvey.survey_no_num
+						survey_no = configSurvey.survey_no_num,
+						staff=User
 					}
 
 				});
@@ -310,6 +315,12 @@ namespace FirstBlazorApp.Pages
 			recordSurveyProfile.AGRI_NO = "sdsdsdsdsdsdsds";
 			//	recordSurveyProfile.AMP = "9603";
 		}
-	
+
+		
+void Navigate(string HC_nextPage)
+		{
+			UriHelper.NavigateTo("/surveya1/" + HC_nextPage);
+		}
+
 	}
 }

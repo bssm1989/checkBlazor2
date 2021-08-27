@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using static FirstBlazorApp.Pages.Surveypageone;
 
 namespace FirstBlazorApp.Pages
 {
@@ -19,6 +20,21 @@ namespace FirstBlazorApp.Pages
         bool displayValidationErrorMessages = false;
         bool displayUserAddedToDB = false;
 
+        //**************แบบสำรวจ***********
+        private List<Models.staff_jun> re_ce = new List<Models.staff_jun>();
+        private List<survey_staff> SurveyStaff= new List<survey_staff>();
+        private List<Models.volunteer> name1 = new List<Models.volunteer>();
+        private int num_total = 0;
+        private string searchHc ="";
+
+        private List<Models.survey_profile> survey_profile_list_by_hc = new List<survey_profile>();
+        private List<survey_profile> survey_profiles = new List<survey_profile>();
+
+        public class listTableByHc
+		{
+            List<Models.survey_profile> survey_profile_list_by_hc = new List<survey_profile>();
+
+        }
         string currentInputValue;
 
         public async Task synData()
@@ -101,10 +117,28 @@ namespace FirstBlazorApp.Pages
             emp.Email = "";
             emp.MobileNumber = "";
         }
-        private void HandleInvalidSubmit(EditContext context)
+        private async Task HandleInvalidSubmitAsync(EditContext context)
         {
             displayValidationErrorMessages = true;
             displayUserAddedToDB = false;
+           
+
+        }
+        private async Task searchHcList()
+        {
+            //await DBContext.OpenIndexedDb;
+            survey_profile_list_by_hc = await DBContext.GetAll<survey_profile>("survey_profile");
+            //survey_profile_list_by_hc = survey_profile_list_by_hc
+            //    .Where(x=>x.HC.Contains(searchHc) &&
+            //    x.survey_year==configSurvey.survey_year &&
+            //    x.survey_no== configSurvey.survey_no_num 
+            //   ).ToList();
+            SurveyStaff = await DBContext.GetAll<survey_staff>("survey_staff");
+            var listProfileStaff = from sp in survey_profile_list_by_hc
+                                   join st in SurveyStaff on sp.survey_no equals st.HC
+                                   select new { sp,st };
+            var listByhc = listProfileStaff.ToList();
+            //listByhc.ElementAt(0).sp.HC;
         }
         protected override async Task OnInitializedAsync()
         {
@@ -112,7 +146,18 @@ namespace FirstBlazorApp.Pages
             survey_profile_list = (await DBContext.GetAll<survey_profile>("survey_profile")).OrderBy(x => x.create_survey).ToList();
 
             employees = await DBContext.GetAll();
+
+            //**************แบบสำรวจ***********
+            re_ce = await DBContext.GetByIndex<string, staff_jun>("staff_jun", "bassam","", "username",false);
+            name1 = await DBContext.GetByIndex<string, volunteer>("volunteer", "bassam","", "username",false);
+
+
+            num_total=survey_profile_list.Count();
+
+
         }
+       
+
         private string AddResult = string.Empty;
     }
 }
