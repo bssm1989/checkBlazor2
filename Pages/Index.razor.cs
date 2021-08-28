@@ -26,6 +26,15 @@ namespace FirstBlazorApp.Pages
         private List<Models.volunteer> name1 = new List<Models.volunteer>();
         private int num_total = 0;
         private string searchHc ="";
+        class tableListSurvey
+        {
+            public survey_staff survey_staff { get; set; }
+            public string HC { get; set; }
+            public string UserName { get; set; }
+            public string nameProvince { get; set; }
+        }
+        List<tableListSurvey> tableListSurveys= new List<tableListSurvey>();
+        
 
         private List<Models.survey_profile> survey_profile_list_by_hc = new List<survey_profile>();
         private List<survey_profile> survey_profiles = new List<survey_profile>();
@@ -148,11 +157,30 @@ namespace FirstBlazorApp.Pages
             employees = await DBContext.GetAll();
 
             //**************แบบสำรวจ***********
-            re_ce = await DBContext.GetByIndex<string, staff_jun>("staff_jun", "bassam","", "username",false);
-            name1 = await DBContext.GetByIndex<string, volunteer>("volunteer", "bassam","", "username",false);
+            //$query_p = "select HC,JUN from        survey_profile where HC='$row->HC'";
+            //198: 	$query_st = "select name from   volunteer where username='$row->staff'";
+            //202: 	$query_j = "select              province_name_thai from province where province_id='$row_p->JUN'";
+            //206: 	$qcheck = "select username from survey_check where HC='$row->HC' and survey_year='$survey_year' and survey_no='$survey_no'";
+            var survey_profiles = await DBContext.GetAll<survey_profile>("survey_profile");
+            var provinces = await DBContext.GetAll<province>("province");
+            var survey_staffs = await DBContext.GetAll<survey_staff>("survey_staff");
+            var listProfileStaff = from sp in survey_profiles
+                                   join pr in provinces on sp.JUN equals pr.province_id
+                                   join st in survey_staffs  on sp.HC equals st.HC
+                                   select new { sp, st ,pr};
+            var listByhc = listProfileStaff.ToList();
+            foreach (var item in listByhc.OrderBy(x=>x.sp.create_survey))
+            {
+                tableListSurveys.Add(new tableListSurvey
+                {
+                    survey_staff = item.st,
+                    UserName = item.st.staff,
+                    nameProvince = item.pr.province_name_thai,
+                    HC = item.sp.HC
+                });
+            }
 
-
-            num_total=survey_profile_list.Count();
+            num_total =survey_profile_list.Count();
 
 
         }

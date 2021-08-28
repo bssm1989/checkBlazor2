@@ -251,6 +251,7 @@ namespace FirstBlazorApp.Pages
 			List<survey_profile> GetHC = await DBContext.GetByIndex<string, survey_profile>("survey_profile", recordSurveyProfile.HC, null, "hc", false);
 			if (GetHC.Count != 0)
 			{
+				recordSurveyProfile.last_edit = updateStamp;
 				_ = await DBContext.UpdateItems<survey_profile>("survey_profile", new List<survey_profile> { recordSurveyProfile });
 				_ = await DBContext.AddItems<log_file>("log_file", new List<log_file> { new log_file { id = num, username = User, time1 = updateStamp, detail = "แก้ไข" + recordSurveyProfile.HC + "profile" } });
 			}
@@ -288,7 +289,7 @@ namespace FirstBlazorApp.Pages
 					new survey_staff
 					{
 						//HC =  recordSurveyProfile.HC,
-						HC =HCFromInput,
+						HC =recordSurveyProfile.HC,
 						survey_year = configSurvey.survey_year,
 						survey_no = configSurvey.survey_no_num,
 						staff=User,

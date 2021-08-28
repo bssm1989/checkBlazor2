@@ -206,7 +206,7 @@ echo"
 <br>
 <div class=\"row\">
 	<div class=\"col-lg-12\">
-		<label>ขณะนี้มีแบบสำรวจทั้งหมด&nbsp; $CHC &nbsp;ชุด&nbsp;&nbsp;<a href='index.php?curr=list_staff1&all=1'>ดูทั้งหมด</a></label>
+		<label>ขณะนี้มีแบบสำรวจทั้งหมด&nbsp; @tableListSurveys.Count() &nbsp;ชุด&nbsp;&nbsp;<a href='index.php?curr=list_staff1&all=1'>ดูทั้งหมด</a></label>
 	</div>
 </div>
 @*
@@ -260,7 +260,12 @@ echo"
 	<td align='center'>เริ่มทำ</td>
 	<td align='center'>ทำเสร็จ</td>
 </tr>
+@foreach (var item in tableListSurveys)
+{
+	
+
 @*";
+@
 while($row=$result->fetch_object()){
 	$query_p="select HC,JUN from survey_profile where HC='$row->HC'";
 //echo"<br>";
@@ -280,46 +285,38 @@ while($row=$result->fetch_object()){
 	$rocheck=$recheck->fetch_object();
 
 	if($rocheck->username){
-		echo"*@
+		echo"
 			<tr bgcolor='green'>
 				<td><a href='survey_edit.php?HC=$row->HC'>$row->HC </a></td>
 				<td>$row_st->name </td>
 				<td>$row_j->province_name_thai </td>
-@*		";
+*@@*		";
 	}else{
-		echo"
-			<tr>*@
-				<td><a href='survey_edit.php?HC=$row->HC'>$row->HC </a></td>
-				<td>$row_st->name </td>
-				<td>$row_j->province_name_thai </td>
-@*		";
-	}
-	*@
+		echo"*@
+			<tr>
+				<td><a href='surveypageone/@item.HC' >@item.HC</a></td>
+				<td>@item.UserName </td>
+				<td>@item.nameProvince </td>
+				<td>@item.survey_staff.ch1_st</td>
+				<td>@item.survey_staff.ch1_sp</td>
+				<td>@item.survey_staff.ch2_st</td>
+				<td>@item.survey_staff.ch2_sp</td>
+				<td>@item.survey_staff.ch3_st</td>
+				<td>@item.survey_staff.ch3_sp</td>
+				<td>@item.survey_staff.ch4_st</td>
+				<td>@item.survey_staff.ch4_sp</td>
+				<td>@item.survey_staff.ch5_st</td>
+				<td>@item.survey_staff.ch5_sp</td>
+			</tr>	
 
-@*if($row_p->HC){
-//	echo"<td align='center'>มี</td>";
-}else{
-//	echo"<td align='center'>ไม่มี</td>";
-}
-echo"*@
-	<td>".timestamp2date($row->ch1_st)."</td>
-	<td>".timestamp2date($row->ch1_sp)."</td>
-	<td>".timestamp2date($row->ch2_st)."</td>
-	<td>".timestamp2date($row->ch2_sp)."</td>
-	<td>".timestamp2date($row->ch3_st)."</td>
-	<td>".timestamp2date($row->ch3_sp)."</td>
-	<td>".timestamp2date($row->ch4_st)."</td>
-	<td>".timestamp2date($row->ch4_sp)."</td>
-	<td>".timestamp2date($row->ch5_st)."</td>
-	<td>".timestamp2date($row->ch5_sp)."</td>
-</tr>	
-</table>
 @*	";
 }
 
 echo"</table>";
 if(!$all){
 echo"*@
+}
+</table>
 <form action='index.php?curr=list_staff1' method='POST' name='frm_select_page'>
 <br>
 <div class=\"row\">
