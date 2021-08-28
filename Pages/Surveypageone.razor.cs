@@ -221,7 +221,7 @@ namespace FirstBlazorApp.Pages
 			SelectDistrictId	="sel"+	recordSurveyProfile.AMP;
 			SelectTambonId		=recordSurveyProfile.TMP;
             }
-            if (recordSurveyProfile.AMP != null)
+            if (recordSurveyProfile.AMP != null &&recordSurveyProfile.AMP!="")
             {
                 int amp = Convert.ToInt32(recordSurveyProfile.JUN);
                 districts = await DBContext.GetByIndex<int?, district>("district", amp, 0, "province_id", false);
@@ -276,9 +276,9 @@ namespace FirstBlazorApp.Pages
 		});
 
 			}
-			
-			List<survey_staff> getSurveyStaff = await DBContext.GetByIndex<string, survey_staff>("survey_staff", recordSurveyProfile.HC, null, "hc", false);
-			var getStaffBySurveyYear=getSurveyStaff.Where(x => x.survey_year == configSurvey.survey_year&&x.survey_no.Split('|')[0]==configSurvey.survey_no(HC,0)).ToList();
+
+			List<survey_staff> getSurveyStaff = await DBContext.GetAll<survey_staff>("survey_staff");
+			var getStaffBySurveyYear=getSurveyStaff.Where(x => x.HC.Contains(recordSurveyProfile.HC)).ToList();
 			//$query1="insert into survey_staff (HC,survey_year,survey_no,staff) value('$HC','$survey_year','$survey_no','$staff')";
 			if (getStaffBySurveyYear.Count == 0)
 			{
@@ -291,11 +291,16 @@ namespace FirstBlazorApp.Pages
 						HC =HCFromInput,
 						survey_year = configSurvey.survey_year,
 						survey_no = configSurvey.survey_no_num,
-						staff=User
+						staff=User,
+						ch1_st=(int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds
+
 					}
 
 				});
 			}
+			
+			
+			HC=recordSurveyProfile.HC;
 			//$log="insert into log_file ( id,username,time1,detail) values('','$username','".date("U") ."','เพิ่ม $HC')";
 			complete = "เรียบร้อย";
 		}

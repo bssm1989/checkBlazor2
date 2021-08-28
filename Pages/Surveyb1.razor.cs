@@ -50,7 +50,19 @@ string complete = "";
             formData.b7_2_2 = String.IsNullOrEmpty(formData.surveyTemp.b7_2_2) ? false : true;
             formData.b7_3_1 = String.IsNullOrEmpty(formData.surveyTemp.b7_3_1) ? false : true;
             formData.b7_3_2 = String.IsNullOrEmpty(formData.surveyTemp.b7_3_2) ? false : true;
+            var getallSurveyStaff = await DBContext.GetAll<survey_staff>("survey_staff");
+            string hc_id = getallSurveyStaff.Where(x => x.HC.Contains(HC)).FirstOrDefault().HC;
+            if (hc_id != null)
+            {
+                var updateStaff = await DBContext.GetByIndex<string, survey_staff>("survey_staff", hc_id, "", "hc", false);
+                var firstStaff = updateStaff.FirstOrDefault();
+                if (firstStaff != null)
+                {
+                    firstStaff.ch2_st = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
+                    await DBContext.UpdateItems<survey_staff>("survey_staff", new List<survey_staff>() { firstStaff });
+                }
+            }
         }
         protected async Task HandleValidSubmit(EditContext context)
         {

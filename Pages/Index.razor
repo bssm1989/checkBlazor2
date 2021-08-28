@@ -150,17 +150,17 @@ while($row=$result->fetch_object()){
 	</div>
 </div>
 *@
-<div class="row">
+@*<div class="row">
 	<div class="col-lg-12">
 		
 			@*<input type='text' name='HC_search' id='HC_search' @bind-value="searchHc.txt" placeholder='--กรอก HC ที่ต้องการค้นหา----' class="form-control" value='<?php echo$HC_search?>'>*@
-			<input type='text'  @bind-value="@searchHc" placeholder='--กรอก HC ที่ต้องการค้นหา----' class="form-control" >
+			@*<input type='text'  @bind-value="@searchHc" placeholder='--กรอก HC ที่ต้องการค้นหา----' class="form-control" >
 			<input type='submit'  @onclick="searchHcList"value='ค้น' class="form-control">
 		
 		
 	</div>
 </div>
-
+*@
 @*
 <?php
 $mysqli=mcon($mysql["host"], $mysql["user"], $mysql["pass"], $mysql["dbname"],$mysql["charset"]);
@@ -177,7 +177,7 @@ $row_count=$result_count->fetch_object();
 
 $CHC=$row_count->CHC;
 echo"
-<br>
+<br>*@
 <div class=\"row\">
 	<div class=\"col-lg-12\">
 		<form action='index.php?curr=list_staff1' method='POST'>
@@ -186,6 +186,7 @@ echo"
 		</form>
 	</div>
 </div>
+@*
 ";
 $query0="select JUN from staff_jun where username='$username'";
 $result0=$mysqli->query($query0);
@@ -201,15 +202,16 @@ echo"
 ";
 }
 echo"
-
+*@
 <br>
 <div class=\"row\">
 	<div class=\"col-lg-12\">
 		<label>ขณะนี้มีแบบสำรวจทั้งหมด&nbsp; $CHC &nbsp;ชุด&nbsp;&nbsp;<a href='index.php?curr=list_staff1&all=1'>ดูทั้งหมด</a></label>
 	</div>
 </div>
+@*
 ";
-
+*@
 echo"
 <br>
 <div class=\"row\">
@@ -220,6 +222,7 @@ echo"
 		<label><a href='index.php?curr=list_staff3'>รายการที่ไม่มีข้อมูลพื้นฐาน</a></label>
 	</div>
 </div>
+@*
 ";
 
 $page_count=($CHC- ($CHC % $show_limit))/ $show_limit+1;
@@ -232,6 +235,7 @@ if($all){
 $result=$mysqli->query($query);
 //	<td rowspan='2' align='center'>Profile</td>
 echo"
+*@
 <table border=1>
 <tr>
 	<td rowspan='2' align='center'>HC</td>
@@ -256,7 +260,7 @@ echo"
 	<td align='center'>เริ่มทำ</td>
 	<td align='center'>ทำเสร็จ</td>
 </tr>
-";
+@*";
 while($row=$result->fetch_object()){
 	$query_p="select HC,JUN from survey_profile where HC='$row->HC'";
 //echo"<br>";
@@ -276,28 +280,28 @@ while($row=$result->fetch_object()){
 	$rocheck=$recheck->fetch_object();
 
 	if($rocheck->username){
-		echo"
+		echo"*@
 			<tr bgcolor='green'>
 				<td><a href='survey_edit.php?HC=$row->HC'>$row->HC </a></td>
 				<td>$row_st->name </td>
 				<td>$row_j->province_name_thai </td>
-		";
+@*		";
 	}else{
 		echo"
-			<tr>
+			<tr>*@
 				<td><a href='survey_edit.php?HC=$row->HC'>$row->HC </a></td>
 				<td>$row_st->name </td>
 				<td>$row_j->province_name_thai </td>
-		";
+@*		";
 	}
-	
+	*@
 
-if($row_p->HC){
+@*if($row_p->HC){
 //	echo"<td align='center'>มี</td>";
 }else{
 //	echo"<td align='center'>ไม่มี</td>";
 }
-echo"
+echo"*@
 	<td>".timestamp2date($row->ch1_st)."</td>
 	<td>".timestamp2date($row->ch1_sp)."</td>
 	<td>".timestamp2date($row->ch2_st)."</td>
@@ -309,49 +313,51 @@ echo"
 	<td>".timestamp2date($row->ch5_st)."</td>
 	<td>".timestamp2date($row->ch5_sp)."</td>
 </tr>	
-	";
+</table>
+@*	";
 }
+
 echo"</table>";
 if(!$all){
-echo"
+echo"*@
 <form action='index.php?curr=list_staff1' method='POST' name='frm_select_page'>
 <br>
 <div class=\"row\">
 	<div class=\"col-lg-12\">
-";
+@*";
 if($page=='1'){
 	echo"\nก่อนหน้า";
 }else{
 	$page_select1=$page-1;
 	echo"\n&nbsp;&nbsp;<a style='cursor:pointer;color:blue' onclick='NextPage(document.frm_select_page,$page_select1)'>ก่อนหน้า</a>";
 }
-
-//.echo"&nbsp;&nbsp;<input type='button' value='ไป' onclick=\"location='index.php?curr=list&page_select='+document.page_select.value\">
-echo"\n&nbsp;&nbsp;<input type='button' value='ไป' onclick='NextPage(this.form,this.form.page_select1.value)'>
+*@
+@*//.echo"&nbsp;&nbsp;<input type='button' value='ไป' onclick=\"location='index.php?curr=list&page_select='+document.page_select.value\">
+echo"\n&nbsp;&nbsp;<input type='button' value='ไป' onclick='NextPage(this.form,this.form.page_select1.value)'>*@
 <input type='text' name='page_select1' onkeypress='return event.charCode >= 48 && event.charCode <= 57' value='$page' size='2' style='text-align: center;' > / $page_count";
 
-if($page==$page_count){
+@*if($page==$page_count){
 	echo"\n ถัดไป";
 }else{
 	$page_select1=$page+1;
 	echo"\n&nbsp;&nbsp;<a style='cursor:pointer;color:blue' onclick='NextPage(document.frm_select_page,$page_select1)'>ถัดไป</a>";
-}
+}*@
 
-echo"\n<input type='hidden' name='page_select' value='2'>";
+@*echo"\n<input type='hidden' name='page_select' value='2'>";
 echo"\n<input type='hidden' name='HC_search' value='$HC_search'>";
-echo"
+
 <script>
 	function NextPage(obj,value){
 		obj.page_select.value=value;
 		obj.submit();
 	}
 </script>
-";
-echo"</form>
-	</div>
+";echo"
+echo"*@
 </div>
-";
-}*@
+</div>
+</form>
+
 
 @*<div class="form-group row">
         <button class="btn btn-info float-right" @onclick="GetSavedEmployees">List All Employees</button>

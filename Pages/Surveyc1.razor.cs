@@ -237,7 +237,19 @@ string complete = "";
             formData.c4_4 = String.IsNullOrEmpty(formData.surveyTemp.c4_4) ? false : true;
             formData.c4_5 = String.IsNullOrEmpty(formData.surveyTemp.c4_5) ? false : true;
             formData.c4_6 = String.IsNullOrEmpty(formData.surveyTemp.c4_6) ? false : true;
+            var getallSurveyStaff = await DBContext.GetAll<survey_staff>("survey_staff");
+            string hc_id = getallSurveyStaff.Where(x => x.HC.Contains(HC)).FirstOrDefault().HC;
+            if (hc_id != null)
+            {
+                var updateStaff = await DBContext.GetByIndex<string, survey_staff>("survey_staff", hc_id, "", "hc", false);
+                var firstStaff = updateStaff.FirstOrDefault();
+                if (firstStaff != null)
+                {
+                    firstStaff.ch3_st = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
+                    await DBContext.UpdateItems<survey_staff>("survey_staff", new List<survey_staff>() { firstStaff });
+                }
+            }
         }
         protected async Task HandleValidSubmit(EditContext context)
         {

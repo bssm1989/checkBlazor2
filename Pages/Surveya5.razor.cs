@@ -76,13 +76,13 @@ public bool a16_8 { get; set; }
 public bool a16_9 { get; set; }
 public bool a16_10 { get; set; }
 public survey_a2 surveyTemp = new survey_a2();
+            
 
         }
-
+string hc_id = "";
         protected override async Task OnInitializedAsync()
         {
             await DBContext.OpenIndexedDb();
-            string hc = configSurvey.HC_random(HC);
 
             //List<survey_a2> getAllSurPro = await DBContext.GetByIndex<string, survey_a2>("survey_a2", hc, null, "hc", false);
             List<survey_a2> getAllSurPro = await DBContext.GetAll< survey_a2>("survey_a2");
@@ -108,6 +108,7 @@ public survey_a2 surveyTemp = new survey_a2();
                     formData.ElementAt(indexSurvey).a16_9 = String.IsNullOrEmpty(item.a16_9) ? false : true;
                     formData.ElementAt(indexSurvey).a16_10= String.IsNullOrEmpty(item.a16_10) ? false : true;
                     indexSurvey++;
+                 
                 }
         
             }
@@ -153,6 +154,21 @@ public survey_a2 surveyTemp = new survey_a2();
             //            formData.survey_B2
             //});
             //}
+
+            //$query_up1 = "update survey_staff set ch1_sp='".date("U")."' where  HC='$HC' and survey_year='$survey_year' and survey_no='$survey_no'";
+            var getallSurveyStaff = await DBContext.GetAll<survey_staff>("survey_staff");
+            hc_id = getallSurveyStaff.Where(x => x.HC.Contains(HC)).FirstOrDefault().HC;
+            if (hc_id != null)
+            {
+                var updateStaff = await DBContext.GetByIndex<string, survey_staff>("survey_staff", hc_id, "", "hc", false);
+                var firstStaff=updateStaff.FirstOrDefault();
+                if (firstStaff != null)
+                {
+                    firstStaff.ch1_sp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                    await DBContext.UpdateItems<survey_staff>("survey_staff",new List<survey_staff>() { firstStaff });
+                }
+            }
             complete = "เรียบร้อย";
         }
 

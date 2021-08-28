@@ -185,6 +185,19 @@ string complete = "";
             //            formData.survey_B2
             //});
             //}
+            var getallSurveyStaff = await DBContext.GetAll<survey_staff>("survey_staff");
+            string hc_id = getallSurveyStaff.Where(x => x.HC.Contains(HC)).FirstOrDefault().HC;
+            if (hc_id != null)
+            {
+                var updateStaff = await DBContext.GetByIndex<string, survey_staff>("survey_staff", hc_id, "", "hc", false);
+                var firstStaff = updateStaff.FirstOrDefault();
+                if (firstStaff != null)
+                {
+                    firstStaff.ch2_sp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+                    await DBContext.UpdateItems<survey_staff>("survey_staff", new List<survey_staff>() { firstStaff });
+                }
+            }
             complete = "เรียบร้อย";
         }
 
