@@ -5,20 +5,14 @@
 
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
-<input type="button" class="btn btn-primary" @onclick="synData" value="synData" />
 
-
-<input class="form-control" @bind="currentInputValue" />
-<button class="btn btn-secondary" @onclick="Save">บันทึก</button>
-<button class="btn btn-secondary" @onclick="Read">อ่าน</button>
-<button class="btn btn-secondary" @onclick="Delete">ลบ</button>
 @*test deploy   id test<h1>Hello, Bassam</h1>*@
 <div>
 	<div class="container content">
 		<div class="row" style='border-style: dotted;border-width: 1px'>
 			<div class="col-lg-12">
 				<label><b>ระบบสารสนเทศ</b></label>
-				<label>โครงการพัฒนาระบบสนับสนุนการทำrrrงานเชิงพื้นที่เพื่อการแก้ไขปัญหาความยากจนแบบเบ็ดเสร็จและแม่นยำ หน่วยบริหารและจัดการทุนด้านการพัฒนาระดับพื้นที่ (บพท.)</label>
+				<label>โครงการพัฒนาระบบสนับสนุนการทำงานเชิงพื้นที่เพื่อการแก้ไขปัญหาความยากจนแบบเบ็ดเสร็จและแม่นยำ หน่วยบริหารและจัดการทุนด้านการพัฒนาระดับพื้นที่ (บพท.)</label>
 			</div>
 		</div>
 
@@ -212,7 +206,7 @@ echo"
 @*
 ";
 *@
-echo"
+
 <br>
 <div class=\"row\">
 	<div class=\"col-lg-12\">
@@ -246,6 +240,7 @@ echo"
 	<td colspan='2' align='center'>ตอนที่ 3</td>
 	<td colspan='2' align='center'>ตอนที่ 4</td>
 	<td colspan='2' align='center'>ตอนที่ 5</td>
+	<td  ></td>
 </tr>
 
 <tr>
@@ -259,6 +254,7 @@ echo"
 	<td align='center'>ทำเสร็จ</td>
 	<td align='center'>เริ่มทำ</td>
 	<td align='center'>ทำเสร็จ</td>
+	<td align='center'></td>
 </tr>
 @foreach (var item in tableListSurveys)
 {
@@ -307,6 +303,10 @@ while($row=$result->fetch_object()){
 				<td>@UnixTimeStampToDateTime(item.survey_staff.ch4_sp)</td>
 				<td>@UnixTimeStampToDateTime(item.survey_staff.ch5_st)</td>
 				<td>@UnixTimeStampToDateTime(item.survey_staff.ch5_sp)</td>
+				 <td>
+                        <input type="button" class="btn btn-danger btn-sm"  value="ลบ" />
+                         <input type="button" class="btn btn-primary btn-sm" value="ส่งข้อมูล" />
+						 </td>
 			</tr>	
 
 @*	";
@@ -317,10 +317,45 @@ if(!$all){
 echo"*@
 }
 </table>
+
+
+
+
+<div class="row">
+	<div class="col-lg-12">
+
+ก่อนหน้า
+&nbsp;&nbsp;<input type="button" value="ไป" onclick="NextPage(this.form,this.form.page_select1.value)">
+<input type="text" name="page_select1" onkeypress="return event.charCode >= 48 &amp;&amp; event.charCode <= 57" value="1" size="2" style="text-align: center;"> / 1
+ ถัดไป
+<input type="hidden" name="page_select" value="2">
+<input type="hidden" name="HC_search" value="">
+
+	</div>
+</div>
+
+
+
+@*
 <form action='index.php?curr=list_staff1' method='POST' name='frm_select_page'>
 <br>
+*@
+
+
+
+@*
+
 <div class=\"row\">
 	<div class=\"col-lg-12\">
+*@
+
+
+
+
+
+
+
+
 @*";
 if($page=='1'){
 	echo"\nก่อนหน้า";
@@ -331,7 +366,20 @@ if($page=='1'){
 *@
 @*//.echo"&nbsp;&nbsp;<input type='button' value='ไป' onclick=\"location='index.php?curr=list&page_select='+document.page_select.value\">
 echo"\n&nbsp;&nbsp;<input type='button' value='ไป' onclick='NextPage(this.form,this.form.page_select1.value)'>*@
-<input type='text' name='page_select1' onkeypress='return event.charCode >= 48 && event.charCode <= 57' value='$page' size='2' style='text-align: center;' > / $page_count";
+
+
+
+
+@*<input type='text' name='page_select1' onkeypress='return event.charCode >= 48 && event.charCode <= 57' value='$page' size='2' style='text-align: center;' > / $page_count";*@
+
+
+
+
+
+
+
+
+
 
 @*if($page==$page_count){
 	echo"\n ถัดไป";
@@ -351,14 +399,32 @@ echo"\n<input type='hidden' name='HC_search' value='$HC_search'>";
 </script>
 ";echo"
 echo"*@
+@*</div>
 </div>
-</div>
-</form>
+</form>*@
 
 
 @*<div class="form-group row">
         <button class="btn btn-info float-right" @onclick="GetSavedEmployees">List All Employees</button>
     </div>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+
+
     @if (survey_profile_list != null)
 {
     <div class="row">
@@ -446,7 +512,14 @@ echo"*@
     </table>
     </div>
     </div>
-    }
+    }*@
+
+
+
+
+
+
+
 @*@if (employees != null)
 {
     <table class="table-bordered">
@@ -473,9 +546,8 @@ echo"*@
                     <td>@employee.localUpdate</td>
                     <td>@employee.User</td>
                     <td>
-                        <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="Delete" />
-                        <a href='editemployee/@employee.Id' class="btn btn-block">Edit</a>
-                    </td>
+                        <input type="button" class="btn btn-danger" @onclick="@(e => DeleteEmployee(employee.Id))" value="ลบ" />
+                         <input type="button" class="btn btn-defual" value="ส่งข้อมูล" />
 
                 </tr>
             </Virtualize>

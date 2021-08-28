@@ -1,16 +1,32 @@
 @page "/datalist"
+@inject IJSRuntime JSRuntime
 
-<h1>Data list</h1>
 
-<p>Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click ssssme</button>
+
+<h3>ข้อมูลเจ้าหน้าที่  </h3>
+@*<input type="button" class="btn btn-primary" @onclick="synData" value="synData" />*@
+
+
+<input class="form-control" @bind="currentInputValue" />
+<button class="btn btn-secondary" @onclick="Save">บันทึก</button>
+<button class="btn btn-secondary" @onclick="Read">อ่าน</button>
+<button class="btn btn-secondary" @onclick="Delete">ลบ</button>
 
 @code {
-    private int currentCount = 0;
+    string currentInputValue;
+    public async Task Save()
+        {
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);
+        }
 
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
+        public async Task Read()
+        {
+            currentInputValue = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name");
+        }
+
+        public async Task Delete()
+        {
+            await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "name");
+        }
 }

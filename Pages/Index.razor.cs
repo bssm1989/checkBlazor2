@@ -44,26 +44,13 @@ namespace FirstBlazorApp.Pages
             List<Models.survey_profile> survey_profile_list_by_hc = new List<survey_profile>();
 
         }
-        string currentInputValue;
+        
 
         public async Task synData()
         {
             await DBContext.loadDbFromServer();
         }
-        public async Task Save()
-        {
-            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "name", currentInputValue);
-        }
-
-        public async Task Read()
-        {
-            currentInputValue = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "name");
-        }
-
-        public async Task Delete()
-        {
-            await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "name");
-        }
+        
         // http
 
         Employee ReceivedEmployee;
