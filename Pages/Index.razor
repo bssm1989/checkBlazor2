@@ -6,7 +6,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 <input type="button" class="btn btn-primary" @onclick="synData" value="synData" />
-<h1>Local Storage!</h1>
+
 
 <input class="form-control" @bind="currentInputValue" />
 <button class="btn btn-secondary" @onclick="Save">บันทึก</button>
@@ -297,16 +297,16 @@ while($row=$result->fetch_object()){
 				<td><a href='surveypageone/@item.HC' >@item.HC</a></td>
 				<td>@item.UserName </td>
 				<td>@item.nameProvince </td>
-				<td>@item.survey_staff.ch1_st</td>
-				<td>@item.survey_staff.ch1_sp</td>
-				<td>@item.survey_staff.ch2_st</td>
-				<td>@item.survey_staff.ch2_sp</td>
-				<td>@item.survey_staff.ch3_st</td>
-				<td>@item.survey_staff.ch3_sp</td>
-				<td>@item.survey_staff.ch4_st</td>
-				<td>@item.survey_staff.ch4_sp</td>
-				<td>@item.survey_staff.ch5_st</td>
-				<td>@item.survey_staff.ch5_sp</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch1_st)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch1_sp)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch2_st)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch2_sp)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch3_st)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch3_sp)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch4_st)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch4_sp)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch5_st)</td>
+				<td>@UnixTimeStampToDateTime(item.survey_staff.ch5_sp)</td>
 			</tr>	
 
 @*	";

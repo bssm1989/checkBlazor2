@@ -19,11 +19,7 @@ namespace FirstBlazorApp.Pages
 {
     public partial class Surveypageone:ComponentBase
     {
-		//[Inject]
-		//IJSRuntime JSRuntime { get; set; }
-		//[Inject]
-		//NavigationManager NavigationManager {  get; set; }
-		string value1;
+		
 		survey_profile recordSurveyProfile = new survey_profile();
 		List<province> provinces1 = new List<province>();
 		List<district> districts = new List<district>();

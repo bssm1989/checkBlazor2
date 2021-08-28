@@ -77,15 +77,7 @@ string complete = "";
 			public bool a7_8 { get; set; }
 
 		}
-		private bool a7_0Val = false;
-		private bool a7_1Val = false;
-		private bool a7_2Val = false;
-		private bool a7_3Val = false;
-		private bool a7_4Val = false;
-		private bool a7_5Val = false;
-		private bool a7_6Val = false;
-		private bool a7_7Val = false;
-		private bool a7_8Val = false;
+		
 
 
 

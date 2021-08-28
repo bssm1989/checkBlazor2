@@ -155,6 +155,12 @@ namespace FirstBlazorApp.Pages
             survey_profile_list = (await DBContext.GetAll<survey_profile>("survey_profile")).OrderBy(x => x.create_survey).ToList();
 
             employees = await DBContext.GetAll();
+            //************  syn data *********
+            var getProvince = await DBContext.GetAll<province>("province");
+            if (getProvince.Count == 0)
+            {
+                await DBContext.loadDbFromServer();
+            }
 
             //**************แบบสำรวจ***********
             //$query_p = "select HC,JUN from        survey_profile where HC='$row->HC'";
@@ -165,26 +171,50 @@ namespace FirstBlazorApp.Pages
             var provinces = await DBContext.GetAll<province>("province");
             var survey_staffs = await DBContext.GetAll<survey_staff>("survey_staff");
             var listProfileStaff = from sp in survey_profiles
-                                   join pr in provinces on sp.JUN equals pr.province_id
                                    join st in survey_staffs  on sp.HC equals st.HC
-                                   select new { sp, st ,pr};
+                                   select new { sp, st };
             var listByhc = listProfileStaff.ToList();
             foreach (var item in listByhc.OrderBy(x=>x.sp.create_survey))
             {
+                var provinceName = "";
+                var getTxtProvince = await DBContext.GetByIndex<string, province>("province",string.IsNullOrEmpty( item.sp.JUN)?"":item.sp.JUN,"","province_id", false);
+               if(getTxtProvince.Count == 0)
+                {
+                    provinceName = "";
+                }
+                else
+                {
+                    provinceName = getTxtProvince.FirstOrDefault().province_name_thai;
+                }
                 tableListSurveys.Add(new tableListSurvey
                 {
                     survey_staff = item.st,
                     UserName = item.st.staff,
-                    nameProvince = item.pr.province_name_thai,
+                    nameProvince =provinceName,
                     HC = item.sp.HC
-                });
+                }); 
             }
 
             num_total =survey_profile_list.Count();
 
 
         }
-       
+        public static string UnixTimeStampToDateTime(int? unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            if(unixTimeStamp == null)
+            {
+                return "";
+            }
+            else
+            {
+                DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                dateTime = dateTime.AddSeconds((double)unixTimeStamp).ToLocalTime();
+                return dateTime.ToString();
+            }
+            
+        }
+
 
         private string AddResult = string.Empty;
     }
