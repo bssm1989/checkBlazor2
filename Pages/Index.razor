@@ -172,6 +172,8 @@ $row_count=$result_count->fetch_object();
 $CHC=$row_count->CHC;
 echo"
 <br>*@
+<div class="container content">
+		<div class="row" style='border-style: dotted;border-width: 1px'>
 <div class=\"row\">
 	<div class=\"col-lg-12\">
 		<form action='index.php?curr=list_staff1' method='POST'>
@@ -230,6 +232,9 @@ $result=$mysqli->query($query);
 //	<td rowspan='2' align='center'>Profile</td>
 echo"
 *@
+<div class="container"> 
+<div class="row">
+	<div class="col-lg-12 col-md-12">
 <table border=1>
 <tr>
 	<td rowspan='2' align='center'>HC</td>
@@ -317,10 +322,13 @@ if(!$all){
 echo"*@
 }
 </table>
+</div>
+</div>
+</div>
 
 
-
-
+<br />
+<div class="container"> 
 <div class="row">
 	<div class="col-lg-12">
 
@@ -332,6 +340,9 @@ echo"*@
 <input type="hidden" name="HC_search" value="">
 
 	</div>
+</div>
+	</div>
+</div>
 </div>
 
 
